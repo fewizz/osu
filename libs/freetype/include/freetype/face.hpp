@@ -1,4 +1,5 @@
 #pragma once
+
 #include "library.hpp"
 #include "glyph.hpp"
 #include "bbox.hpp"
@@ -7,14 +8,15 @@ namespace freetype {
 	typedef unsigned glyph_index;
 
 	class glyph_slot;
+	class library;
 
 	class face {
 		friend class library;
 
 		void* face_rec_ptr;
-		library* lib;
+		const library* lib;
 
-		face(void* rec_ptr, library* lib) :face_rec_ptr{ rec_ptr }, lib{lib} {}
+		face(void* rec_ptr, const library* lib) :face_rec_ptr{ rec_ptr }, lib{lib} {}
 	public:
 		face(face&& f) :lib{ f.lib }, face_rec_ptr{f.face_rec_ptr} {
 			f.face_rec_ptr = nullptr;

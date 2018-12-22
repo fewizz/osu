@@ -23,6 +23,9 @@ namespace gfx {
 	public:
 		explicit shader_renderer(std::shared_ptr<gl::program> program) :program_{ program } {}
 		explicit shader_renderer(gl::program&& program) :program_{ new gl::program{std::move(program)} } {};
+		shader_renderer(shader_renderer&& r) {
+			program_.swap(r.program_);
+		}
 		shader_renderer(const shader_renderer&) = delete;
 		shader_renderer& operator=(const shader_renderer&) = delete;
 
@@ -47,6 +50,11 @@ namespace gfx {
 		verticies_renderer(gl::program&& program, gl::vertex_array&& vao)
 			:shader_renderer(std::move(program)),
 			vertex_array{ std::make_shared<gl::vertex_array>(std::move(vao)) } {}
+
+		verticies_renderer(verticies_renderer&& v)
+		:shader_renderer(std::move(v)) {
+			vertex_array.swap(v.vertex_array);
+		}
 
 		std::shared_ptr<gl::vertex_array> get_vertex_array() {
 			return vertex_array;

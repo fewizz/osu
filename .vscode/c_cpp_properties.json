@@ -3,6 +3,7 @@
         {
             "name": "Linux",
             "includePath": [
+                "/usr/include/freetype2/**",
                 "${workspaceFolder}/**"
             ],
             "defines": [],

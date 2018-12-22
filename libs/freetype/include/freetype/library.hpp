@@ -8,9 +8,9 @@ namespace freetype {
 	class face;
 
 	class library {
-		std::vector<face> faces;
+		mutable std::vector<face> faces;
 		void* library_rec_ptr;
-		face* new_memory_face(void* begin, size_t size);
+		face* new_memory_face(void* begin, size_t size) const;
 	public:
 		library();
 
@@ -19,8 +19,11 @@ namespace freetype {
 			return new_memory_face(container.data(), container.size());
 		}
 
-		template<class Char>
-		face* face_from_istream(std::basic_istream<Char>& stream) {
+		face* face_from_istream(std::istream&& stream) const {
+			return face_from_istream(stream);
+		}
+
+		face* face_from_istream(std::istream& stream) const {
 			std::streampos prev = stream.tellg();
 			stream.seekg(0, std::ios_base::end);
 			std::streampos size = stream.tellg() - prev;

@@ -1,4 +1,5 @@
 #include <string>
+#include <stdexcept>
 
 namespace freetype {
 	namespace internal {

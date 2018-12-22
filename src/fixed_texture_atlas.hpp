@@ -31,6 +31,15 @@ namespace gfx {
 			int size = texture_size * textures_per_side;
 			image<uint8_t>(gl::internal_format::rgba8, 0, size, size, gl::pixel_format::rgba, (uint8_t*)nullptr);
 		}
+		fixed_texture_atlas(fixed_texture_atlas&& r):texture_2d(std::move(r)) {
+			texture_size = r.texture_size;
+			textures_per_side = r.textures_per_side;
+			last_index = r.last_index;
+		}
+		fixed_texture_atlas& operator=(fixed_texture_atlas&& r) {
+			fixed_texture_atlas(std::move(r));
+			return *this;
+		}
 
 		/* Returns right top point */
 		std::pair<unsigned, unsigned> add(int w, int h, uint8_t* data) {

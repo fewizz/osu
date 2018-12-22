@@ -1,4 +1,4 @@
-#include "face.hpp"
+#include "freetype/face.hpp"
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -18,7 +18,7 @@ freetype::face::size_metrics freetype::face::get_size_metrics() {
 }
 
 freetype::glyph_slot freetype::face::get_glyph() {
-	return freetype::glyph_slot::glyph_slot(((FT_Face)face_rec_ptr)->glyph);
+	return freetype::glyph_slot{((FT_Face)face_rec_ptr)->glyph};
 }
 
 void freetype::face::load_glyph(freetype::glyph_index index) {

@@ -27,6 +27,10 @@ namespace gfx {
 			return std::max(global_box.x_max - global_box.x_min, global_box.y_max - global_box.y_min) / 64 + 1;
 		}
 	public:
+
+		//text_renderer(text_renderer&& r):verticies_renderer(std::move(r)),
+		//	tex_atlas(std::move(r.tex_atlas)) {}
+
 		text_renderer(std::string str, freetype::face& face, std::shared_ptr<gl::program> program)
 			:verticies_renderer(program), text{ str }, tex_atlas{ calculate_max_size(face), 30 },
 			chars{ str.size() }, atlas_loc{program->uniform_location("a_position")}

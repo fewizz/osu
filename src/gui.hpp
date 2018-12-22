@@ -4,20 +4,18 @@
 
 namespace gui {
 
-	template<class... Props>
-	class view : public Props... {
-	protected:
-		view(){}
-	};
-
 	class renderable {
 	public:
-		virtual void render();
+		virtual void render() = 0;
+	};
+
+	template<class... Props>
+	class view : public Props... {
 	};
 
 	class updatable {
 	public:
-		virtual void render();
+		virtual void update() = 0;
 	};
 
 	class dimension {

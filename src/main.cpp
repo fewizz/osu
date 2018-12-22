@@ -1,40 +1,57 @@
 #include "opengl/core.hpp"
 #include "opengl/context.hpp"
+#include "opengl/debug.hpp"
 #include "glfw/glfw.hpp"
 #include <iostream>
 #include <string>
 #include <thread>
 #include <filesystem>
 #include <vector>
-//#include "map_list_screen.hpp"
+#include <fstream>
+#include "map_list_screen.hpp"
+#include "freetype/library.hpp"
+#include "freetype/face.hpp"
+#include "main.hpp"
 
 using namespace std;
 using namespace gl;
 
 namespace osu {
-    extern void import_beatmap(filesystem::path);
+    glfw::window* window;
+    freetype::library main_lib;
 }
 
 int main()
 {
-    glfw::window window = glfw::create_window(800, 600, "osu!", {});
+    freetype::face* face =
+        osu::main_lib.face_from_istream(ifstream("Pacifico.ttf", iostream::binary));
 
-    window.set_drop_callback([](vector<filesystem::path> paths) {
+    osu::window = new glfw::window(glfw::create_window(800, 600, "osu!", {}));
+    cout << "window created" << "\n";
+
+    osu::window->set_drop_callback([](vector<filesystem::path> paths) {
         for(filesystem::path p : paths)
             osu::import_beatmap(p);
     });
-    window.swap_interval(1);
     cout << "Init GL" << "\n";
+    osu::window->make_context_current();
+    cout << "make context current" << "\n";
+    osu::window->swap_interval(1);
+
+    debug_message_callback([](string str) {
+        cout << str << "\n";
+    });
+    cout << "debug callback set" << "\n";
 
     context context{wrap_context()};
     clear_color(0, 0, 0, 1);
-    //map_list_screen mls;
+    map_list_screen mls(*face);
 
-    while (!window.should_close())
+    while (!osu::window->should_close())
     {
         //clear(clear_buffer::color);
-        //mls.render();
-        window.swap_buffers();
+        mls.render();
+        osu::window->swap_buffers();
         glfw::poll_events();
     }
 }

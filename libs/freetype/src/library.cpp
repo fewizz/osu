@@ -1,5 +1,5 @@
-#include "library.hpp"
-#include <ft2build.h>
+#include "freetype/library.hpp"
+#include "ft2build.h"
 #include FT_FREETYPE_H
 #include <algorithm>
 
@@ -15,7 +15,7 @@ freetype::library::library() {
 	library_rec_ptr = lib;
 }
 
-freetype::face* freetype::library::new_memory_face(void* begin, size_t size) {
+freetype::face* freetype::library::new_memory_face(void* begin, size_t size) const {
 	FT_Face face_raw;
 	FT_Library lib{ (FT_Library)library_rec_ptr };
 	unsigned error = FT_New_Memory_Face(lib, (FT_Byte*)begin, size, 0, &face_raw);
