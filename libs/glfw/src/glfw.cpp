@@ -2,7 +2,7 @@
 #include "GLFW/glfw3.h"
 #include "glfw/glfw.hpp"
 #include <string>
-#include "window.hpp"
+#include "glfw/window.hpp"
 
 void glfw::internal::init() {
 	glfwInit();
@@ -12,13 +12,16 @@ void glfw::window::hints::hint::set_hint() {
 	glfwWindowHint(code, value);
 }
 
-glfw::window&& glfw::create_window(int width, int height, std::string title, std::vector<glfw::window::hints::hint> hints) {
+glfw::window glfw::create_window(int width, int height, std::string title, std::vector<glfw::window::hints::hint> hints) {
 	internal::init();
 
 	for (auto hint : hints)
 		hint.set_hint();
 
-	return glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+	GLFWwindow* w = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+	glfw::window window{w};
+	glfwSetWindowUserPointer(w, &window);
+	return window;
 }
 
 void glfw::window::make_context_current() {
@@ -42,6 +45,16 @@ std::pair<int, int> glfw::window::get_framebuffer_size() {
 
 void glfw::window::swap_interval(int interval) {
 	glfwSwapInterval(interval);
+}
+
+void glfw::window::set_drop_callback(glfw::window::drop_callback) {
+	glfwSetDropCallback((GLFWwindow*)window_ptr, [](GLFWwindow* win_ptr,int count,const char** paths_) {
+		std::vector<std::filesystem::path> paths;
+		for(int i = 0; i < count; i++) {
+			paths.push_back(std::filesystem::path(paths_[i]));
+		}
+		((glfw::window*)glfwGetWindowUserPointer(win_ptr))->drop_callback_(paths);
+	});
 }
 
 void glfw::poll_events() {

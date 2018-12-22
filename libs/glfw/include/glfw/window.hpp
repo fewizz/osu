@@ -1,11 +1,17 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <filesystem>
 
 namespace glfw {
 
 	class window {
+
+		//class GLFWwindow;
+		//typedef void (* GLFWdropfun)(GLFWwindow*,int,const char**);
+		typedef void(* drop_callback)(std::vector<std::filesystem::path>);
 	public:
+		drop_callback drop_callback_;
 		class hints {
 			hints() {} // You can't create it, it's like fake namespace
 
@@ -37,7 +43,8 @@ namespace glfw {
 		void swap_buffers();
 		std::pair<int, int> get_framebuffer_size();
 		void swap_interval(int interval);
+		void set_drop_callback(drop_callback);
 	};
 
-	window&& create_window(int width, int height, std::string title, std::vector<window::hints::hint> hints);
+	window create_window(int width, int height, std::string title, std::vector<window::hints::hint> hints);
 }
