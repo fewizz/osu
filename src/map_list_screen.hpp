@@ -27,7 +27,8 @@ public:
         for(std::string s : names) {
             result += s + "\n";
         }
-
+        std::cout << result << "\n";
+        std::cout << "program" << "\n";
         auto program = std::make_shared<gl::program>(
         gl::vertex_shader{R"(
 #version 420 core
@@ -50,7 +51,6 @@ void main() {
 }
 )"}
         );
-
         return {result, face, program};
     }
 
@@ -58,10 +58,10 @@ void main() {
         rend.program()->uniform<float, 4, 4>(
             rend.program()->uniform_location("u_mat"),
             glm::ortho<float>(
-                0,
-                osu::window->get_framebuffer_size().first,
-                0,
-                osu::window->get_framebuffer_size().second
+                osu::window->get_framebuffer_size().first / -2.0f,
+                osu::window->get_framebuffer_size().first / 2.0f,
+                osu::window->get_framebuffer_size().second / -2.0f,
+                osu::window->get_framebuffer_size().second / 2.0f
             )
         );
         rend.render();

@@ -30,9 +30,11 @@ LDLIBS+= \
 .PHONY: opengl-wrapper glfw-wrapper freetype-wraper run
 
 objects = main.o import_beatmap.o
+lib-targets = opengl-wrapper glfw-wrapper freetype-wrapper
 
-osu: $(objects) opengl-wrapper glfw-wrapper freetype-wrapper
+osu: $(objects) $(lib-targets)
 	$(CXX) $(CXXFLAGS) -o $@ $(objects) $(LDFLAGS) $(LDLIBS)
+%.o: $(lib-targets)
 main.o : main.hpp gui.hpp map_list_screen.hpp
 
 opengl-wrapper:
