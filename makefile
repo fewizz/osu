@@ -10,6 +10,7 @@ CXXFLAGS+= \
 -Ilibs/freetype/include \
 -Ilibs/minimp3 \
 -Ilibs/glm \
+-Ilibs/stacktrace/include \
 --std=c++17
 LDFLAGS+= \
 -Llibs/opengl \

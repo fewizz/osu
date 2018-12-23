@@ -8,11 +8,13 @@
 #include <filesystem>
 #include <vector>
 #include <fstream>
+#include <csignal>
 #include "map_list_screen.hpp"
 #include "freetype/library.hpp"
 #include "freetype/face.hpp"
 #include "main.hpp"
 #include "opengl/internal.hpp"
+#include "stacktrace.hpp"
 
 using namespace std;
 using namespace gl;
@@ -28,7 +30,7 @@ int main0()
         osu::main_lib.face_from_istream(ifstream("Pacifico.ttf", iostream::binary));
     face->set_char_size(64*60, 0, 0, 0);
 
-    osu::window = new glfw::window(glfw::create_window(800, 600, "osu!", {}));
+    osu::window = new glfw::window(glfw::create_window(800, 600, "osu!", {glfw::window::hints::opengl_debug_context{true}}));
     cout << "window created" << "\n";
 
     osu::window->set_drop_callback([](vector<filesystem::path> paths) {
@@ -67,7 +69,14 @@ int main0()
     return 0;
 }
 
+void on_error(int s) {
+    cerr << get_stacktrace_string() << "\n";
+}
+
 int main() {
+    std::signal(SIGABRT, on_error);
+    std::signal(SIGSEGV, on_error);
+    std::signal(SIGINT, on_error);
     try {
         return main0();
     }

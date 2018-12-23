@@ -3,6 +3,7 @@
         {
             "name": "Linux",
             "includePath": [
+                "${workspaceFolder}/libs/stacktrace",
                 "/usr/include/freetype2/**",
                 "${workspaceFolder}/**"
             ],
