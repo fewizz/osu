@@ -34,6 +34,8 @@ namespace freetype {
 
 		glyph_slot get_glyph();
 
+		unsigned short units_per_em();
+
 		class size_metrics;
 
 		size_metrics get_size_metrics();

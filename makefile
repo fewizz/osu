@@ -36,7 +36,12 @@ lib-targets = opengl-wrapper glfw-wrapper freetype-wrapper
 osu: $(objects) $(lib-targets)
 	$(CXX) $(CXXFLAGS) -o $@ $(objects) $(LDFLAGS) $(LDLIBS)
 %.o: $(lib-targets)
-main.o : main.hpp gui.hpp map_list_screen.hpp
+main.o : \
+main.hpp \
+gui.hpp \
+renderer.hpp \
+text_renderer.hpp \
+map_list_screen.hpp
 
 opengl-wrapper:
 	make -C libs/opengl

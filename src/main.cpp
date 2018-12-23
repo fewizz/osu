@@ -27,15 +27,17 @@ namespace osu {
 int main0()
 {
     freetype::face* face =
-        osu::main_lib.face_from_istream(ifstream("Pacifico.ttf", iostream::binary));
-    face->set_char_size(64*60, 0, 0, 0);
+        osu::main_lib.face_from_istream(ifstream("CaviarDreams.ttf", iostream::binary));
+    face->set_char_size(64*40, 0, 0, 0);
 
-    osu::window = new glfw::window(glfw::create_window(800, 600, "osu!", {glfw::window::hints::opengl_debug_context{true}}));
+    osu::window = new glfw::window(800, 600, "osu!", {glfw::window::hints::opengl_debug_context{true}});
     cout << "window created" << "\n";
 
     osu::window->set_drop_callback([](vector<filesystem::path> paths) {
-        for(filesystem::path p : paths)
+        for(filesystem::path p : paths) {
+            cout << "callback " << p.string() << "\n";
             osu::import_beatmap(p);
+        }
     });
     osu::window->swap_interval(1);
     cout << "Init GL" << "\n";
@@ -71,6 +73,7 @@ int main0()
 
 void on_error(int s) {
     cerr << get_stacktrace_string() << "\n";
+    std::exit(-1);
 }
 
 int main() {

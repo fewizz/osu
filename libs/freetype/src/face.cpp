@@ -29,6 +29,10 @@ void freetype::face::set_char_size(int w, int h, int hr, int vr) {
 	FT_Set_Char_Size((FT_Face)face_rec_ptr, w, h, hr, vr);
 }
 
+unsigned short freetype::face::units_per_em() {
+	return ((FT_Face)face_rec_ptr)->units_per_EM;
+}
+
 freetype::bbox freetype::face::get_bbox() {
 	FT_BBox b = ((FT_Face)face_rec_ptr)->bbox;
 	return bbox(b.xMin, b.yMin, b.xMax, b.yMax);

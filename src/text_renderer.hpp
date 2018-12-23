@@ -23,13 +23,13 @@ namespace gfx {
 		unsigned atlas_loc;
 
 		static int calculate_max_size(freetype::face& face) {
+			auto size_metrics = face.get_size_metrics();
 			freetype::bbox global_box{ face.get_bbox() };
-			return std::max(global_box.x_max - global_box.x_min, global_box.y_max - global_box.y_min) / 64 + 1;
+			double w = (double)(global_box.x_max - global_box.x_min) / (double)face.units_per_em() * size_metrics.x_ppem();
+			double h = (double)(global_box.y_max - global_box.y_min) / (double)face.units_per_em() * size_metrics.y_ppem();
+			return std::max(w, h) + 1;
 		}
 	public:
-
-		//text_renderer(text_renderer&& r):verticies_renderer(std::move(r)),
-		//	tex_atlas(std::move(r.tex_atlas)) {}
 
 		text_renderer(std::string str, freetype::face& face, std::shared_ptr<gl::program> program)
 			:verticies_renderer(program), text{ str }, tex_atlas{ calculate_max_size(face), 30 },
@@ -54,7 +54,7 @@ namespace gfx {
 				uint32_t code_point = utf8::next(begin, str.end());
 
 				if (code_point == '\n') {
-					penY -= face.get_size_metrics().height();
+					penY -= (double)face.get_size_metrics().height();
 					penX = 0;
 					continue;
 				}
@@ -146,6 +146,10 @@ namespace gfx {
 
 		float get_width() {
 			return width;
+		}
+
+		std::shared_ptr<gfx::fixed_texture_atlas> texture_atlas() {
+			return std::shared_ptr<gfx::fixed_texture_atlas>{&tex_atlas, [](auto){}};
 		}
 	};
 }

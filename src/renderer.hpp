@@ -109,12 +109,12 @@ namespace gfx {
 		using rectangle_renderer::rectangle_renderer;
 
 		void texture(std::shared_ptr<gl::texture_2d> texture) {
-			texture_ = texture;
+			this->texture(texture, 0, 0, texture->width(), texture->height());
 		}
 
-		void texture(gl::texture_2d&& texture, int xo, int yo, int w, int h) {
-			float tw = texture.width();
-			float th = texture.height();
+		void texture(std::shared_ptr<gl::texture_2d> texture, int xo, int yo, int w, int h) {
+			float tw = texture->width();
+			float th = texture->height();
 
 			uvs.data(std::vector<float> {
 				xo / tw, (yo + h) / th,
@@ -125,7 +125,7 @@ namespace gfx {
 			gl::vertex_attribute::location uv_loc = program()->attrib_location("a_uv");
 			vertex_array->attrib_pointer<float, 2>(uv_loc, uvs);
 			vertex_array->enable_attrib_array(uv_loc);
-			texture_ = std::make_shared<gl::texture_2d>(std::move(texture));
+			texture_ = texture;
 		}
 
 		void render() override {
