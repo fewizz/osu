@@ -41,6 +41,7 @@ main.hpp \
 gui.hpp \
 renderer.hpp \
 text_renderer.hpp \
+beatmap.hpp \
 map_list_screen.hpp
 
 opengl-wrapper:

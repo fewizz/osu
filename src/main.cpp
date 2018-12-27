@@ -15,6 +15,7 @@
 #include "main.hpp"
 #include "opengl/internal.hpp"
 #include "stacktrace.hpp"
+#include "beatmap.hpp"
 
 using namespace std;
 using namespace gl;
@@ -26,6 +27,9 @@ namespace osu {
 
 int main0()
 {
+    osu::decoder::decode_diff(
+        ifstream("Songs/820707 EDEN - Circles/EDEN - Circles (GreenHue) [Hard].osu", ios::binary)
+    );
     freetype::face* face =
         osu::main_lib.face_from_istream(ifstream("CaviarDreams.ttf", iostream::binary));
     face->set_char_size(64*40, 0, 0, 0);
