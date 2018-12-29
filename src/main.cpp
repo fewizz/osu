@@ -21,15 +21,20 @@ using namespace std;
 using namespace gl;
 
 namespace osu {
+    vector<beatmap_info> loaded_beatmaps;
     glfw::window* window;
     freetype::library main_lib;
 }
 
 int main0()
 {
-    osu::decoder::decode_diff(
-        ifstream("Songs/820707 EDEN - Circles/EDEN - Circles (GreenHue) [Hard].osu", ios::binary)
-    );
+    filesystem::directory_iterator it{"Songs"};
+    std::for_each(filesystem::directory_iterator{"Songs"}, filesystem::directory_iterator{},
+        [](filesystem::directory_entry entry) {
+            osu::load_beatmap(entry.path());
+        }
+    ); 
+
     freetype::face* face =
         osu::main_lib.face_from_istream(ifstream("CaviarDreams.ttf", iostream::binary));
     face->set_char_size(64*40, 0, 0, 0);

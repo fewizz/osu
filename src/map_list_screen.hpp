@@ -12,13 +12,16 @@
 #include "glm/ext/matrix_transform.hpp"
 #include "main.hpp"
 #include "GLFW/glfw3.h"
+#include "png.hpp"
 
 class map_list_screen : public gui::view<gui::renderable>
 {
     std::vector<gfx::text_renderer> name_renderers;
-    class outline_renderer : public gfx::shader_renderer
+    gfx::textured_rectangle_renderer back_renderer;
+
+    class : public gfx::shader_renderer
     {
-      public:
+    public:
         using gfx::shader_renderer::shader_renderer;
         inline void render() override
         {
@@ -26,6 +29,16 @@ class map_list_screen : public gui::view<gui::renderable>
         }
     } outline;
     unsigned current_map = 0;
+    std::shared_ptr<gl::texture_2d> current_tex;
+
+    void choose(unsigned mp) {
+        current_map = mp;
+        current_tex = std::make_shared<gl::texture_2d>(png::decode(
+            osu::loaded_beatmaps[mp].get_dir_path().string()
+            + "/"
+            + osu::loaded_beatmaps[mp].diffs[0].back->string()
+            ));
+    }
 
   public:
     map_list_screen(freetype::face &face)
@@ -51,13 +64,43 @@ class map_list_screen : public gui::view<gui::renderable>
             void main() {
                 gl_FragColor = vec4(1);
             }
-        )"}}}
+        )"}}},
+        back_renderer{
+            gl::program{
+                gl::vertex_shader{R"(
+                #version 130
+                out vec2 uv;
+                void main() {
+                    vec2 positions[4] = vec2[](
+                        vec2(-1, -1),
+                        vec2(1, -1),
+                        vec2(1, 1),
+                        vec2(-1, 1)
+                    );
+                    gl_Position = vec4(positions[gl_VertexID], 0, 1);
+                    uv = positions[gl_VertexID];
+                    uv.y *= -1;
+                }
+                )"
+                },
+                gl::fragment_shader{R"(
+                #version 130
+                uniform sampler2D u_texture;
+                in vec2 uv;
+                void main() {
+                    gl_FragColor = texture(u_texture, uv);
+                }
+                )"}
+            }
+        }
     {
+        choose(0);
+
         osu::window->set_key_callback([&](int key, int scancode, int action, int mods) {
             if (current_map > 0 && key == GLFW_KEY_UP)
-                current_map--;
+                choose(current_map-1);
             if (current_map < name_renderers.size() - 1 && key == GLFW_KEY_DOWN)
-                current_map++;
+                choose(current_map+1);
         });
     }
 
@@ -65,9 +108,8 @@ class map_list_screen : public gui::view<gui::renderable>
     {
         std::vector<std::string> names;
 
-        for (auto &de : std::filesystem::directory_iterator("Songs"))
-        {
-            names.push_back((++de.path().begin())->string());
+        for (osu::beatmap_info bm : osu::loaded_beatmaps) {
+            names.push_back(*bm.diffs[0].title);
         }
 
         auto program = std::make_shared<gl::program>(
@@ -108,6 +150,9 @@ void main() {
             osu::window->get_framebuffer_size().first,
             -osu::window->get_framebuffer_size().second,
             0);
+        
+        back_renderer.texture(current_tex);
+        back_renderer.render();
 
         mat = glm::translate(mat, {0, -100, 0});
         for (int i = 0; i < name_renderers.size(); i++)

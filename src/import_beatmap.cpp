@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <memory>
+#include "main.hpp"
 
 using namespace std;
 
@@ -65,6 +66,7 @@ void import_beatmap(filesystem::path path) {
         }
     }
 
+    osu::load_beatmap(song_dir);
     delete[] ar_data;
     delete[] buff0;
 }
