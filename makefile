@@ -24,17 +24,18 @@ LDLIBS+= \
 -lopenal \
 -lglfw \
 -lglfw-wrapper \
--lGL \
+-lOpenGL \
 -lopengl-wrapper \
 -lfreetype \
 -lfreetype-wrapper \
 -lzip \
 -llodepng \
--lGLEW
+-lGLEW \
+-ljpeg
 
 .PHONY: opengl-wrapper glfw-wrapper freetype-wraper run
 
-objects = main.o import_beatmap.o beatmap.o
+objects = main.o import_beatmap.o beatmap.o png.o jpeg.o
 lib-targets = opengl-wrapper glfw-wrapper freetype-wrapper liblodepng.a
 
 osu: $(objects) $(lib-targets)
@@ -55,7 +56,6 @@ glfw-wrapper:
 freetype-wrapper:
 	make -C libs/freetype
 liblodepng.a: liblodepng.a(lodepng.o)
-liblodepng.a(lodepng.o): lodepng.o
 lodepng.o: lodepng.h
 run:
 	LD_LIBRARY_PATH=$(CURDIR) ./osu

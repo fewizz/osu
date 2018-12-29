@@ -12,12 +12,24 @@
 #include "glm/ext/matrix_transform.hpp"
 #include "main.hpp"
 #include "GLFW/glfw3.h"
-#include "png.hpp"
+#include "jpeg.hpp"
 
 class map_list_screen : public gui::view<gui::renderable>
 {
     std::vector<gfx::text_renderer> name_renderers;
-    gfx::textured_rectangle_renderer back_renderer;
+    class : public gfx::shader_renderer {
+    public:
+        using gfx::shader_renderer::shader_renderer;
+        std::shared_ptr<gl::texture_2d> current_tex;
+
+        void render() override {
+            gl::active_texture(*current_tex, 0);
+            program()->uniform<int, 1>(program()->uniform_location("u_texture"), 0);
+            program()->uniform<int, 2>(program()->uniform_location("u_dim"), osu::window->get_framebuffer_size());
+            program()->draw_arrays(gl::primitive_type::triangle_strip, 0, 4);
+        }
+
+    } back_renderer;
 
     class : public gfx::shader_renderer
     {
@@ -29,15 +41,15 @@ class map_list_screen : public gui::view<gui::renderable>
         }
     } outline;
     unsigned current_map = 0;
-    std::shared_ptr<gl::texture_2d> current_tex;
 
     void choose(unsigned mp) {
         current_map = mp;
-        current_tex = std::make_shared<gl::texture_2d>(png::decode(
-            osu::loaded_beatmaps[mp].get_dir_path().string()
+        back_renderer.current_tex = std::make_shared<gl::texture_2d>(jpeg::decode(
+            std::filesystem::path
+            {osu::loaded_beatmaps[mp].get_dir_path().string()
             + "/"
             + osu::loaded_beatmaps[mp].diffs[0].back->string()
-            ));
+            }));
     }
 
   public:
@@ -65,20 +77,42 @@ class map_list_screen : public gui::view<gui::renderable>
                 gl_FragColor = vec4(1);
             }
         )"}}},
-        back_renderer{
-            gl::program{
+        back_renderer {
+            gl::program {
                 gl::vertex_shader{R"(
                 #version 130
+                uniform ivec2 u_dim;
+                uniform sampler2D u_texture;
+                in vec2 a_position;
                 out vec2 uv;
                 void main() {
+                    float dimW = vec2(u_dim).x / vec2(u_dim).y;
+                    float dimT = vec2(textureSize(u_texture, 0)).x / vec2(textureSize(u_texture, 0)).y;
+
+                    float y = 1;
+                    float x = 1;
+                    
+                    if(dimW < dimT) {
+                        x *= dimT / dimW;
+                    }
+                    if(dimW > dimT)
+                        y *= dimW / dimT;
+
                     vec2 positions[4] = vec2[](
-                        vec2(-1, -1),
-                        vec2(1, -1),
-                        vec2(1, 1),
-                        vec2(-1, 1)
+                        vec2(-x, -y),
+                        vec2(x, -y),
+                        vec2(-x, y),
+                        vec2(x, y)
                     );
                     gl_Position = vec4(positions[gl_VertexID], 0, 1);
-                    uv = positions[gl_VertexID];
+
+                    vec2 uvs[4] = vec2[](
+                        vec2(0, 0),
+                        vec2(1, 0),
+                        vec2(0, 1),
+                        vec2(1, 1)
+                    );
+                    uv = uvs[gl_VertexID];
                     uv.y *= -1;
                 }
                 )"
@@ -114,7 +148,7 @@ class map_list_screen : public gui::view<gui::renderable>
 
         auto program = std::make_shared<gl::program>(
             gl::vertex_shader{R"(
-#version 420 core
+#version 130
 uniform mat4 u_mat;
 in vec2 a_position;
 in vec2 a_uv;
@@ -125,12 +159,12 @@ void main() {
 }
 )"},
             gl::fragment_shader{R"(
-#version 420 core
+#version 130
 uniform sampler2D u_atlas;
 in vec2 uv_vs;
-out vec4 color;
+//out vec4 color;
 void main() {
-	color = texture(u_atlas, uv_vs);
+	gl_FragColor = texture(u_atlas, uv_vs);
 }
 )"});
 
@@ -151,7 +185,6 @@ void main() {
             -osu::window->get_framebuffer_size().second,
             0);
         
-        back_renderer.texture(current_tex);
         back_renderer.render();
 
         mat = glm::translate(mat, {0, -100, 0});

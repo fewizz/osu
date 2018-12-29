@@ -467,5 +467,4 @@ main.o main.d : src/main.cpp libs/opengl/include/opengl/core.hpp \
   libs/glm/glm/./ext/matrix_transform.inl src/main.hpp src/beatmap.hpp \
   /usr/include/GLFW/glfw3.h /usr/include/GL/gl.h /usr/include/GL/glext.h \
   /usr/include/clang/7.0.0/include/inttypes.h /usr/include/inttypes.h \
-  src/png.hpp libs/lodepng/lodepng.h src/stacktrace.hpp \
-  /usr/include/execinfo.h
+  src/jpeg.hpp src/stacktrace.hpp /usr/include/execinfo.h

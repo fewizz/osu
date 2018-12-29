@@ -70,9 +70,9 @@ namespace gfx {
 		{
 			positions.data(std::vector<float>{
 				x, y,
-					x + w, y,
-					x, y + h,
-					x + w, y + h,
+				x + w, y,
+				x, y + h,
+				x + w, y + h,
 			}, usage);
 			gl::vertex_attribute::location pos_loc = program->attrib_location("a_position");
 
