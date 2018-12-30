@@ -53,8 +53,8 @@ osu_file_info osu::decoder::diff(istream& stream) {
         string_view str(buff);
         if(str.back() == '\r')
             str = str.substr(0, str.length() - 1);
-        cout << str << "\n";
-        cout << str.length() << "\n";
+        // cout << str << "\n";
+        // cout << str.length() << "\n";
 
 
         if(str.length() == 0) { // Delimiter only
@@ -64,19 +64,19 @@ osu_file_info osu::decoder::diff(istream& stream) {
         if(str.length() >= 2 && str.substr(0, 2) == "//")
             continue;
         
-        if(str == "[General]")
-            current = general;
-        if(str == "[Events]")
-            current = events;
-        if(str == "[Metadata]")
-            current = metadata;
-        
         if(current == general)
             parse_general(res, str);
         if(current == events)
             parse_events(res, str);
         if(current == metadata)
             parse_metadata(res, str);
+
+        if(str == "[General]")
+            current = general;
+        if(str == "[Events]")
+            current = events;
+        if(str == "[Metadata]")
+            current = metadata;
             
     }
 

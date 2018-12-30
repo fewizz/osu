@@ -1,5 +1,5 @@
 #include "al.hpp"
-#include "al.h"
+#include "AL/al.h"
 #include <exception>
 
 unsigned al::internal::get_error() {
@@ -36,6 +36,10 @@ void al::source::i(unsigned source, unsigned param, int value) {
 
 void al::source::play() {
 	alSourcePlay(name);
+}
+
+void al::source::stop() {
+	alSourceStop(name);
 }
 
 al::source::~source() {

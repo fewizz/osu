@@ -80,6 +80,14 @@ namespace al {
 			i(name, internal::source_param::buffer, buf.name);
 		}
 
+		void buffer(al::buffer* buf) {
+			i(
+				name,
+				internal::source_param::buffer,
+				buf == nullptr ? 0 : (*buf).name);
+		}
+
 		void play();
+		void stop();
 	};
 }

@@ -6,7 +6,7 @@ CPPFLAGS+= \
 -Isrc \
 -Ilibs/opengl/include \
 -Ilibs/utfcpp/source \
--Ilibs/openal \
+-Ilibs/openal/include \
 -Ilibs/glfw/include \
 -Ilibs/freetype/include \
 -Ilibs/minimp3 \
@@ -17,6 +17,7 @@ CXXFLAGS = --std=c++17
 LDFLAGS += \
 -L. \
 -Llibs/opengl \
+-Llibs/openal \
 -Llibs/glfw \
 -Llibs/freetype
 LDLIBS+= \
@@ -26,6 +27,7 @@ LDLIBS+= \
 -lglfw-wrapper \
 -lOpenGL \
 -lopengl-wrapper \
+-lopenal-wrapper \
 -lfreetype \
 -lfreetype-wrapper \
 -lzip \
@@ -33,10 +35,15 @@ LDLIBS+= \
 -lGLEW \
 -ljpeg
 
-.PHONY: opengl-wrapper glfw-wrapper freetype-wraper run
+objects := main.o import_beatmap.o beatmap.o png.o jpeg.o mp3.o
+lib-targets := \
+opengl-wrapper \
+openal-wrapper \
+glfw-wrapper \
+freetype-wrapper \
+liblodepng.a
 
-objects = main.o import_beatmap.o beatmap.o png.o jpeg.o
-lib-targets = opengl-wrapper glfw-wrapper freetype-wrapper liblodepng.a
+.PHONY: $(lib-targets) run
 
 osu: $(objects) $(lib-targets)
 	$(CXX) $(CXXFLAGS) -o $@ $(objects) $(LDFLAGS) $(LDLIBS)
@@ -51,11 +58,13 @@ include $(objects:.o=.d)
 
 opengl-wrapper:
 	make -C libs/opengl
+openal-wrapper:
+	make -C libs/openal
 glfw-wrapper:
 	make -C libs/glfw
 freetype-wrapper:
 	make -C libs/freetype
 liblodepng.a: liblodepng.a(lodepng.o)
-lodepng.o: lodepng.h
+
 run:
 	LD_LIBRARY_PATH=$(CURDIR) ./osu

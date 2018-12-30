@@ -51,6 +51,8 @@
         "utility": "cpp",
         "algorithm": "cpp",
         "*.ipp": "cpp",
-        "csignal": "cpp"
+        "csignal": "cpp",
+        "memory_resource": "cpp",
+        "csetjmp": "cpp"
     }
 }

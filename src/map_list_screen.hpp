@@ -13,12 +13,13 @@
 #include "main.hpp"
 #include "GLFW/glfw3.h"
 #include "jpeg.hpp"
+#include "openal/al.hpp"
+#include "mp3.hpp"
 
 class map_list_screen : public gui::view<gui::renderable>
 {
     std::vector<gfx::text_renderer> name_renderers;
-    class : public gfx::shader_renderer {
-    public:
+    struct : public gfx::shader_renderer {
         using gfx::shader_renderer::shader_renderer;
         std::shared_ptr<gl::texture_2d> current_tex;
 
@@ -28,12 +29,9 @@ class map_list_screen : public gui::view<gui::renderable>
             program()->uniform<int, 2>(program()->uniform_location("u_dim"), osu::window->get_framebuffer_size());
             program()->draw_arrays(gl::primitive_type::triangle_strip, 0, 4);
         }
-
     } back_renderer;
 
-    class : public gfx::shader_renderer
-    {
-    public:
+    struct : public gfx::shader_renderer {
         using gfx::shader_renderer::shader_renderer;
         inline void render() override
         {
@@ -41,9 +39,26 @@ class map_list_screen : public gui::view<gui::renderable>
         }
     } outline;
     unsigned current_map = 0;
+    al::source src;
+    al::buffer buf;
 
     void choose(unsigned mp) {
         current_map = mp;
+
+        std::vector<uint16_t> data;
+        mp3::info info = mp3::decode(
+            osu::loaded_beatmaps[mp].get_dir_path().string()
+            + "/"
+            + osu::loaded_beatmaps[mp].diffs[0].audio->string(),
+            data);
+        std::cout << data.size() << " " <<info.channels << " " << info.frequency << "\n"; 
+        src.stop();
+        src.buffer(nullptr);
+        buf.data(info.channels, 16, data, info.frequency);
+        src.buffer(buf);
+        src.play();
+        std::cout << "al: " << al::internal::get_error() << "\n";
+
         back_renderer.current_tex = std::make_shared<gl::texture_2d>(jpeg::decode(
             std::filesystem::path
             {osu::loaded_beatmaps[mp].get_dir_path().string()

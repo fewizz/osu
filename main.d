@@ -159,6 +159,7 @@ main.o main.d : src/main.cpp libs/opengl/include/opengl/core.hpp \
   libs/opengl/include/opengl/debug.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/functional \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/std_function.h \
+  libs/openal/include/openal/al.hpp libs/openal/include/openal/alc.hpp \
   libs/glfw/include/glfw/glfw.hpp libs/glfw/include/glfw/window.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/vector \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_vector.h \
@@ -467,4 +468,4 @@ main.o main.d : src/main.cpp libs/opengl/include/opengl/core.hpp \
   libs/glm/glm/./ext/matrix_transform.inl src/main.hpp src/beatmap.hpp \
   /usr/include/GLFW/glfw3.h /usr/include/GL/gl.h /usr/include/GL/glext.h \
   /usr/include/clang/7.0.0/include/inttypes.h /usr/include/inttypes.h \
-  src/jpeg.hpp src/stacktrace.hpp /usr/include/execinfo.h
+  src/jpeg.hpp src/mp3.hpp src/stacktrace.hpp /usr/include/execinfo.h

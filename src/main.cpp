@@ -1,6 +1,8 @@
 #include "opengl/core.hpp"
 #include "opengl/context.hpp"
 #include "opengl/debug.hpp"
+#include "openal/al.hpp"
+#include "openal/alc.hpp"
 #include "glfw/glfw.hpp"
 #include <iostream>
 #include <string>
@@ -38,6 +40,11 @@ int main0()
     freetype::face* face =
         osu::main_lib.face_from_istream(ifstream("CaviarDreams.ttf", iostream::binary));
     face->set_char_size(64*40, 0, 0, 0);
+
+    cout << "Init AL" << "\n";
+    alc::device dev = alc::open_device();
+    alc::context al_context = dev.create_context();
+    alc::make_context_current(al_context);
 
     osu::window = new glfw::window(800, 600, "osu!", {glfw::window::hints::opengl_debug_context{true}});
     cout << "window created" << "\n";
