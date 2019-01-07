@@ -4,9 +4,11 @@
 
 namespace estd {
 	template<class T>
-	std::unique_ptr<T[]> get(std::istream& istream, size_t count) {
+	std::enable_if_t<std::is_pointer_v<T>,
+	std::unique_ptr<std::remove_pointer_t<T>[]>>
+	get(std::istream& istream, size_t count) {
 		size_t size = sizeof(T)*count;
-		std::unique_ptr<T[]> arr = std::make_unique<T[]>(size);
+		auto arr = std::make_unique<std::remove_pointer_t<T>[]>(size);
 		istream.read((char*)arr.get(), size);
 		return arr;
 	}
@@ -41,5 +43,16 @@ namespace estd {
 
 	inline size_t distance_to(std::ios::seekdir to, std::istream& s) {
 		return distance(std::ios::cur, to, s);
+	}
+
+	inline size_t distance_to_end(std::istream& s) {
+		return distance_to(std::ios::end, s);
+	}
+
+	template<class T>
+	std::enable_if_t<std::is_pointer_v<T>,
+	std::unique_ptr<std::remove_pointer_t<T>[]>>
+	get(std::istream& istream) {
+		get<T>(istream, distance_to_end(istream));
 	}
 }

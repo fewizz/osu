@@ -32,9 +32,9 @@ namespace mp3 {
 
     
     inline info decode(std::istream& stream, std::vector<uint16_t>& out) {
-        size_t size = estd::distance_to(std::ios::end, stream);
-        
-        auto buffer_ptr = estd::get<uint8_t>(stream, size);
+        size_t size = estd::distance_to_end(stream);
+
+        auto buffer_ptr = estd::get<uint8_t*>(stream, size);
 
         decoder d(buffer_ptr.get(), size);
 

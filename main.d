@@ -466,9 +466,10 @@ main.o main.d : src/main.cpp libs/opengl/include/opengl/core.hpp \
   libs/glm/glm/./ext/../gtc/constants.inl \
   libs/glm/glm/./ext/../matrix.hpp \
   libs/glm/glm/./ext/matrix_transform.inl src/main.hpp src/beatmap.hpp \
-  /usr/include/GLFW/glfw3.h /usr/include/GL/gl.h /usr/include/GL/glext.h \
-  /usr/include/clang/7.0.0/include/inttypes.h /usr/include/inttypes.h \
-  src/jpeg.hpp src/mp3.hpp src/unsafe_iostream_operations.hpp \
+  src/resourcepack.hpp /usr/include/GLFW/glfw3.h /usr/include/GL/gl.h \
+  /usr/include/GL/glext.h /usr/include/clang/7.0.0/include/inttypes.h \
+  /usr/include/inttypes.h src/jpeg.hpp \
+  src/unsafe_iostream_operations.hpp src/mp3.hpp src/shaders.hpp \
   src/stacktrace.hpp /usr/include/execinfo.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/mutex \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/std_mutex.h \

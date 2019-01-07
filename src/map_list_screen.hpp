@@ -15,6 +15,11 @@
 #include "jpeg.hpp"
 #include "openal/al.hpp"
 #include "mp3.hpp"
+#include "shaders.hpp"
+
+class beatmap_set_renderer {
+
+}
 
 class map_list_screen : public gui::view<gui::renderable>
 {
@@ -47,9 +52,9 @@ class map_list_screen : public gui::view<gui::renderable>
 
         std::vector<uint16_t> data;
         mp3::info info = mp3::decode(
-            osu::loaded_beatmaps[mp].get_dir_path().string()
+            osu::loaded_beatmaps[mp].get_dir<std::string>()
             + "/"
-            + osu::loaded_beatmaps[mp].diffs[0].audio->string(),
+            + *osu::loaded_beatmaps[mp].diffs[0].audio,
             data
         );
         std::cout << data.size() << " " <<info.channels << " " << info.frequency << "\n"; 
@@ -62,9 +67,9 @@ class map_list_screen : public gui::view<gui::renderable>
 
         back_renderer.current_tex = std::make_shared<gl::texture_2d>(jpeg::decode(
             std::filesystem::path
-            {osu::loaded_beatmaps[mp].get_dir_path().string()
+            {osu::loaded_beatmaps[mp].get_dir<std::string>()
             + "/"
-            + osu::loaded_beatmaps[mp].diffs[0].back->string()
+            + *osu::loaded_beatmaps[mp].diffs[0].back
             }));
     }
 
@@ -158,37 +163,18 @@ class map_list_screen : public gui::view<gui::renderable>
     {
         std::vector<std::string> names;
 
-        for (osu::beatmap_info bm : osu::loaded_beatmaps) {
-            names.push_back(*bm.diffs[0].title);
-        }
+        for (osu::beatmap_info bm : osu::loaded_beatmaps)
+            names.push_back(bm.title());
 
         auto program = std::make_shared<gl::program>(
-            gl::vertex_shader{R"(
-#version 130
-uniform mat4 u_mat;
-in vec2 a_position;
-in vec2 a_uv;
-out vec2 uv_vs;
-void main() {
-	uv_vs = a_uv;
-	gl_Position = u_mat * vec4(a_position, 0, 1);
-}
-)"},
-            gl::fragment_shader{R"(
-#version 130
-uniform sampler2D u_atlas;
-in vec2 uv_vs;
-//out vec4 color;
-void main() {
-	gl_FragColor = texture(u_atlas, uv_vs);
-}
-)"});
+            osu::load<gl::vertex_shader>("shaders/passtrough_mat4_tex2_pos2.vs"),
+            osu::load<gl::fragment_shader>("shaders/passtrough_mat4_tex2_pos2.fs")
+        );
 
         std::vector<gfx::text_renderer> result;
         for (std::string s : names)
-        {
             result.push_back({s, face, program});
-        }
+        
 
         return result;
     }

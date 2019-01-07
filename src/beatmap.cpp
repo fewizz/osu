@@ -9,16 +9,6 @@ using namespace osu::decoder;
 using namespace std;
 using namespace std::filesystem;
 
-path osu::beatmap_info::get_dir_path() {
-    return path(
-        "songs/"
-        + *(diffs[0].beatmap_set_id)
-        + " "
-        + *(diffs[0].artist)
-        + " - "
-        + *(diffs[0].title));
-}
-
 namespace osu {
     namespace decoder {
         enum event_type {
@@ -105,7 +95,7 @@ void parse_general(osu_file_info& res, string_view str) {
     cout << "general: " << key << ":" << value << "\n";
 
     if(key == "AudioFilename")
-        res.audio = new path { value };
+        res.audio = new string(value);
 }
 
 void parse_metadata(osu_file_info& res, string_view str) {
@@ -117,7 +107,7 @@ void parse_metadata(osu_file_info& res, string_view str) {
     if(key == "Artist")
         res.artist = val;
     if(key == "BeatmapSetID")
-        res.beatmap_set_id = val;
+        res.set_id = val;
 }
 
 void parse_events(osu_file_info& res, string_view str) {
@@ -125,7 +115,7 @@ void parse_events(osu_file_info& res, string_view str) {
     int type = str[0] - '0';
     switch(type) {
     case background:
-        res.back = new filesystem::path {
+        res.back = new string {
             str.begin() + "x,x,q"s.length(),
             str.end() - "q,x,x"s.length()
         };

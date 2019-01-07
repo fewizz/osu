@@ -11,7 +11,7 @@ namespace jpeg {
     gl::texture_2d decode(char* data, size_t size);
 
     inline gl::texture_2d decode(std::istream& s, size_t size) {
-        auto data_ptr = estd::get<char>(s, size);
+        auto data_ptr = estd::get<char*>(s, size);
         gl::texture_2d tex = decode(data_ptr.get(), size);
         return tex;
     }
@@ -21,7 +21,7 @@ namespace jpeg {
     }
 
     inline gl::texture_2d decode(std::istream& s) {
-        return decode(s, estd::distance_to(std::ios::end, s));
+        return decode(s, estd::distance_to_end(s));
     }
 
     inline gl::texture_2d decode(std::istream&& s) {

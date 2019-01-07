@@ -23,17 +23,18 @@
 #include <future>
 #include <condition_variable>
 #include <functional>
+#include "resourcepack.hpp"
 
 using namespace std;
 using namespace gl;
 
 namespace osu {
     vector<beatmap_info> loaded_beatmaps;
+    vector<resourcepack> loaded_resourcepacks;
     glfw::window* window;
     freetype::library main_lib;
 
     namespace worker {
-        //function<void()> end([](){});
         vector<function<void()>> tasks;
         mutex m;
         condition_variable cv;
@@ -53,9 +54,20 @@ namespace osu {
 
 int main0()
 {
-    filesystem::directory_iterator it{"songs"};
-    std::for_each(filesystem::directory_iterator{"songs"}, filesystem::directory_iterator{},
-        [](filesystem::directory_entry entry) {
+    std::for_each(
+        filesystem::directory_iterator{"resourcepacks"},
+        filesystem::directory_iterator{},
+        [](filesystem::directory_entry entry)
+        {
+            osu::loaded_resourcepacks.push_back(entry.path());
+        }
+    );
+
+    std::for_each(
+        filesystem::directory_iterator{"songs"},
+        filesystem::directory_iterator{},
+        [](filesystem::directory_entry entry)
+        {
             osu::load_beatmap(entry.path());
         }
     );

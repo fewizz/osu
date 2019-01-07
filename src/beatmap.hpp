@@ -7,25 +7,43 @@
 #include <algorithm>
 
 namespace osu {
-    struct osu_file_info;
-
-    struct beatmap_info {
-        std::vector<osu_file_info> diffs;
-
-        std::filesystem::path get_dir_path();
-    };
-
     struct osu_file_info {
         // General
-        std::filesystem::path* audio;
+        std::string* audio;
 
         // Metadata
         std::string* title;
         std::string* artist;
-        std::string* beatmap_set_id;
+        std::string* set_id;
 
         // Events
-        std::filesystem::path* back;
+        std::string* back;
+    };
+
+    struct beatmap_info {
+        std::vector<osu_file_info> diffs;
+
+        inline std::string title() {
+            return {*diffs[0].title};
+        }
+
+        inline std::string artist() {
+            return {*diffs[0].artist};
+        }
+
+        inline std::string set_id() {
+            return {*diffs[0].set_id};
+        }
+
+        template<class T>
+        T get_dir() {
+            return "songs/"
+            + set_id()
+            + " "
+            + artist()
+            + " - "
+            + title();
+        }
     };
 
     namespace decoder {

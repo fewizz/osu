@@ -5,14 +5,27 @@
 #include <filesystem>
 #include <vector>
 #include "beatmap.hpp"
+#include <fstream>
+#include <string>
+#include "resourcepack.hpp"
 
 namespace osu {
     extern std::vector<beatmap_info> loaded_beatmaps;
+    extern std::vector<resourcepack> loaded_resourcepacks;
     extern glfw::window* window;
     extern freetype::library main_lib;
     extern void import_beatmap(std::filesystem::path);
 
     inline void load_beatmap(std::filesystem::path bm_dir) {
         loaded_beatmaps.push_back(parse_beatmap_dir(bm_dir));
+    }
+
+    inline std::filesystem::path get_resource_path(std::string p) {
+        for(auto r : loaded_resourcepacks) {
+            auto path = r.get_relative_path(p);
+            if(std::filesystem::exists(path))
+                return path;
+        }
+        throw std::runtime_error("resource \"" + p + "\" not found");
     }
 }

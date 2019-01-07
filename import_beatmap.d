@@ -198,4 +198,5 @@ import_beatmap.o import_beatmap.d : src/import_beatmap.cpp /usr/include/zip.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/algorithmfwd.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_heap.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/uniform_int_dist.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/limits
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/limits \
+  src/resourcepack.hpp

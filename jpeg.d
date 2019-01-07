@@ -191,5 +191,6 @@ jpeg.o jpeg.d : src/jpeg.cpp src/jpeg.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/atomic_lockfree_defines.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/backward/auto_ptr.h \
   libs/opengl/include/opengl/internal.hpp \
-  libs/opengl/include/opengl/context.hpp /usr/include/jpeglib.h \
+  libs/opengl/include/opengl/context.hpp \
+  src/unsafe_iostream_operations.hpp /usr/include/jpeglib.h \
   /usr/include/x86_64-linux-gnu/jconfig.h /usr/include/jmorecfg.h
