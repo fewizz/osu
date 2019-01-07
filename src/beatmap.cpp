@@ -11,7 +11,7 @@ using namespace std::filesystem;
 
 path osu::beatmap_info::get_dir_path() {
     return path(
-        "Songs/"
+        "songs/"
         + *(diffs[0].beatmap_set_id)
         + " "
         + *(diffs[0].artist)
@@ -36,13 +36,15 @@ namespace osu {
 void parse_general(osu_file_info& res, std::string_view str);
 void parse_metadata(osu_file_info& res, std::string_view str);
 void parse_events(osu_file_info& res, std::string_view str);
+void parse_hit_objects(osu_file_info& res, std::string_view str);
 
 osu_file_info osu::decoder::diff(istream& stream) {
     enum type {
             none,
             general,
             metadata,
-            events
+            events,
+            hit_objects
     } current = none;
 
     char buff[0xFF];
@@ -70,6 +72,8 @@ osu_file_info osu::decoder::diff(istream& stream) {
             parse_events(res, str);
         if(current == metadata)
             parse_metadata(res, str);
+        if(current == hit_objects)
+            parse_hit_objects(res, str);
 
         if(str == "[General]")
             current = general;
@@ -77,7 +81,8 @@ osu_file_info osu::decoder::diff(istream& stream) {
             current = events;
         if(str == "[Metadata]")
             current = metadata;
-            
+        if(str == "[HitObjects]")
+            current = hit_objects;
     }
 
     return res;
@@ -126,4 +131,20 @@ void parse_events(osu_file_info& res, string_view str) {
         };
         break;
     }
+}
+
+void parse_hit_objects(osu_file_info& res, string_view str) {
+    vector<string_view> split;
+
+    auto left = 0;
+
+    while(true) {
+        auto right = str.find_first_of(',', left);
+        if(right == string::npos)
+            break;
+        split.push_back(str.substr(left, right - left));
+        left = right + 1;
+    }
+
+    cout << "x: " << split[0] << " y: " << split[1] << "\n";
 }

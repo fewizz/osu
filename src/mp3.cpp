@@ -1,6 +1,7 @@
 #include "mp3.hpp"
 #define MINIMP3_IMPLEMENTATION
-#include "minimp3.h"
+#define MINIMP3_ONLY_MP3
+#include "minimp3_ex.h"
 #include <csetjmp>
 #include <stdexcept>
 #include <iostream>
@@ -16,10 +17,51 @@ mp3::decoder::decoder(uint8_t* buffer, size_t buffer_size):
     mp3dec = new mp3dec_t;
     mp3dec_init((mp3dec_t*)mp3dec);
 }
+/*mp3::decoder::decoder(istream* stream, size_t buffer_size):
+    stream{stream},
+    pointer{0},
+    buffer{new uint8_t[buffer_size]},
+    buffer_size{buffer_size} {
+        frame_info = new mp3dec_frame_info_t;
+        mp3dec = new mp3dec_t;
+        mp3dec_init((mp3dec_t*)mp3dec);
+    };*/
 
 bool mp3::decoder::next(array<int16_t, 1152*2>& data) {
     //cout << "next" << "\n";
-    //while(true) {
+    while(true) {
+    /*while(true) {
+        int ffb = 0;
+        int fb = 0;
+        int n = mp3d_find_frame(buffer + pointer, buffer_size - pointer, &ffb, &fb);
+
+        cout << "fb: " << fb << "\n";
+        cout << "n: " << n << "\n";
+
+        if(!fb && n) {
+            pointer += n;
+            continue;
+        }
+        if(!fb)
+            return false;
+
+        int samples = mp3dec_decode_frame(
+            (mp3dec_t*)mp3dec,
+            buffer + pointer,
+            fb,
+            data.data(),
+            (mp3dec_frame_info_t*)frame_info
+        );
+
+        cout << "samples: " << samples << "\n";
+
+        if(!samples)
+            return false;
+        else {
+            pointer += ((mp3dec_frame_info_t*)frame_info)->frame_bytes;
+            return true;
+        }
+    }*/
     //mp3dec_t* preserv = new mp3dec_t(*(mp3dec_t*)mp3dec);
 
     if(pointer == buffer_size)
@@ -66,7 +108,7 @@ bool mp3::decoder::next(array<int16_t, 1152*2>& data) {
         throw runtime_error("is this mp3?");
 
     //cout << "again: pointer=" << (pointer) <<"\n";
-    //}
+    }
 }
 
 mp3::info mp3::decoder::get_info() {

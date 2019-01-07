@@ -50,7 +50,8 @@ class map_list_screen : public gui::view<gui::renderable>
             osu::loaded_beatmaps[mp].get_dir_path().string()
             + "/"
             + osu::loaded_beatmaps[mp].diffs[0].audio->string(),
-            data);
+            data
+        );
         std::cout << data.size() << " " <<info.channels << " " << info.frequency << "\n"; 
         src.stop();
         src.buffer(nullptr);

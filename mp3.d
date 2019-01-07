@@ -187,6 +187,7 @@ mp3.o mp3.d : src/mp3.cpp src/mp3.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/atomic_lockfree_defines.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/backward/auto_ptr.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/filesystem \
+  src/unsafe_iostream_operations.hpp libs/minimp3/minimp3_ex.h \
   libs/minimp3/minimp3.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/stdlib.h \
   /usr/include/string.h /usr/include/strings.h \
@@ -256,5 +257,21 @@ mp3.o mp3.d : src/mp3.cpp src/mp3.hpp \
   /usr/include/clang/7.0.0/include/sgxintrin.h \
   /usr/include/clang/7.0.0/include/ptwriteintrin.h \
   /usr/include/clang/7.0.0/include/invpcidintrin.h \
+  /usr/include/x86_64-linux-gnu/sys/mman.h \
+  /usr/include/x86_64-linux-gnu/bits/mman.h \
+  /usr/include/x86_64-linux-gnu/bits/mman-linux.h \
+  /usr/include/x86_64-linux-gnu/bits/mman-shared.h \
+  /usr/include/x86_64-linux-gnu/sys/stat.h \
+  /usr/include/x86_64-linux-gnu/bits/stat.h \
+  /usr/include/x86_64-linux-gnu/bits/statx.h /usr/include/unistd.h \
+  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+  /usr/include/x86_64-linux-gnu/bits/environments.h \
+  /usr/include/x86_64-linux-gnu/bits/confname.h \
+  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+  /usr/include/x86_64-linux-gnu/bits/getopt_core.h /usr/include/fcntl.h \
+  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
+  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
+  /usr/include/linux/falloc.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/csetjmp \
   /usr/include/setjmp.h

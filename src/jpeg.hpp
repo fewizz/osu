@@ -5,15 +5,14 @@
 #include <filesystem>
 #include <fstream>
 #include "opengl/texture.hpp"
+#include "unsafe_iostream_operations.hpp"
 
 namespace jpeg {
     gl::texture_2d decode(char* data, size_t size);
 
     inline gl::texture_2d decode(std::istream& s, size_t size) {
-        char* data = new char[size];
-        s.read(data, size);
-        gl::texture_2d tex = decode(data, size);
-        delete[] data;
+        auto data_ptr = estd::get<char>(s, size);
+        gl::texture_2d tex = decode(data_ptr.get(), size);
         return tex;
     }
 
@@ -22,11 +21,7 @@ namespace jpeg {
     }
 
     inline gl::texture_2d decode(std::istream& s) {
-        auto prev = s.tellg();
-        s.seekg(0, std::ios::end);
-        auto size = s.tellg() - prev;
-        s.seekg(prev);
-        return decode(s, size);
+        return decode(s, estd::distance_to(std::ios::end, s));
     }
 
     inline gl::texture_2d decode(std::istream&& s) {

@@ -18,6 +18,11 @@
 #include "opengl/internal.hpp"
 #include "stacktrace.hpp"
 #include "beatmap.hpp"
+#include <thread>
+#include <mutex>
+#include <future>
+#include <condition_variable>
+#include <functional>
 
 using namespace std;
 using namespace gl;
@@ -26,16 +31,34 @@ namespace osu {
     vector<beatmap_info> loaded_beatmaps;
     glfw::window* window;
     freetype::library main_lib;
+
+    namespace worker {
+        //function<void()> end([](){});
+        vector<function<void()>> tasks;
+        mutex m;
+        condition_variable cv;
+
+        void add_task(function<void()> t) {
+            m.lock();
+            tasks.push_back(t);
+            m.unlock();
+            cv.notify_one();
+        }
+
+        void end() {
+            cv.notify_one();
+        }
+    }
 }
 
 int main0()
 {
-    filesystem::directory_iterator it{"Songs"};
-    std::for_each(filesystem::directory_iterator{"Songs"}, filesystem::directory_iterator{},
+    filesystem::directory_iterator it{"songs"};
+    std::for_each(filesystem::directory_iterator{"songs"}, filesystem::directory_iterator{},
         [](filesystem::directory_entry entry) {
             osu::load_beatmap(entry.path());
         }
-    ); 
+    );
 
     freetype::face* face =
         osu::main_lib.face_from_istream(ifstream("CaviarDreams.ttf", iostream::binary));
@@ -43,8 +66,23 @@ int main0()
 
     cout << "Init AL" << "\n";
     alc::device dev = alc::open_device();
+    cout << "al: dev" << "\n";
     alc::context al_context = dev.create_context();
+    cout << "al: con" << "\n";
     alc::make_context_current(al_context);
+    cout << "al: make_current" << "\n";
+    
+    thread t([]() {
+        unique_lock lock(osu::worker::m);
+
+        while(true) {
+            osu::worker::cv.wait(lock);
+            if(osu::worker::tasks.empty())
+                return;
+            osu::worker::tasks.back();
+            osu::worker::tasks.pop_back();
+        }
+    });
 
     osu::window = new glfw::window(800, 600, "osu!", {glfw::window::hints::opengl_debug_context{true}});
     cout << "window created" << "\n";
@@ -84,6 +122,9 @@ int main0()
         osu::window->swap_buffers();
         glfw::poll_events();
     }
+
+    osu::worker::end();
+    t.join();
     return 0;
 }
 
