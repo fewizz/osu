@@ -478,7 +478,7 @@ main.o main.d : src/main.cpp libs/opengl/include/opengl/core.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/algorithmfwd.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_heap.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/uniform_int_dist.h \
-  libs/opengl/include/opengl/shader.hpp \
+  src/glyph_cache.hpp libs/opengl/include/opengl/shader.hpp \
   libs/glm/glm/ext/matrix_clip_space.hpp \
   libs/glm/glm/./ext/../ext/scalar_constants.hpp \
   libs/glm/glm/./ext/scalar_constants.inl \

@@ -21,7 +21,7 @@ namespace gfx {
 		gl::array_buffer uvs;
 		float width;
 		size_t chars;
-		unsigned atlas_loc;
+		//unsigned atlas_loc;
 
 	public:
 
@@ -38,7 +38,7 @@ namespace gfx {
 		}
 
 		texture_atlas& texture_atlas() {
-			return atlas;
+			return cache.get_texture_atlas();
 		}
 	};
 }

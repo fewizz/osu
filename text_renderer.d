@@ -444,4 +444,4 @@ text_renderer.o text_renderer.d : src/text_renderer.cpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/algorithmfwd.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_heap.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/uniform_int_dist.h \
-  libs/opengl/include/opengl/core.hpp
+  libs/opengl/include/opengl/core.hpp src/glyph_cache.hpp

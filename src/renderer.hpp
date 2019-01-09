@@ -74,7 +74,7 @@ namespace gfx {
 				x, y + h,
 				x + w, y + h,
 			}, usage);
-			gl::vertex_attribute::location pos_loc = program->attrib_location("a_position");
+			gl::vertex_attribute::location pos_loc = program->attrib_location("a_pos");
 
 			vertex_array->attrib_pointer<float, 2>(pos_loc, positions);
 			vertex_array->enable_attrib_array(pos_loc);
@@ -130,7 +130,7 @@ namespace gfx {
 
 		void render() override {
 			gl::active_texture(*texture_, 0);
-			program()->uniform<int, 1>(program()->uniform_location("u_texture"), 0);
+			program()->uniform<int, 1>(program()->uniform_location("u_tex"), 0);
 			rectangle_renderer::render();
 		}
 	};

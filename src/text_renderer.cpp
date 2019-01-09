@@ -5,15 +5,7 @@ using namespace std;
 using namespace freetype;
 using namespace gfx;
 
-static glm::uvec2 calculate_max_size(freetype::face& face) {
-    auto size_metrics = face.get_size_metrics();
-    freetype::bbox global_box{ face.get_bbox() };
-    double w = (double)(global_box.x_max() - global_box.x_min()) / (double)face.units_per_em() * size_metrics.x_ppem();
-    double h = (double)(global_box.y_max() - global_box.y_min()) / (double)face.units_per_em() * size_metrics.y_ppem();
-    return {w + 1, h + 1};
-}
-
-static fixed_slot_container
+/*static fixed_slot_container
 get_occupator(freetype::face& face, glm::uvec2 tex_dim) {
     auto size = calculate_max_size(face);
     return fixed_slot_container(
@@ -21,15 +13,15 @@ get_occupator(freetype::face& face, glm::uvec2 tex_dim) {
         tex_dim[0]/size[0],
         tex_dim[1]/size[1]
     );
-}
+}*/
         
 gfx::text_renderer::text_renderer(string str, glyph_cache& cache, shared_ptr<gl::program> program)
 :
 verticies_renderer(program),
 text{ str },
 cache { cache },
-chars{ str.size() },
-atlas_loc{program->uniform_location("a_position")}
+chars{ str.size() }
+//atlas_loc{program->uniform_location("a_tex")}
 {
     freetype::face& face = cache.get_face();
     std::vector<float> positions;
@@ -103,10 +95,10 @@ void gfx::text_renderer::render() {
     gl::enable_blending();
     gl::blend_func(gl::blending_factor::src_alpha, gl::blending_factor::one_minus_src_alpha);
     gl::active_texture(cache.get_texture_atlas(), 0);
-    program()->uniform<int, 1>(program()->uniform_location("u_atlas"), 0);
+    program()->uniform<int, 1>(program()->uniform_location("u_tex"), 0);
 
-    vertex_array->attrib_pointer<float, 2>(program()->attrib_location("a_position"), positions);
-    vertex_array->enable_attrib_array(program()->attrib_location("a_position"));
+    vertex_array->attrib_pointer<float, 2>(program()->attrib_location("a_pos"), positions);
+    vertex_array->enable_attrib_array(program()->attrib_location("a_pos"));
 
     vertex_array->attrib_pointer<float, 2>(program()->attrib_location("a_uv"), uvs);
     vertex_array->enable_attrib_array(program()->attrib_location("a_uv"));
