@@ -13,63 +13,28 @@ static glm::uvec2 calculate_max_size(freetype::face& face) {
     return {w + 1, h + 1};
 }
 
-static gfx::fixed_slot_occupator
+static fixed_slot_container
 get_occupator(freetype::face& face, glm::uvec2 tex_dim) {
     auto size = calculate_max_size(face);
-    return gfx::fixed_slot_occupator(
+    return fixed_slot_container(
         size,
         tex_dim[0]/size[0],
         tex_dim[1]/size[1]
     );
 }
-
-tuple<slot_id, slot, glyph_metrics> bake_glyph(
-    freetype::face& face,
-    fixed_texture_atlas& atlas,
-    uint32_t code_point) {
-    glyph_slot& glyph = face.load_glyph(face.get_char_index(code_point));
-
-    auto bitmap = glyph.get_bitmap();
-    unsigned w = bitmap.width();
-    unsigned h = bitmap.rows();
-    std::vector<uint8_t> data(w * h * 4);
-
-    for (unsigned x = 0; x < w; x++) {
-        for (unsigned y = 0; y < h; y++) {
-            uint8_t c = bitmap.data<uint8_t>()[x + bitmap.pitch() * y];
-            data[(x + y * w) * 4] = 0xFF;
-            data[(x + y * w) * 4 + 1] = 0xFF;
-            data[(x + y * w) * 4 + 2] = 0xFF;
-            data[(x + y * w) * 4 + 3] = c;
-        }
-    }
-
-    auto [id, slot] = atlas.add({w, h}, data.data());
-    return {id, slot, glyph.get_metrics()};
-}
         
-gfx::text_renderer::text_renderer(string str, freetype::face& face, shared_ptr<gl::program> program)
+gfx::text_renderer::text_renderer(string str, glyph_cache& cache, shared_ptr<gl::program> program)
 :
 verticies_renderer(program),
 text{ str },
-tex_atlas{ {1024, 1024}, get_occupator(face, {1024, 1024}) },
+cache { cache },
 chars{ str.size() },
 atlas_loc{program->uniform_location("a_position")}
 {
-    using namespace freetype;
-    tex_atlas.mag_filter(gl::mag_filter::nearest);
-    tex_atlas.min_filter(gl::min_filter::nearest);
-
+    freetype::face& face = cache.get_face();
     std::vector<float> positions;
     std::vector<float> uvs;
 
-    struct info {
-        slot_id id;
-        const slot s;
-        glyph_metrics metrics;
-    };
-
-    std::map<uint32_t, info> code_to_info;
     long penX = 0;
     long penY = 0;
 
@@ -86,18 +51,8 @@ atlas_loc{program->uniform_location("a_position")}
             continue;
         }
 
-        if (!code_to_info[code_point].id.valid()) {
-            auto [id, s, m] =
-                bake_glyph(face, tex_atlas, code_point);
-            code_to_info.erase(code_point);
-            code_to_info.insert({code_point, {id, s, m}});
-            //cout << "pos: " << s.position.x << " " << s.position.y << "\n";
-            //cout << "dim: " << s.dimension.x << " " << s.dimension.y << "\n";
-            //cout << "id: " << id << "\n";
-            //cout << "met: " << m.width() << " " << m.height() << "\n";
-        }
-
-        glyph_metrics metrics = code_to_info[code_point].metrics;
+        auto [id, slot, metrics] =
+            cache.get_glyph_info(face.get_char_index(code_point));
 
         if (metrics.height() == 0 && metrics.width() == 0) {
             penX += metrics.horizontal_advance();
@@ -120,11 +75,10 @@ atlas_loc{program->uniform_location("a_position")}
         });
         
         //cout << "met: " << metrics.width() << " " << metrics.height() << "\n";
-        slot s = code_to_info[code_point].s;
-        float x = s.position[0] / (float)tex_atlas.width();
-        float y = s.position[1] / (float)tex_atlas.height();
-        float w = metrics.width() / 64.0f / (float)tex_atlas.width();
-        float h = metrics.height() / 64.0f / (float)tex_atlas.height();
+        float x = slot.position[0] / (float)cache.get_texture_atlas().width();
+        float y = slot.position[1] / (float)cache.get_texture_atlas().height();
+        float w = metrics.width() / 64.0f / (float)cache.get_texture_atlas().width();
+        float h = metrics.height() / 64.0f / (float)cache.get_texture_atlas().height();
 
         uvs.insert(uvs.end(),
         {
@@ -148,7 +102,7 @@ atlas_loc{program->uniform_location("a_position")}
 void gfx::text_renderer::render() {
     gl::enable_blending();
     gl::blend_func(gl::blending_factor::src_alpha, gl::blending_factor::one_minus_src_alpha);
-    gl::active_texture(tex_atlas, 0);
+    gl::active_texture(cache.get_texture_atlas(), 0);
     program()->uniform<int, 1>(program()->uniform_location("u_atlas"), 0);
 
     vertex_array->attrib_pointer<float, 2>(program()->attrib_location("a_position"), positions);

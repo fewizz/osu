@@ -36,7 +36,7 @@ namespace gfx {
 		slot(slot&&) = default;
 	};
 
-	class occupator {
+	class slot_container {
 	public:
 		virtual std::pair<slot_id, slot>
 		occupy(glm::uvec2 tex_dim) = 0;
@@ -44,15 +44,16 @@ namespace gfx {
 		virtual slot get_slot(slot_id id) = 0;
 
 		virtual void free(slot_id) = 0;
+		virtual ~slot_container() = default;
 	};
 
-	template<class Occup>
 	class texture_atlas : public gl::texture_2d {
-		Occup occup;
-	public:
+		std::unique_ptr<slot_container> container;
+ 	public:
 
-		texture_atlas(glm::uvec2 td, Occup&& o )
-		: occup(std::move(o))
+		template<class SC>
+		texture_atlas(glm::uvec2 td, SC&& o )
+		: container{std::make_unique<SC>(std::move(o))}
 		{
     		image<uint8_t>(
         		gl::internal_format::rgba8,
@@ -68,23 +69,10 @@ namespace gfx {
 		texture_atlas& operator=(texture_atlas&& r) = default;
 
 		std::pair<slot_id, slot>
-		add(glm::uvec2 td, uint8_t* data) {
-		    auto [id, slot] = occup.occupy(td);
-
-		    sub_image(
-		        slot.position.x,
-		        slot.position.y, 
-		        slot.dimension[0],
-		        slot.dimension[1],
-		        gl::pixel_format::rgba,
-		        data
-		    );
-
-		    return {id, slot};
-		}
+		add(glm::uvec2 td, uint8_t* data);
 
 		inline slot get(slot_id id) {
-			return occup->get_slot(id);
+			return container->get_slot(id);
 		}
 	};
 
@@ -119,14 +107,14 @@ namespace gfx {
 		}
 	};
 
-	class fixed_slot_occupator : public occupator {
+	class fixed_slot_container : public slot_container {
 		glm::uvec2 slot_dim;
 		glm::uvec2 slots;
 
 		std::map<slot_id, slot> map;
 		static_index_provider ip;
 	public:
-		fixed_slot_occupator(
+		fixed_slot_container (
 			glm::uvec2 slot,
 			unsigned slots_x,
 			unsigned slots_y
@@ -148,5 +136,5 @@ namespace gfx {
 		}
 	};
 
-	using fixed_texture_atlas = texture_atlas<fixed_slot_occupator>;
+	//using fixed_texture_atlas = texture_atlas<fixed_slot_occupator>;
 }

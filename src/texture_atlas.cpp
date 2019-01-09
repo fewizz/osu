@@ -3,6 +3,22 @@
 using namespace gfx;
 using namespace std;
 using namespace glm;
+
+pair<slot_id, slot>
+gfx::texture_atlas::add(uvec2 td, uint8_t* data) {
+    auto [id, slot] = container->occupy(td);
+
+    sub_image(
+        slot.position.x,
+        slot.position.y, 
+        slot.dimension[0],
+        slot.dimension[1],
+        gl::pixel_format::rgba,
+        data
+    );
+
+    return {id, slot};
+}
         
 slot_id gfx::dynamic_index_provider::get_free() {
     slot_id result;
@@ -42,7 +58,7 @@ slot_id gfx::static_index_provider::get_free() {
 }
 
 pair<slot_id, slot>
-gfx::fixed_slot_occupator::occupy(uvec2 tex_dim)
+gfx::fixed_slot_container::occupy(uvec2 tex_dim)
 {
     slot_id id = ip.get_free();
 

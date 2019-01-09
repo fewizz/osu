@@ -10,10 +10,11 @@
 #include <cmath>
 #include <map>
 #include "opengl/core.hpp"
+#include "glyph_cache.hpp"
 
 namespace gfx {
 	class text_renderer : public verticies_renderer {
-		fixed_texture_atlas tex_atlas;
+		glyph_cache& cache;
 		std::string text;
 		std::vector<int> textures_array_texture_units;
 		gl::array_buffer positions;
@@ -26,7 +27,7 @@ namespace gfx {
 
 		text_renderer(
 			std::string str,
-			freetype::face& face, 
+			glyph_cache& cache, 
 			std::shared_ptr<gl::program> program
 		);
 
@@ -36,8 +37,8 @@ namespace gfx {
 			return width;
 		}
 
-		std::shared_ptr<fixed_texture_atlas> texture_atlas() {
-			return std::shared_ptr<gfx::fixed_texture_atlas>{&tex_atlas, [](auto){}};
+		texture_atlas& texture_atlas() {
+			return atlas;
 		}
 	};
 }
