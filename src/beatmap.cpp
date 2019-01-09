@@ -92,7 +92,7 @@ kv_pair(string_view str) {
 
 void parse_general(osu_file_info& res, string_view str) {
     auto [key, value] = kv_pair(str);
-    cout << "general: " << key << ":" << value << "\n";
+    //cout << "general: " << key << ":" << value << "\n";
 
     if(key == "AudioFilename")
         res.audio = new string(value);
@@ -136,5 +136,5 @@ void parse_hit_objects(osu_file_info& res, string_view str) {
         left = right + 1;
     }
 
-    cout << "x: " << split[0] << " y: " << split[1] << "\n";
+    //cout << "x: " << split[0] << " y: " << split[1] << "\n";
 }

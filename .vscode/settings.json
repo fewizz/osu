@@ -53,6 +53,9 @@
         "*.ipp": "cpp",
         "csignal": "cpp",
         "memory_resource": "cpp",
-        "csetjmp": "cpp"
+        "csetjmp": "cpp",
+        "list": "cpp",
+        "future": "cpp",
+        "map": "cpp"
     }
 }

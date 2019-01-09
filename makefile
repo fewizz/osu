@@ -2,7 +2,7 @@ vpath %.cpp src libs/lodepng
 vpath %.hpp src
 vpath %.h libs/lodepng
 
-override CPPFLAGS+= \
+override CPPFLAGS += \
 -Isrc \
 -Ilibs/opengl/include \
 -Ilibs/utfcpp/source \
@@ -12,7 +12,8 @@ override CPPFLAGS+= \
 -Ilibs/minimp3 \
 -Ilibs/glm \
 -Ilibs/stacktrace/include \
--Ilibs/lodepng
+-Ilibs/lodepng \
+-I/usr/include/freetype2/
 override CXXFLAGS += --std=c++17
 override LDFLAGS += \
 -L. \
@@ -36,7 +37,7 @@ LDLIBS+= \
 -ljpeg \
 -lpthread
 
-objects := main.o import_beatmap.o beatmap.o png.o jpeg.o mp3.o
+objects := $(subst .cpp,.o,$(notdir $(wildcard src/*.cpp)))
 lib-targets := \
 opengl-wrapper \
 openal-wrapper \
@@ -48,8 +49,9 @@ liblodepng.a
 
 osu: $(objects) $(lib-targets)
 	$(CXX) $(CXXFLAGS) -o $@ $(objects) $(LDFLAGS) $(LDLIBS)
-%.o: $(lib-targets)
 
+%.hpp:
+	
 %.d : %.cpp
 	@set -e; rm -f $@; \
 	$(CXX) -M $(CPPFLAGS) $< > $@.$$$$; \

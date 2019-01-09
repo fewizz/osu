@@ -10,7 +10,4 @@ CXXFLAGS = \
 
 $(SLN): $(SLN)(error.o face.o glyph.o library.o)
 
-face.o: face.hpp
-glyph.o: glyph.hpp
-library.o: library.hpp
 error.o: error.cpp

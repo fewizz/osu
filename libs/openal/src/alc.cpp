@@ -9,6 +9,11 @@ alc::device alc::open_device(std::string device_name) {
 	return device;
 }
 
+alc::device::~device() {
+	alcCloseDevice(static_cast<ALCdevice*>(device_ptr));
+	device_ptr = nullptr;
+}
+
 alc::context alc::device::create_context() {
 	return alcCreateContext(static_cast<ALCdevice*>(device_ptr), nullptr);
 }

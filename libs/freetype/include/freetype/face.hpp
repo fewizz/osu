@@ -1,53 +1,66 @@
 #pragma once
 
-#include "library.hpp"
-#include "glyph.hpp"
+#include "freetype_fwd.hpp"
+#include "internal.hpp"
+#include "glyph_slot.hpp"
 #include "bbox.hpp"
+#include "size_metrics.hpp"
+#include <memory>
 
 namespace freetype {
 	typedef unsigned glyph_index;
 
 	class glyph_slot;
-	class library;
 
 	class face {
 		friend class library;
 
-		void* face_rec_ptr;
-		const library* lib;
+		FT_Face ft_face;
+		glyph_slot slot;
 
-		face(void* rec_ptr, const library* lib) :face_rec_ptr{ rec_ptr }, lib{lib} {}
+		face(FT_Face raw)
+		:ft_face{ raw } {}
 	public:
-		face(face&& f) :lib{ f.lib }, face_rec_ptr{f.face_rec_ptr} {
-			f.face_rec_ptr = nullptr;
-			f.lib = nullptr;
+		face(face&& f):ft_face{f.ft_face} {f.ft_face = nullptr;};
+
+		inline ~face() {
+			if(ft_face)
+				internal::check_for_errors(FT_Done_Face(ft_face));
+			ft_face = nullptr;
 		}
-		~face();
 
-		glyph_index get_char_index(unsigned charcode);
+		inline glyph_index get_char_index(unsigned charcode) {
+			return FT_Get_Char_Index(ft_face, charcode);
+		}
 
-		void set_char_size(int w, int h, int hr, int vr);
+		inline void set_char_size(int w, int h, int hr, int vr) {
+			internal::check_for_errors(
+				FT_Set_Char_Size(ft_face, w, h, hr, vr)
+			);
+		}
 
-		bbox get_bbox();
+		inline bbox get_bbox() {
+			return ft_face->bbox;
+		}
 
-		void load_glyph(glyph_index index);
+		inline glyph_slot& load_glyph(glyph_index index) {
+			internal::check_for_errors (
+				FT_Load_Glyph(ft_face, index, FT_LOAD_RENDER)
+			);
+			slot = ft_face->glyph;
+			return glyph();
+		}
 
-		glyph_slot get_glyph();
+		inline glyph_slot& glyph() {
+			return slot;
+		}
 
-		unsigned short units_per_em();
+		inline unsigned short units_per_em() {
+			return ft_face->units_per_EM;
+		}
 
-		class size_metrics;
-
-		size_metrics get_size_metrics();
-
-		class size_metrics {
-			friend class face;
-			void* size_rec_ptr;
-			size_metrics(void* data) :size_rec_ptr{ data } {}
-		public:
-			unsigned short x_ppem();
-			unsigned short y_ppem();
-			signed long height();
-		};
+		inline size_metrics get_size_metrics() {
+			return ft_face->size->metrics;
+		}
 	};
 }

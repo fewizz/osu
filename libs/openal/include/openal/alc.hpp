@@ -11,8 +11,9 @@ namespace alc {
 	class device {
 		friend device open_device(std::string);
 		void* device_ptr;
-		device(void* device_ptr) :device_ptr{ device_ptr } {}
+		device(void* device_ptr): device_ptr{ device_ptr } {}
 	public:
+		~device();
 		context create_context();
 	};
 

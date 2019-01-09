@@ -1,11 +1,19 @@
 #pragma once
 
+#include "freetype_fwd.hpp"
+
 namespace freetype {
 	class bbox {
-	public:
-		bbox(int x_min, int y_min, int x_max, int y_max)
-			:x_min{ x_min }, y_min{ y_min }, x_max{ x_max }, y_max{ y_max }{}
+		friend class face;
 
-		const int x_min, y_min, x_max, y_max;
+		FT_BBox ft_bbox;
+
+		bbox(FT_BBox raw):ft_bbox{ raw }{}
+	public:
+	
+		inline long x_min() { return ft_bbox.xMin; }
+		inline long y_min() { return ft_bbox.yMin; }
+		inline long x_max() { return ft_bbox.xMax; }
+		inline long y_max() { return ft_bbox.yMax; }
 	};
 }

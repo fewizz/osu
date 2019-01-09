@@ -14,6 +14,7 @@
 #include "map_list_screen.hpp"
 #include "freetype/library.hpp"
 #include "freetype/face.hpp"
+#include "freetype/face.hpp"
 #include "main.hpp"
 #include "opengl/internal.hpp"
 #include "stacktrace.hpp"
@@ -27,6 +28,7 @@
 
 using namespace std;
 using namespace gl;
+using namespace freetype;
 
 namespace osu {
     vector<beatmap_info> loaded_beatmaps;
@@ -54,7 +56,7 @@ namespace osu {
 
 int main0()
 {
-    std::for_each(
+    for_each(
         filesystem::directory_iterator{"resourcepacks"},
         filesystem::directory_iterator{},
         [](filesystem::directory_entry entry)
@@ -63,7 +65,7 @@ int main0()
         }
     );
 
-    std::for_each(
+    for_each(
         filesystem::directory_iterator{"songs"},
         filesystem::directory_iterator{},
         [](filesystem::directory_entry entry)
@@ -72,9 +74,10 @@ int main0()
         }
     );
 
-    freetype::face* face =
+    cout << "reading font..." << "\n";
+    face& face =
         osu::main_lib.face_from_istream(ifstream("CaviarDreams.ttf", iostream::binary));
-    face->set_char_size(64*40, 0, 0, 0);
+    face.set_char_size(64*40, 0, 0, 0);
 
     cout << "Init AL" << "\n";
     alc::device dev = alc::open_device();
@@ -119,7 +122,7 @@ int main0()
 
     clear_color(0, 0, 0, 1);
     cout << "set clear color" << "\n";
-    map_list_screen mls(*face);
+    map_list_screen mls(face);
 
     while (!osu::window->should_close())
     {
@@ -142,17 +145,17 @@ int main0()
 
 void on_error(int s) {
     cerr << get_stacktrace_string() << "\n";
-    std::exit(-1);
+    exit(-1);
 }
 
 int main() {
-    std::signal(SIGABRT, on_error);
-    std::signal(SIGSEGV, on_error);
-    std::signal(SIGINT, on_error);
+    signal(SIGABRT, on_error);
+    signal(SIGSEGV, on_error);
+    signal(SIGINT, on_error);
     try {
         return main0();
     }
-    catch(const std::exception& e) {
+    catch(const exception& e) {
         cerr << e.what() << "\n";
     }
     return -1;

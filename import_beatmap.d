@@ -190,9 +190,35 @@ import_beatmap.o import_beatmap.d : src/import_beatmap.cpp /usr/include/zip.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/functional \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/std_function.h \
   libs/freetype/include/freetype/library.hpp \
+  libs/freetype/include/freetype/freetype_fwd.hpp \
+  /usr/include/freetype2/ft2build.h \
+  /usr/include/freetype2/freetype/config/ftheader.h \
+  /usr/include/freetype2/freetype/freetype.h \
+  /usr/include/freetype2/freetype/config/ftconfig.h \
+  /usr/include/freetype2/freetype/config/ftoption.h \
+  /usr/include/freetype2/freetype/config/ftstdlib.h \
+  /usr/include/clang/7.0.0/include/limits.h /usr/include/limits.h \
+  /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
+  /usr/include/linux/limits.h \
+  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/uio_lim.h /usr/include/string.h \
+  /usr/include/strings.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/stdlib.h \
+  /usr/include/setjmp.h /usr/include/freetype2/freetype/fttypes.h \
+  /usr/include/freetype2/freetype/ftsystem.h \
+  /usr/include/freetype2/freetype/ftimage.h \
+  /usr/include/freetype2/freetype/fterrors.h \
+  /usr/include/freetype2/freetype/ftmoderr.h \
+  /usr/include/freetype2/freetype/fterrdef.h \
   libs/freetype/include/freetype/face.hpp \
-  libs/freetype/include/freetype/glyph.hpp \
-  libs/freetype/include/freetype/bbox.hpp src/beatmap.hpp \
+  libs/freetype/include/freetype/internal.hpp \
+  libs/freetype/include/freetype/glyph_slot.hpp \
+  libs/freetype/include/freetype/glyph_metrics.hpp \
+  libs/freetype/include/freetype/bitmap.hpp \
+  libs/freetype/include/freetype/bbox.hpp \
+  libs/freetype/include/freetype/size_metrics.hpp src/beatmap.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/algorithm \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_algo.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/algorithmfwd.h \

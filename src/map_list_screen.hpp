@@ -17,10 +17,6 @@
 #include "mp3.hpp"
 #include "shaders.hpp"
 
-class beatmap_set_renderer {
-
-}
-
 class map_list_screen : public gui::view<gui::renderable>
 {
     std::vector<gfx::text_renderer> name_renderers;
