@@ -20,65 +20,70 @@
 
 class map_list_screen : public gui::view<>
 {
-    /*struct outline_renderer : public gfx::shader_renderer {
-        outline_renderer():gfx::shader_renderer( gl::program {
-            osu::load<gl::vertex_shader>("shaders/rectangle_mat4_tex2_dim.vs"),
-            osu::load<gl::fragment_shader>("shaders/color4.fs")    
-        }) {
-            program()->uniform<float, 2>(
-                program()->uniform_location("u_dim"),
-                glm::vec2{100, 600}
-            );
+    class name_drawer : public gfx::text_drawer {
+    public:
+        using gfx::text_drawer::text_drawer;
+
+        void draw(glm::mat4 off) {
+            prog()->uniform<float, 4, 4>(prog()->u_loc("u_mat"), off);
+            gfx::text_drawer::draw();
         }
+    };
 
-        void render() override {
-
-        }
-    } outline_renderer;*/
-
-    std::vector<gfx::text_drawer> name_drawers;
-    struct : public gfx::with_program {
-        //using gfx::shader_renderer::shader_renderer;
+    std::vector<name_drawer> name_drawers;
+    struct : public gfx::triangle_fan_drawer<0, 4> {
         std::shared_ptr<gl::texture_2d> current_tex;
 
-        inline void draw() {
+        inline void draw(glm::mat4 center) {
+            glm::vec2 fb_size = osu::window->framebuffer_size<glm::uvec2>();
+            glm::vec2 tex_size = {current_tex->width(), current_tex->height()};
+
+            float w_ratio = fb_size[0] / fb_size[1];
+            float t_ratio = tex_size[0] / tex_size[1];
+
+            glm::vec2 scaled_size =
+                current_tex->size<glm::vec2>()
+                *
+                (w_ratio > t_ratio ?
+                    fb_size[0] / tex_size[0]
+                    :
+                    fb_size[1] / tex_size[1]
+                );
+            
+            prog()->uniform<float, 2>(prog()->u_loc("u_dim"), scaled_size);
+
+            prog()->uniform<float, 4, 4>(
+                prog()->u_loc("u_mat"),
+                translate(center, {-scaled_size[0] / 2, -scaled_size[1] / 2, 0})
+            );
+
             gl::active_texture(*current_tex, 0);
-            program()->uniform<int, 1>(program()->uniform_location("u_tex"), 0);
-            program()->uniform<int, 2>(program()->uniform_location("u_dim"), osu::window->get_framebuffer_size());
-            program()->draw_arrays(gl::primitive_type::triangle_strip, 0, 4);
+            prog()->uniform<int, 1>(prog()->u_loc("u_tex"), 0);
+
+            gfx::triangle_fan_drawer<0, 4>::draw();
         }
     } back_drawer;
 
-    struct s : public gfx::with_program {
-        //using gfx::shader_renderer::shader_renderer;
+    struct s : public gfx::line_loop_drawer<0, 4> {
         s()
         :
-        gfx::with_program(
+        gfx::line_loop_drawer<0, 4> (
             gl::program {
-                osu::load<gl::vertex_shader>("shaders/rectangle_mat4_tex2_dim.vs"),
+                osu::load<gl::vertex_shader>("shaders/rectangle_u_mat4_u_dim_a_uv.vs"),
                 osu::load<gl::fragment_shader>("shaders/color4.fs")
             }
         ){}
 
-        inline void draw() {
-            program()->uniform<float, 2>(
-                program()->uniform_location("u_dim"),
-                glm::vec2 {
-                    5000.0f,
-                    80.0f
-                }
+        inline void draw(glm::mat4 top_left) {
+            prog()->uniform<float, 2>(
+                prog()->u_loc("u_dim"),
+                glm::vec2 { 5000.0f, 80.0f}
             );
 
-            program()->uniform<float, 4>(
-                program()->uniform_location("u_color"),
-                glm::vec4 {
-                    1.0f,
-                    1.0f,
-                    1.0f,
-                    1.0f
-                }
-            );
-            program()->draw_arrays(gl::primitive_type::line_loop, 0, 4);
+            prog()->uniform<float, 4>(prog()->u_loc("u_color"),glm::vec4 {1});
+            prog()->uniform<float, 4, 4>(prog()->u_loc("u_mat"),top_left);
+
+            gfx::line_loop_drawer<0, 4>::draw();
         }
     } outline;
 
@@ -92,45 +97,7 @@ class map_list_screen : public gui::view<>
     name_drawers { create_name_drawers() },
     back_drawer {
         gl::program {
-            gl::vertex_shader{R"(
-                #version 130
-                uniform ivec2 u_dim;
-                uniform sampler2D u_tex;
-                in vec2 a_pos;
-                out vec2 uv_vs;
-                void main() {
-                    float dimW = vec2(u_dim).x / vec2(u_dim).y;
-                    vec2 size = vec2(textureSize(u_tex, 0));
-                    float dimT = size.x / size.y;
-
-                    float y = 1;
-                    float x = 1;
-                    
-                    if(dimW < dimT) {
-                        x *= dimT / dimW;
-                    }
-                    if(dimW > dimT)
-                        y *= dimW / dimT;
-
-                    vec2 positions[4] = vec2[](
-                        vec2(-x, -y),
-                        vec2(x, -y),
-                        vec2(-x, y),
-                        vec2(x, y)
-                    );
-                    gl_Position = vec4(positions[gl_VertexID], 0, 1);
-
-                    vec2 uvs[4] = vec2[](
-                        vec2(0, 0),
-                        vec2(1, 0),
-                        vec2(0, 1),
-                        vec2(1, 1)
-                    );
-                    uv_vs = uvs[gl_VertexID];
-                    uv_vs.y *= -1;
-                }
-                )"
-            },
+            osu::load<gl::vertex_shader>("shaders/rectangle_u_mat4_u_dim_uv.vs"),
             osu::load<gl::fragment_shader>("shaders/passtrough_tex2.fs")
         }
     }
@@ -145,7 +112,7 @@ class map_list_screen : public gui::view<>
         });
     }
 
-    std::vector<gfx::text_drawer> create_name_drawers()
+    std::vector<name_drawer> create_name_drawers()
     {
         std::cout << "creating_name_renderers..." << "\n";
         std::vector<std::string> names;
@@ -160,7 +127,7 @@ class map_list_screen : public gui::view<>
         );
         std::cout << "program created..." << "\n";
 
-        std::vector<gfx::text_drawer> result;
+        std::vector<name_drawer> result;
         for (std::string s : names)
             result.push_back({
                 s,
@@ -202,33 +169,31 @@ class map_list_screen : public gui::view<>
 
     void draw()
     {
+        glm::vec2 fb_size = osu::window->framebuffer_size<glm::vec2>();
         glm::mat mat = glm::ortho<float> (
+            -fb_size[0] / 2,
+            fb_size[0] / 2,
+            -fb_size[1] / 2,
+            fb_size[1] / 2
+        );
+        back_drawer.draw(mat);
+
+        mat = glm::ortho<float> (
             0,
-            osu::window->get_framebuffer_size().first,
-            -osu::window->get_framebuffer_size().second,
+            fb_size[0],
+            -fb_size[1],
             0
         );
-        
-        back_drawer.draw();
 
         mat = glm::translate(mat, {0, -100, 0});
         for (int i = 0; i < name_drawers.size(); i++)
         {
-            auto& r = name_drawers[i];
-            r.program()->uniform<float, 4, 4>(
-                r.program()->uniform_location("u_mat"),
-                mat);
-            r.draw();
+            name_drawers[i].draw(mat);
 
             if (i == current_map)
-            {
-                outline.program()->uniform<float, 4, 4>(
-                    outline.program()->uniform_location("u_mat"),
-                    glm::translate(mat, {0, -20, 0}));
-            }
+                outline.draw(glm::translate(mat, {0, -60, 0}));
 
             mat = glm::translate(mat, {0, -80, 0});
         }
-        outline.draw();
     }
 };

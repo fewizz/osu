@@ -10,7 +10,7 @@ using namespace std;
 
 namespace osu {
 void import_beatmap(filesystem::path path) {
-    filesystem::create_directory("Songs");
+    filesystem::create_directory("songs");
 
     cout << "Importing " << path << "\n";
 

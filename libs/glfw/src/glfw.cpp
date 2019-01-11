@@ -40,11 +40,8 @@ void glfw::window::swap_buffers() {
 	glfwSwapBuffers(static_cast<GLFWwindow*>(window_ptr));
 }
 
-std::pair<int, int> glfw::window::get_framebuffer_size() {
-	int w;
-	int h;
-	glfwGetFramebufferSize((GLFWwindow*)window_ptr, &w, &h);
-	return { w, h };
+void glfw::internal::framebuffer_size(void* window, int& w, int& h) {
+	glfwGetFramebufferSize((GLFWwindow*)window, &w, &h);
 }
 
 void glfw::window::swap_interval(int interval) {

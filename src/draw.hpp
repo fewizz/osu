@@ -29,6 +29,7 @@ namespace gfx {
 			p{std::make_shared<gl::program>(std::move(p))}{}
 
 		std::shared_ptr<gl::program> program() { return p; }
+		inline std::shared_ptr<gl::program> prog() { return program(); }
 	};
 
 	template<class Tex>
@@ -80,11 +81,11 @@ namespace gfx {
 		:
 		with_program(std::forward<P>(p)) {}
 
-		void render() {
+		void draw() {
 			program()->draw_arrays(pt, Begin, Count);
 		}
 		
-		void render(unsigned begin, unsigned count) {
+		void draw(unsigned begin, unsigned count) {
 			program()->draw_arrays(pt, begin, count);
 		}
 	};
@@ -107,7 +108,7 @@ namespace gfx {
 		:
 		with_program(p){}*/
 
-		void render(unsigned begin, unsigned count) {
+		void draw(unsigned begin, unsigned count) {
 			program()->draw_arrays(pt, begin, count);
 		}
 	};
@@ -130,9 +131,16 @@ namespace gfx {
 	>
 	using triangle_fan_drawer = 
 		vertex_array_drawer<
-			gl::primitive_type::triangles,
+			gl::primitive_type::triangle_fan,
 			Begin, Count
 		>;
+
+	template<
+		unsigned Begin = internal::dynamic,
+		unsigned Count = internal::dynamic
+	>
+	using line_loop_drawer =
+		vertex_array_drawer<gl::primitive_type::lines, Begin, Count>;
 
 	class with_origin {
 		glm::vec2 o;

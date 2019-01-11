@@ -5,6 +5,9 @@
 #include <functional>
 
 namespace glfw {
+	namespace internal {
+		void framebuffer_size(void* window, int& w, int& h);
+	}
 
 	class window {
 
@@ -47,9 +50,16 @@ namespace glfw {
 		void make_context_current();
 		bool should_close();
 		void swap_buffers();
-		std::pair<int, int> get_framebuffer_size();
 		void swap_interval(int interval);
 		void set_drop_callback(std::function<drop_callback>);
 		void set_key_callback(std::function<key_callback>);
+
+		template<class Vec2>
+		Vec2 framebuffer_size() {
+			int w;
+			int h;
+			internal::framebuffer_size(window_ptr, w, h);
+			return {w, h};
+		}
 	};
 }

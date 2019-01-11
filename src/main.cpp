@@ -156,8 +156,8 @@ int main0()
         viewport(
             0,
             0,
-            osu::window->get_framebuffer_size().first,
-            osu::window->get_framebuffer_size().second
+            osu::window->framebuffer_size<glm::uvec2>()[0],
+            osu::window->framebuffer_size<glm::uvec2>()[1]
         );
         clear(clear_buffer::color);
         mls.draw();
