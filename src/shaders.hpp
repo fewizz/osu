@@ -11,15 +11,9 @@ namespace osu {
     template<class Shader>
     Shader load(std::string shader) {
         auto path = get_resource_path(shader);
-        auto ext = path.extension();
-        //std::unique_ptr<gl::shader> sh;
 
-        //if(ext == ".vs")
-        //    sh = std::make_unique<gl::vertex_shader>();
-        //else if(ext == ".fs")
-        //    sh = std::make_unique<gl::fragment_shader()>;
-        //else 
-        //    throw std::runtime_error("unknown shader file extension: " + shader);
+        if(!std::filesystem::exists(path))
+            throw std::runtime_error("shader \"" + path.string() + "\" not found\n");
         
         std::ifstream stream(path, std::ios::binary);
         size_t size = estd::distance_to_end(stream);

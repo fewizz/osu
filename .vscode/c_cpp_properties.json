@@ -5,7 +5,9 @@
             "includePath": [
                 "${workspaceFolder}/libs/stacktrace",
                 "/usr/include/freetype2/**",
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/libs/utfcpp/source",
+                "${workspaceFolder}/libs/freetype/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

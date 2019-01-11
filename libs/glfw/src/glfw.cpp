@@ -13,7 +13,7 @@ void glfw::window::hints::hint::set_hint() {
 	glfwWindowHint(code, value);
 }
 
-glfw::window::window(int width, int height, std::string title, std::vector<glfw::window::hints::hint> hints) {
+glfw::window::window(int width, int height, std::string title, std::initializer_list<glfw::window::hints::hint> hints) {
 	internal::init();
 
 	for (auto hint : hints)

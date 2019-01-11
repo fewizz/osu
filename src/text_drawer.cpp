@@ -1,5 +1,5 @@
 #include <iostream>
-#include "text_renderer.hpp"
+#include "text_drawer.hpp"
 
 using namespace std;
 using namespace freetype;
@@ -15,9 +15,14 @@ get_occupator(freetype::face& face, glm::uvec2 tex_dim) {
     );
 }*/
         
-gfx::text_renderer::text_renderer(string str, glyph_cache& cache, shared_ptr<gl::program> program)
+gfx::text_drawer::text_drawer(
+    string str,
+    glyph_cache& cache,
+    shared_ptr<gl::program> program,
+    origin o
+)
 :
-verticies_renderer(program),
+gfx::triangles_drawer<>(program),
 text{ str },
 cache { cache },
 chars{ str.size() }
@@ -29,6 +34,13 @@ chars{ str.size() }
 
     long penX = 0;
     long penY = 0;
+
+    long offX = 0;
+    long offY = 0;
+
+    if(o == origin::top_left) {
+        offY = -face.get_size_metrics().height();
+    }
 
     float scaleX = 1.0 / 64.0;
     float scaleY = 1.0 / 64.0;
@@ -53,8 +65,8 @@ chars{ str.size() }
 
         float left = (penX + metrics.horizontal_bearing_x()) * scaleX;
         float right = (penX + metrics.horizontal_bearing_x() + metrics.width()) * scaleX;
-        float bot = (penY + metrics.horizontal_bearing_y() - metrics.height()) * scaleY;
-        float top = (penY + metrics.horizontal_bearing_y()) * scaleY;
+        float bot = (penY + offY + metrics.horizontal_bearing_y() - metrics.height()) * scaleY;
+        float top = (penY + offY + metrics.horizontal_bearing_y()) * scaleY;
 
         positions.insert(positions.end(),
         {
@@ -91,17 +103,17 @@ chars{ str.size() }
     width = penX * scaleX;
 }
 
-void gfx::text_renderer::render() {
+void gfx::text_drawer::draw() {
     gl::enable_blending();
     gl::blend_func(gl::blending_factor::src_alpha, gl::blending_factor::one_minus_src_alpha);
     gl::active_texture(cache.get_texture_atlas(), 0);
     program()->uniform<int, 1>(program()->uniform_location("u_tex"), 0);
 
-    vertex_array->attrib_pointer<float, 2>(program()->attrib_location("a_pos"), positions);
-    vertex_array->enable_attrib_array(program()->attrib_location("a_pos"));
+    vertex_array()->attrib_pointer<float, 2>(program()->attrib_location("a_pos"), positions);
+    vertex_array()->enable_attrib_array(program()->attrib_location("a_pos"));
 
-    vertex_array->attrib_pointer<float, 2>(program()->attrib_location("a_uv"), uvs);
-    vertex_array->enable_attrib_array(program()->attrib_location("a_uv"));
+    vertex_array()->attrib_pointer<float, 2>(program()->attrib_location("a_uv"), uvs);
+    vertex_array()->enable_attrib_array(program()->attrib_location("a_uv"));
 
-    program()->draw_arrays(gl::primitive_type::triangles, 0, 6 * chars, *vertex_array);
+    program()->draw_arrays(gl::primitive_type::triangles, 0, 6 * chars, *vertex_array());
 }

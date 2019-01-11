@@ -13,7 +13,7 @@
 #include "glyph_cache.hpp"
 
 namespace gfx {
-	class text_renderer : public verticies_renderer {
+	class text_drawer : public gfx::triangles_drawer<> {
 		glyph_cache& cache;
 		std::string text;
 		std::vector<int> textures_array_texture_units;
@@ -21,17 +21,33 @@ namespace gfx {
 		gl::array_buffer uvs;
 		float width;
 		size_t chars;
-		//unsigned atlas_loc;
 
 	public:
 
-		text_renderer(
+		/*using origin_baseline_start = glm::vec2{};
+
+		static inline glm::vec2 origin_top_left(freetype::face face) {
+			return
+			{
+				0,
+				origin_baseline_start -
+				face.get_size_metrics().height() / 64.0
+			};
+		}*/
+
+		enum class origin {
+			top_left,
+			baseline_start
+		};
+
+		text_drawer(
 			std::string str,
-			glyph_cache& cache, 
-			std::shared_ptr<gl::program> program
+			glyph_cache& cache,
+			std::shared_ptr<gl::program> program,
+			origin o
 		);
 
-		void render() override;
+		void draw();
 
 		float get_width() {
 			return width;
@@ -41,4 +57,6 @@ namespace gfx {
 			return cache.get_texture_atlas();
 		}
 	};
+
+
 }

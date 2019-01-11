@@ -40,8 +40,8 @@ namespace glfw {
 		};
 
 		void* window_ptr;
-		window(int width, int height, std::string title, std::vector<window::hints::hint> hints);
-		window(void* window_ptr) :window_ptr{ window_ptr } {}\
+		window(int width, int height, std::string title, std::initializer_list<window::hints::hint> hints);
+		window(void* window_ptr) :window_ptr{ window_ptr } {}
 		window(window&& r);
 
 		void make_context_current();
@@ -52,6 +52,4 @@ namespace glfw {
 		void set_drop_callback(std::function<drop_callback>);
 		void set_key_callback(std::function<key_callback>);
 	};
-
-	window create_window(int width, int height, std::string title, std::vector<window::hints::hint> hints);
 }

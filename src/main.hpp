@@ -8,13 +8,21 @@
 #include <fstream>
 #include <string>
 #include "resourcepack.hpp"
+#include "glyph_cache.hpp"
 
 namespace osu {
     extern std::vector<beatmap_info> loaded_beatmaps;
     extern std::vector<resourcepack> loaded_resourcepacks;
-    extern glfw::window* window;
+    extern std::unique_ptr<glfw::window> window;
     extern freetype::library main_lib;
-    extern void import_beatmap(std::filesystem::path);
+    extern std::unique_ptr<std::reference_wrapper<freetype::face>> main_face;
+    extern std::unique_ptr<gfx::glyph_cache> glyph_cache;
+
+    inline freetype::face& get_main_face() {
+        return main_face->get();
+    }
+
+    void import_beatmap(std::filesystem::path);
 
     inline void load_beatmap(std::filesystem::path bm_dir) {
         loaded_beatmaps.push_back(parse_beatmap_dir(bm_dir));

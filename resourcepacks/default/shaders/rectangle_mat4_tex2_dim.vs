@@ -10,9 +10,9 @@ void main() {
 		vec2(0,0),
 		vec2(u_dim[0],0),
 		vec2(u_dim[0],u_dim[1]),
-		vec2(0,u_dim[1]);
+		vec2(0,u_dim[1])
 	);
 
-	gl_Position = u_mat * positions[gl_VertexID];
+	gl_Position = u_mat * vec4(positions[gl_VertexID], 0, 1);
 	uv_vs = a_uv;
 }

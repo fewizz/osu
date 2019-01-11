@@ -4,11 +4,6 @@
 
 namespace gui {
 
-	class renderable {
-	public:
-		virtual void render() = 0;
-	};
-
 	template<class... Props>
 	class view : public Props... {
 	};
