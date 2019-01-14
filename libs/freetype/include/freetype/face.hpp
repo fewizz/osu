@@ -6,6 +6,7 @@
 #include "bbox.hpp"
 #include "size_metrics.hpp"
 #include <memory>
+#include <functional>
 
 namespace freetype {
 	typedef unsigned glyph_index;
@@ -30,11 +31,10 @@ namespace freetype {
 			return *this;
 		}
 
-		//face(){}
-
 		inline ~face() {
-			if(ft_face)
+			if(ft_face) {
 				internal::check_for_errors(FT_Done_Face(ft_face));
+			}
 			ft_face = nullptr;
 		}
 

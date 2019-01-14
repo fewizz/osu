@@ -11,54 +11,61 @@ map_list_screen::map_list_screen() {
     );
     
     for(auto bm : osu::loaded_beatmaps) {
-        diffs_drawers.push_back({outline_drawer, bm, diff_d_program});
+        diffs_drawers.push_back({diff_d_program, outline_drawer, bm});
     }
 
-    choose(0);
+    choose(0, 0);
 
     osu::window->set_key_callback([&](int key, int scancode, int action, int mods) {
         if(action == GLFW_PRESS)
             return;
         if (current_map > 0 && key == GLFW_KEY_UP)
-            choose(current_map-1);
+            choose(current_map-1, 0);
         if (current_map < osu::loaded_beatmaps.size() - 1 && key == GLFW_KEY_DOWN)
-            choose(current_map+1);
+            choose(current_map+1, 0);
         if (current_diff > 0 && key == GLFW_KEY_LEFT)
-            current_diff--;
+            choose(current_map, current_diff-1);
         if (current_diff < osu::loaded_beatmaps[current_map].diffs.size() - 1
             &&
             key == GLFW_KEY_RIGHT
             )
-            current_diff++;
+            choose(current_map, current_diff+1);
     });
 }
 
-void map_list_screen::choose(unsigned mp) {
-    cout << "choosing " << mp << "\n";
+void map_list_screen::choose(unsigned mp, unsigned diff) {
+    if(mp != current_map) {
+        vector<uint16_t> data;
+        mp3::info info = mp3::decode(
+            osu::loaded_beatmaps[mp].get_dir<string>()
+            + "/"
+            + *osu::loaded_beatmaps[mp].diffs[0].audio,
+            data
+        );
+        std::cout << data.size() << " " <<info.channels << " " << info.frequency << "\n"; 
+        src.stop();
+        src.buffer(nullptr);
+        buf.data(info.channels, 16, data, info.frequency);
+        src.buffer(buf);
+        src.play();
+        std::cout << "al: " << al::internal::get_error() << "\n";
+
+        background_drawer.current_tex = std::make_shared<gl::texture_2d>(jpeg::decode(
+            std::filesystem::path
+            {osu::loaded_beatmaps[mp].get_dir<std::string>()
+            + "/"
+            + *osu::loaded_beatmaps[mp].diffs[0].back
+            }));
+        
+        diffs_drawers[current_map].main.set_pressed(false);
+        diffs_drawers[mp].main.set_pressed(true);
+    }
+
+    diffs_drawers[current_map].diffs[current_diff].set_pressed(false);
+    diffs_drawers[mp].diffs[diff].set_pressed(true);
+
     current_map = mp;
-    current_diff = 0;
-
-    vector<uint16_t> data;
-    mp3::info info = mp3::decode(
-        osu::loaded_beatmaps[mp].get_dir<string>()
-        + "/"
-        + *osu::loaded_beatmaps[mp].diffs[0].audio,
-        data
-    );
-    std::cout << data.size() << " " <<info.channels << " " << info.frequency << "\n"; 
-    src.stop();
-    src.buffer(nullptr);
-    buf.data(info.channels, 16, data, info.frequency);
-    src.buffer(buf);
-    src.play();
-    std::cout << "al: " << al::internal::get_error() << "\n";
-
-    background_drawer.current_tex = std::make_shared<gl::texture_2d>(jpeg::decode(
-        std::filesystem::path
-        {osu::loaded_beatmaps[mp].get_dir<std::string>()
-        + "/"
-        + *osu::loaded_beatmaps[mp].diffs[0].back
-        }));
+    current_diff = diff;
 }
 
 void map_list_screen::draw() {
@@ -78,10 +85,10 @@ void map_list_screen::draw() {
         0
     );
 
-    mat = translate(mat, {0, -100, 0});
-    for (int i = 0; i < diffs_drawers.size(); i++)
+    for (auto& dd : diffs_drawers)
     {
-        mat = diffs_drawers[i].draw(mat, i == current_map ? current_diff : -1);
+        dd.draw(mat);
+        mat = translate(mat, {0, -dd.get_h(), 0});
     }
 }
 
@@ -117,69 +124,55 @@ void map_list_screen::background_drawer::draw(mat4 center) {
     gfx::triangle_fan_drawer<0, 4>::draw();
 }
 
-void map_list_screen::outline_drawer::draw(mat4 top_left, vec4 color, vec2 dim) {
+void map_list_screen::outline_drawer_t::draw(mat4 bot_left, vec4 color, vec2 dim) {
     prog()->uniform<float, 2> (
         prog()->u_loc("u_dim"),
         dim
     );
 
     prog()->uniform<float, 4>(prog()->u_loc("u_color"), color);
-    prog()->uniform<float, 4, 4>(prog()->u_loc("u_mat"), top_left);
+    prog()->uniform<float, 4, 4>(prog()->u_loc("u_mat"), bot_left);
 
     gfx::line_loop_drawer<0, 4>::draw();
 }
 
-map_list_screen::beatmap_diffs_drawer::beatmap_diffs_drawer(
-    decltype(outline_drawer)& od,
-    osu::beatmap_info info,
-    std::shared_ptr<gl::program> p
-)
-:
-od{od},
-info{info},
-map_name {
-    info.artist() + " - " + info.title(),
-    *osu::glyph_cache,
-    p,
-    gfx::text_drawer::origin::baseline_start
-} {
+void map_list_screen::slot::draw(glm::mat4 top_left) {
+    mat4 mat = translate(top_left, vec3{0, -get_size()[1], 0});
+    text.prog()->uniform<float, 4, 4>(
+        text.prog()->u_loc("u_mat"),
+        translate(
+            mat,
+            {5, (get_h() - (osu::main_face->get_size_metrics().height() / 64.0)) / 2.0, 0}
+        )
+    );
+    text.draw();
+    od.draw(mat, outline_color, get_size());
+}
 
+map_list_screen::bm_main_drawer::bm_main_drawer(
+    shared_ptr<gl::program> prog,
+    outline_drawer_t& od,
+    osu::beatmap_info bi
+):
+main{bi.artist() + " - " + bi.title(), prog, od, {0, 0, 1, 1}},
+info{bi} {
     for(auto d : info.diffs) {
-        diffs.push_back({
+        diffs.emplace_back(
             *d.version,
-            *osu::glyph_cache,
-            p,
-            gfx::text_drawer::origin::baseline_start
-        });
+            prog,
+            od,
+            vec4{1, 0, 0, 1}
+        );
     }
 }
 
-mat4 map_list_screen::beatmap_diffs_drawer::draw(mat4 top_left, int selected_diff) {
-    const float H = 80;
-
-    map_name.prog()->uniform<float, 4, 4>(map_name.prog()->u_loc("u_mat"), top_left);
-    map_name.draw();
-    od.draw(translate(top_left, {0, -10, 0}), vec4{1}, {10000, H});
-
-    top_left = translate(top_left, {0, -H, 0});
-
-    if(selected_diff == -1)
-        return top_left;
-
-    top_left = translate(top_left, {100, 0, 0});
-
-    int i = 0;
+void map_list_screen::bm_main_drawer::draw(mat4 top_left) {
+    main.draw(top_left);
+    if(!main.is_pressed())
+        return;
+    mat4 mat = translate(top_left, {100, -main.get_h(), 0});
     for(auto& d : diffs) {
-        d.prog()->uniform<float, 4, 4>(d.prog()->u_loc("u_mat"), top_left);
-        d.draw();
-        od.draw(
-            translate(top_left, {0, -10, 0}),
-            i == selected_diff ? vec4{1, 0, 0, 1} : vec4{0, 0, 1, 1},
-            vec2{600, H}
-        );
-        top_left = translate(top_left, {0, -H - 10, 0});
-        i++;
+        d.draw(mat);
+        mat = translate(mat, {0, -d.get_h(), 0});
     }
-    top_left = translate(top_left, {-100, 0, 0});
-    return translate(top_left, {0, -20, 0});
 }

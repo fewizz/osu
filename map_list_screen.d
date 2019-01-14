@@ -189,7 +189,10 @@ map_list_screen.o map_list_screen.d : src/gui/map_list_screen.cpp \
   libs/freetype/include/freetype/glyph_metrics.hpp \
   libs/freetype/include/freetype/bitmap.hpp \
   libs/freetype/include/freetype/bbox.hpp \
-  libs/freetype/include/freetype/size_metrics.hpp src/draw.hpp \
+  libs/freetype/include/freetype/size_metrics.hpp \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/functional \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/std_function.h \
+  src/draw.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cmath \
   /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
   /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
@@ -224,8 +227,6 @@ map_list_screen.o map_list_screen.d : src/gui/map_list_screen.cpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/istream \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/istream.tcc \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stream_iterator.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/functional \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/std_function.h \
   libs/glm/glm/mat4x4.hpp libs/glm/glm/./ext/matrix_double4x4.hpp \
   libs/glm/glm/./ext/../detail/type_mat4x4.hpp \
   libs/glm/glm/./ext/../detail/type_vec4.hpp \
@@ -472,4 +473,6 @@ map_list_screen.o map_list_screen.d : src/gui/map_list_screen.cpp \
   /usr/include/GL/glext.h /usr/include/clang/7.0.0/include/inttypes.h \
   /usr/include/inttypes.h src/jpeg.hpp \
   src/unsafe_iostream_operations.hpp libs/openal/include/openal/al.hpp \
-  src/mp3.hpp src/shaders.hpp
+  src/mp3.hpp src/shaders.hpp src/properties/with_height.hpp \
+  src/properties/with_size.hpp src/properties/with_width.hpp \
+  src/properties/pressable.hpp src/properties/drawable.hpp

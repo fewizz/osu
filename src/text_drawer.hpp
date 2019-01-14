@@ -45,6 +45,10 @@ namespace gfx {
 		gfx::texture_atlas& texture_atlas() {
 			return cache.get_texture_atlas();
 		}
+
+		gfx::glyph_cache& get_glyph_cache() {
+			return cache;
+		}
 	};
 
 

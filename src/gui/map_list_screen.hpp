@@ -18,6 +18,10 @@
 #include "shaders.hpp"
 #include "glyph_cache.hpp"
 #include "beatmap.hpp"
+#include "properties/with_height.hpp"
+#include "properties/with_size.hpp"
+#include "properties/pressable.hpp"
+#include "properties/drawable.hpp"
 
 class map_list_screen : public gui::view<>
 {
@@ -36,8 +40,8 @@ class map_list_screen : public gui::view<>
         void draw(glm::mat4 center);
     } background_drawer;
 
-    struct outline_drawer : public gfx::line_loop_drawer<0, 4> {
-        outline_drawer()
+    struct outline_drawer_t : public gfx::line_loop_drawer<0, 4> {
+        outline_drawer_t()
         :
         gfx::line_loop_drawer<0, 4> (
             gl::program {
@@ -49,31 +53,66 @@ class map_list_screen : public gui::view<>
         void draw(glm::mat4 top_left, glm::vec4 color, glm::vec2 dim);
     } outline_drawer;
 
-    class beatmap_diffs_drawer {
-        decltype(outline_drawer)& od;
-        osu::beatmap_info info;
-        gfx::text_drawer map_name;
-        std::vector<gfx::text_drawer> diffs;
+    class slot: public gui::view<
+        prop::with_size<glm::vec2, float>,
+        prop::with_pressable_state<>,
+        prop::drawable<glm::mat4>
+    >{
+        gfx::text_drawer text;
+        outline_drawer_t& od;
+        glm::vec4 outline_color;
+        float w;
     public:
+        slot(
+            std::string text,
+            std::shared_ptr<gl::program> prog,
+            outline_drawer_t& od,
+            glm::vec4 o_color):
+        outline_color{o_color},
+        text{text, *osu::glyph_cache, prog, gfx::text_drawer::origin::baseline_start},
+        w{this->text.get_width() + 10},
+        od{od}
+        {}
 
-        beatmap_diffs_drawer(
-            decltype(outline_drawer)& od,
-            osu::beatmap_info,
-            std::shared_ptr<gl::program> p
-        );
+        glm::vec2 get_size() override { return {w, 60}; }
 
-        glm::mat4 draw(glm::mat4 left_top, int selected_d);
+        void draw(glm::mat4 top_left) override ;
     };
 
-    std::vector<beatmap_diffs_drawer> diffs_drawers;
+    class bm_diff_drawer : public slot {
+    public:
+        using slot::slot;
+    };
 
-    unsigned current_map = 0;
-    unsigned current_diff = 0;
+    struct bm_main_drawer : public prop::with_height<float> {
+        osu::beatmap_info info;
+        std::vector<bm_diff_drawer> diffs;
+        slot main;
+
+        bm_main_drawer(
+            std::shared_ptr<gl::program> prog,
+            outline_drawer_t& od,
+            osu::beatmap_info bi
+        );
+
+		float get_h() override {
+            return 
+            main.get_h()
+            +main.is_pressed()*diffs.size()*diffs[0].get_h();
+        }
+
+        void draw(glm::mat4 top_left);
+    };
+
+    std::vector<bm_main_drawer> diffs_drawers;
+
+    unsigned current_map = 1;
+    unsigned current_diff = 1;
     al::source src;
     al::buffer buf;
 
   public:
     map_list_screen();
-    void choose(unsigned map);
+    void choose(unsigned map, unsigned diff);
     void draw();
 };

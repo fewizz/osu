@@ -7,8 +7,9 @@ namespace freetype {
 
     class bitmap {
         friend glyph_slot;
-
+    
         FT_Bitmap ft_bitmap;
+
         bitmap(FT_Bitmap raw) : ft_bitmap{ raw } {}
     public:
         bitmap(const bitmap&) = delete;

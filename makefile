@@ -8,6 +8,7 @@ vpath %.h libs/lodepng
 
 objects := $(subst .cpp,.o,\
 $(foreach dir,$(source-containing-dirs),$(notdir $(wildcard $(dir)*.cpp ))))
+deps := $(objects:.o=.d)
 
 override CPPFLAGS += \
 -Isrc \
@@ -63,7 +64,7 @@ osu: $(objects) $(lib-targets)
 	$(CXX) -M $(CPPFLAGS) $< > $@.$$$$; \
 	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
-include $(objects:.o=.d)
+include $(deps)
 
 opengl-wrapper:
 	make -C libs/opengl
@@ -76,7 +77,7 @@ freetype-wrapper:
 liblodepng.a: liblodepng.a(lodepng.o)
 
 clean:
-	rm $(objects) $(objects:.o:.d) liblodepng.a osu
+	rm -f $(objects) $(deps) liblodepng.a osu
 	make -C libs/opengl clean
 	make -C libs/openal clean
 	make -C libs/glfw clean

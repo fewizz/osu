@@ -500,7 +500,10 @@ main.o main.d : src/main.cpp src/main.hpp libs/glfw/include/glfw/window.hpp \
   /usr/include/GL/gl.h /usr/include/GL/glext.h \
   /usr/include/clang/7.0.0/include/inttypes.h /usr/include/inttypes.h \
   src/jpeg.hpp src/unsafe_iostream_operations.hpp src/mp3.hpp \
-  src/shaders.hpp src/stacktrace.hpp /usr/include/execinfo.h \
+  src/shaders.hpp src/properties/with_height.hpp \
+  src/properties/with_size.hpp src/properties/with_width.hpp \
+  src/properties/pressable.hpp src/properties/drawable.hpp \
+  src/stacktrace.hpp /usr/include/execinfo.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/mutex \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/std_mutex.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/future \

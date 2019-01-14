@@ -81,7 +81,7 @@ int main0()
     cout << "reading font..." << "\n";
     osu::main_face = 
         &osu::main_lib.face_from_istream (
-            ifstream (
+            make_unique<ifstream> (
                 "CaviarDreams.ttf",
                 iostream::binary
             )

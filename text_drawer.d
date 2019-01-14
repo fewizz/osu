@@ -206,6 +206,8 @@ text_drawer.o text_drawer.d : src/text_drawer.cpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/atomic_base.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/atomic_lockfree_defines.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/backward/auto_ptr.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/functional \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/std_function.h \
   src/draw.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/vector \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_vector.h \
@@ -223,8 +225,6 @@ text_drawer.o text_drawer.d : src/text_drawer.cpp \
   /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/iterator \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stream_iterator.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/functional \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/std_function.h \
   libs/glm/glm/mat4x4.hpp libs/glm/glm/./ext/matrix_double4x4.hpp \
   libs/glm/glm/./ext/../detail/type_mat4x4.hpp \
   libs/glm/glm/./ext/../detail/type_vec4.hpp \
