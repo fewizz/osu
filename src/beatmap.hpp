@@ -14,6 +14,7 @@ namespace osu {
         // Metadata
         std::string* title;
         std::string* artist;
+        std::string* version;
         std::string* set_id;
 
         // Events

@@ -42,7 +42,7 @@ slot_id gfx::static_index_provider::get_free() {
     for(unsigned i = 0; i < size; i++) {
         uint32_t& v0 = v[i];
 
-        if(v0 == numeric_limits<uint32_t>::max())
+        if(~v0 == 0)
             continue;
 
         unsigned x = 0;
@@ -51,11 +51,13 @@ slot_id gfx::static_index_provider::get_free() {
 
         v0 |= (1 << x);
 
-        return (i << 3) + x;
+        return (i << 5) | x;
     }
 
     throw runtime_error("free index not found");
 }
+
+#include <iostream>
 
 pair<slot_id, slot>
 gfx::fixed_slot_container::occupy(uvec2 tex_dim)
@@ -64,8 +66,11 @@ gfx::fixed_slot_container::occupy(uvec2 tex_dim)
 
     uvec2 coord {
         (id % slots[0]) * slot_dim[0],
-        (id / slots[1]) * slot_dim[1]
+        (id / slots[0]) * slot_dim[1]
     };
+
+    std::cout << "id: " << id << "\n";
+    std::cout << "coord: " << coord[0] << " " << coord[1] << "\n";
 
     slot s{coord, tex_dim};
     auto result = make_pair(id, s);

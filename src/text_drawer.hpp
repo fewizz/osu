@@ -24,17 +24,6 @@ namespace gfx {
 
 	public:
 
-		/*using origin_baseline_start = glm::vec2{};
-
-		static inline glm::vec2 origin_top_left(freetype::face face) {
-			return
-			{
-				0,
-				origin_baseline_start -
-				face.get_size_metrics().height() / 64.0
-			};
-		}*/
-
 		enum class origin {
 			top_left,
 			baseline_start
@@ -53,7 +42,7 @@ namespace gfx {
 			return width;
 		}
 
-		texture_atlas& texture_atlas() {
+		gfx::texture_atlas& texture_atlas() {
 			return cache.get_texture_atlas();
 		}
 	};

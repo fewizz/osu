@@ -103,7 +103,7 @@ namespace gfx {
 		slot_id get_free() override;
 
 		inline void free(slot_id s) override {
-			v[s >> 3] &= (0 << (s & 0b111));
+			v[s >> 5] &= (0 << (s & 0b11111));
 		}
 	};
 

@@ -15,12 +15,8 @@ namespace osu {
     extern std::vector<resourcepack> loaded_resourcepacks;
     extern std::unique_ptr<glfw::window> window;
     extern freetype::library main_lib;
-    extern std::unique_ptr<std::reference_wrapper<freetype::face>> main_face;
+    extern freetype::face* main_face;
     extern std::unique_ptr<gfx::glyph_cache> glyph_cache;
-
-    inline freetype::face& get_main_face() {
-        return main_face->get();
-    }
 
     void import_beatmap(std::filesystem::path);
 

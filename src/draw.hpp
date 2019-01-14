@@ -104,9 +104,6 @@ namespace gfx {
 		vertex_array_drawer(P&& p)
 		:
 		with_program(std::forward<P>(p)) {}
-		/*vertex_array_drawer(std::shared_ptr<gl::program> p)
-		:
-		with_program(p){}*/
 
 		void draw(unsigned begin, unsigned count) {
 			program()->draw_arrays(pt, begin, count);
@@ -140,7 +137,7 @@ namespace gfx {
 		unsigned Count = internal::dynamic
 	>
 	using line_loop_drawer =
-		vertex_array_drawer<gl::primitive_type::lines, Begin, Count>;
+		vertex_array_drawer<gl::primitive_type::line_loop, Begin, Count>;
 
 	class with_origin {
 		glm::vec2 o;

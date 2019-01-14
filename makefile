@@ -1,6 +1,13 @@
-vpath %.cpp src libs/lodepng
-vpath %.hpp src
+source-containing-dirs = $(sort $(dir $(wildcard src/*/)))
+
+$(info $(source-containing-dirs))
+
+vpath %.cpp $(source-containing-dirs) libs/lodepng
+vpath %.hpp $(source-containing-dirs)
 vpath %.h libs/lodepng
+
+objects := $(subst .cpp,.o,\
+$(foreach dir,$(source-containing-dirs),$(notdir $(wildcard $(dir)*.cpp ))))
 
 override CPPFLAGS += \
 -Isrc \
@@ -37,7 +44,6 @@ LDLIBS+= \
 -ljpeg \
 -lpthread
 
-objects := $(subst .cpp,.o,$(notdir $(wildcard src/*.cpp)))
 lib-targets := \
 opengl-wrapper \
 openal-wrapper \
@@ -45,7 +51,7 @@ glfw-wrapper \
 freetype-wrapper \
 liblodepng.a
 
-.PHONY: $(lib-targets) run osu
+.PHONY: $(lib-targets) clean osu
 
 osu: $(objects) $(lib-targets)
 	$(CXX) $(CXXFLAGS) -o $@ $(objects) $(LDFLAGS) $(LDLIBS)
@@ -69,5 +75,9 @@ freetype-wrapper:
 	make -C libs/freetype
 liblodepng.a: liblodepng.a(lodepng.o)
 
-run:
-	LD_LIBRARY_PATH=$(CURDIR) ./osu
+clean:
+	rm $(objects) $(objects:.o:.d) liblodepng.a osu
+	make -C libs/opengl clean
+	make -C libs/openal clean
+	make -C libs/glfw clean
+	make -C libs/freetype clean

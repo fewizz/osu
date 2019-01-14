@@ -21,7 +21,16 @@ namespace freetype {
 		face(FT_Face raw)
 		:ft_face{ raw } {}
 	public:
-		face(face&& f):ft_face{f.ft_face} {f.ft_face = nullptr;};
+		face(face&& f) {
+			ft_face = std::exchange(f.ft_face, nullptr);
+		}
+
+		face& operator=(face&& f) {
+			ft_face = std::exchange(f.ft_face, nullptr);
+			return *this;
+		}
+
+		//face(){}
 
 		inline ~face() {
 			if(ft_face)

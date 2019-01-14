@@ -13,7 +13,7 @@
 #include <vector>
 #include <fstream>
 #include <csignal>
-#include "map_list_screen.hpp"
+#include "gui/map_list_screen.hpp"
 #include "freetype/library.hpp"
 #include "freetype/face.hpp"
 #include "freetype/face.hpp"
@@ -37,7 +37,7 @@ namespace osu {
     vector<resourcepack> loaded_resourcepacks;
     unique_ptr<glfw::window> window;
     freetype::library main_lib;
-    unique_ptr<reference_wrapper<freetype::face>> main_face;
+    freetype::face* main_face;
     unique_ptr<gfx::glyph_cache> glyph_cache;
 
     namespace worker {
@@ -79,16 +79,14 @@ int main0()
     );
 
     cout << "reading font..." << "\n";
-    osu::main_face = make_unique<reference_wrapper<freetype::face>> (
-        osu::main_lib.face_from_istream (
+    osu::main_face = 
+        &osu::main_lib.face_from_istream (
             ifstream (
                 "CaviarDreams.ttf",
                 iostream::binary
             )
-        )
-        
-    );
-    osu::get_main_face().set_char_size(64*40, 0, 0, 0);
+        );
+    osu::main_face->set_char_size(64*40, 0, 0, 0);
 
     cout << "Init AL" << "\n";
     alc::device dev = alc::open_device();
@@ -143,7 +141,7 @@ int main0()
     atlas.min_filter(gl::min_filter::nearest);
     std::cout << "creating cache" << "\n";
     osu::glyph_cache = make_unique<gfx::glyph_cache> (
-        osu::get_main_face(),
+        *osu::main_face,
         std::move(atlas)
     );
 

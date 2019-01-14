@@ -106,6 +106,8 @@ void parse_metadata(osu_file_info& res, string_view str) {
         res.title = val;
     if(key == "Artist")
         res.artist = val;
+    if(key == "Version")
+        res.version = val;
     if(key == "BeatmapSetID")
         res.set_id = val;
 }
