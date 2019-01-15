@@ -191,4 +191,5 @@ png.o png.d : src/png.cpp src/png.hpp libs/lodepng/lodepng.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/codecvt.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/basic_file.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/c++io.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/fstream.tcc
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/fstream.tcc \
+  src/unsafe_iostream_operations.hpp

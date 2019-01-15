@@ -469,10 +469,11 @@ map_list_screen.o map_list_screen.d : src/gui/map_list_screen.cpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/basic_file.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/c++io.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/fstream.tcc \
-  src/resourcepack.hpp /usr/include/GLFW/glfw3.h /usr/include/GL/gl.h \
-  /usr/include/GL/glext.h /usr/include/clang/7.0.0/include/inttypes.h \
-  /usr/include/inttypes.h src/jpeg.hpp \
-  src/unsafe_iostream_operations.hpp libs/openal/include/openal/al.hpp \
-  src/mp3.hpp src/shaders.hpp src/properties/with_height.hpp \
+  src/resourcepack.hpp libs/openal/include/openal/al.hpp src/shaders.hpp \
+  src/unsafe_iostream_operations.hpp src/properties/with_height.hpp \
   src/properties/with_size.hpp src/properties/with_width.hpp \
-  src/properties/pressable.hpp src/properties/drawable.hpp
+  src/properties/pressable.hpp src/properties/drawable.hpp src/png.hpp \
+  libs/lodepng/lodepng.h src/mp3.hpp /usr/include/GLFW/glfw3.h \
+  /usr/include/GL/gl.h /usr/include/GL/glext.h \
+  /usr/include/clang/7.0.0/include/inttypes.h /usr/include/inttypes.h \
+  src/jpeg.hpp

@@ -63,7 +63,7 @@ namespace gfx {
 	}
 
 	template<
-		gl::primitive_type pt,
+		gl::primitive_type PT = (gl::primitive_type)internal::dynamic,
 		unsigned Begin = internal::dynamic,
 		unsigned Count = internal::dynamic
 	>
@@ -82,16 +82,20 @@ namespace gfx {
 		with_program(std::forward<P>(p)) {}
 
 		void draw() {
-			program()->draw_arrays(pt, Begin, Count);
+			program()->draw_arrays(PT, Begin, Count);
 		}
 		
-		void draw(unsigned begin, unsigned count) {
-			program()->draw_arrays(pt, begin, count);
-		}
+		//void draw(unsigned begin, unsigned count) {
+		//	program()->draw_arrays(Pt, begin, count);
+		//}
+
+		//void draw(gl::primitive_type pt, unsigned begin, unsigned count) {
+		//	program()->draw_arrays(pt, begin, count);
+		//}
 	};
 
-	template<gl::primitive_type pt>
-	class vertex_array_drawer<pt, internal::dynamic, internal::dynamic>
+	template<gl::primitive_type PT>
+	class vertex_array_drawer<PT, internal::dynamic, internal::dynamic>
 	: public with_program, public with_vertex_array {
 	public:
 		template<class P, class VA>
@@ -106,6 +110,26 @@ namespace gfx {
 		with_program(std::forward<P>(p)) {}
 
 		void draw(unsigned begin, unsigned count) {
+			program()->draw_arrays(PT, begin, count);
+		}
+	};
+
+	template<>
+	class vertex_array_drawer<(gl::primitive_type)internal::dynamic, internal::dynamic, internal::dynamic>
+	: public with_program, public with_vertex_array {
+	public:
+		template<class P, class VA>
+		vertex_array_drawer(P&& p, VA&& va)
+		:
+		with_program(std::forward<P>(p)),
+		with_vertex_array(std::forward<VA>(va)) {}
+
+		template<class P>
+		vertex_array_drawer(P&& p)
+		:
+		with_program(std::forward<P>(p)) {}
+
+		void draw(gl::primitive_type pt, unsigned begin, unsigned count) {
 			program()->draw_arrays(pt, begin, count);
 		}
 	};

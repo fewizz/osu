@@ -45,7 +45,7 @@ void import_beatmap(filesystem::path path) {
 
     char* buff0 = new char[0xFFFF];
 
-    filesystem::path song_dir("Songs/" + song_name);
+    filesystem::path song_dir("songs/" + song_name);
     filesystem::create_directory(song_dir);
 
     for(int e = 0; e < entries; e++) {
