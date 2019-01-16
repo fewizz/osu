@@ -34,12 +34,20 @@ void al::source::i(unsigned source, unsigned param, int value) {
 	alSourcei(source, param, value);
 }
 
+void al::source::get_i(unsigned source, unsigned param, int* value) {
+	alGetSourcei(source, param, value);
+}
+
 void al::source::play() {
 	alSourcePlay(name);
 }
 
 void al::source::stop() {
 	alSourceStop(name);
+}
+
+void al::source::queue_buffer(al::buffer& buff) {
+	alSourceQueueBuffers(name, 1, &(buff.name));
 }
 
 al::source::~source() {

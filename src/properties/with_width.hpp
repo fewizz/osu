@@ -2,13 +2,13 @@
 
 namespace prop {
     template<class T>
-    class with_width {
+    struct with_width {
         virtual T get_w() = 0;
     };
 
     template<class T>
-    class with_width_state
-    : public with_height<T>
+    struct with_mutable_width
+    : public with_width<T>
     {
         virtual void set_t(T val) = 0;
     };

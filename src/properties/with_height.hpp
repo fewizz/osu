@@ -2,12 +2,12 @@
 
 namespace prop {
     template<class T>
-    class with_height {
+    struct with_height {
         virtual T get_h() = 0;
     };
 
     template<class T>
-    class with_height_state
+    struct with_mutable_height
     : public with_height<T>
     {
         virtual void set_t(T val) = 0;

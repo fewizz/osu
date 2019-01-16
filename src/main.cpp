@@ -27,18 +27,21 @@
 #include <functional>
 #include "resourcepack.hpp"
 #include "glyph_cache.hpp"
+#include "properties/updatable.hpp"
+#include "properties/drawable.hpp"
 
 using namespace std;
 using namespace gl;
 using namespace freetype;
 
 namespace osu {
-    vector<beatmap_info> loaded_beatmaps;
-    vector<resourcepack> loaded_resourcepacks;
+    vector<beatmap_set> beatmap_sets;
+    vector<resourcepack> resourcepacks;
     unique_ptr<glfw::window> window;
     freetype::library main_lib;
     freetype::face* main_face;
     unique_ptr<gfx::glyph_cache> glyph_cache;
+    unique_ptr<gui::screen<>> current_screen;
 
     namespace worker {
         vector<function<void()>> tasks;
@@ -65,7 +68,7 @@ int main0()
         filesystem::directory_iterator{},
         [](filesystem::directory_entry entry)
         {
-            osu::loaded_resourcepacks.push_back(entry.path());
+            osu::resourcepacks.push_back(entry.path());
         }
     );
 
@@ -147,7 +150,7 @@ int main0()
 
     clear_color(0, 0, 0, 1);
     cout << "set clear color" << "\n";
-    map_list_screen mls;
+    osu::current_screen = make_unique<map_list_screen>();
 
     while (!osu::window->should_close())
     {
@@ -158,12 +161,22 @@ int main0()
             osu::window->framebuffer_size<glm::uvec2>()[1]
         );
         clear(clear_buffer::color);
-        mls.draw();
+        osu::current_screen->update();
+        osu::current_screen->draw();
         osu::window->swap_buffers();
         glfw::poll_events();
     }
 
     return 0;
+}
+
+filesystem::path osu::get_resource_path(string p) {
+        for(auto r : resourcepacks) {
+            auto path = r.get_relative_path(p);
+            if(std::filesystem::exists(path))
+                return path;
+        }
+        throw std::runtime_error("resource \"" + p + "\" not found");
 }
 
 void on_error(int s) {

@@ -155,13 +155,44 @@ map_list_screen.o map_list_screen.d : src/gui/map_list_screen.cpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/atomic_base.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/atomic_lockfree_defines.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/backward/auto_ptr.h \
-  libs/opengl/include/opengl/core.hpp \
+  src/properties/drawable.hpp src/properties/updatable.hpp \
+  src/properties/with_size.hpp src/properties/with_width.hpp \
+  src/properties/with_height.hpp libs/glm/glm/vec2.hpp \
+  libs/glm/glm/./ext/vector_bool2.hpp \
+  libs/glm/glm/./ext/../detail/type_vec2.hpp \
+  libs/glm/glm/./ext/../detail/qualifier.hpp \
+  libs/glm/glm/./ext/../detail/setup.hpp \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cassert \
+  /usr/include/assert.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cstddef \
+  libs/glm/glm/./ext/../detail/../simd/platform.h \
+  /usr/include/clang/7.0.0/include/emmintrin.h \
+  /usr/include/clang/7.0.0/include/xmmintrin.h \
+  /usr/include/clang/7.0.0/include/mmintrin.h \
+  /usr/include/clang/7.0.0/include/mm_malloc.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/stdlib.h \
+  libs/glm/glm/./ext/../detail/type_vec2.inl \
+  libs/glm/glm/./ext/../detail/./compute_vector_relational.hpp \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/limits \
+  libs/glm/glm/./ext/vector_bool2_precision.hpp \
+  libs/glm/glm/./ext/vector_float2.hpp \
+  libs/glm/glm/./ext/vector_float2_precision.hpp \
+  libs/glm/glm/./ext/vector_double2.hpp \
+  libs/glm/glm/./ext/vector_double2_precision.hpp \
+  libs/glm/glm/./ext/vector_int2.hpp \
+  libs/glm/glm/./ext/vector_int2_precision.hpp \
+  libs/glm/glm/./ext/vector_uint2.hpp \
+  libs/glm/glm/./ext/vector_uint2_precision.hpp \
+  libs/glfw/include/glfw/window.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/vector \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_vector.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_bvector.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/vector.tcc \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/filesystem \
-  src/text_drawer.hpp libs/freetype/include/freetype/face.hpp \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/functional \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/std_function.h \
+  libs/opengl/include/opengl/core.hpp src/draw/text_drawer.hpp \
+  libs/freetype/include/freetype/face.hpp \
   libs/freetype/include/freetype/freetype_fwd.hpp \
   /usr/include/freetype2/ft2build.h \
   /usr/include/freetype2/freetype/config/ftheader.h \
@@ -176,9 +207,8 @@ map_list_screen.o map_list_screen.d : src/gui/map_list_screen.cpp \
   /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
   /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
   /usr/include/x86_64-linux-gnu/bits/uio_lim.h /usr/include/string.h \
-  /usr/include/strings.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/stdlib.h \
-  /usr/include/setjmp.h /usr/include/freetype2/freetype/fttypes.h \
+  /usr/include/strings.h /usr/include/setjmp.h \
+  /usr/include/freetype2/freetype/fttypes.h \
   /usr/include/freetype2/freetype/ftsystem.h \
   /usr/include/freetype2/freetype/ftimage.h \
   /usr/include/freetype2/freetype/fterrors.h \
@@ -189,10 +219,7 @@ map_list_screen.o map_list_screen.d : src/gui/map_list_screen.cpp \
   libs/freetype/include/freetype/glyph_metrics.hpp \
   libs/freetype/include/freetype/bitmap.hpp \
   libs/freetype/include/freetype/bbox.hpp \
-  libs/freetype/include/freetype/size_metrics.hpp \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/functional \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/std_function.h \
-  src/draw.hpp \
+  libs/freetype/include/freetype/size_metrics.hpp src/draw/draw.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cmath \
   /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
   /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
@@ -230,37 +257,13 @@ map_list_screen.o map_list_screen.d : src/gui/map_list_screen.cpp \
   libs/glm/glm/mat4x4.hpp libs/glm/glm/./ext/matrix_double4x4.hpp \
   libs/glm/glm/./ext/../detail/type_mat4x4.hpp \
   libs/glm/glm/./ext/../detail/type_vec4.hpp \
-  libs/glm/glm/./ext/../detail/qualifier.hpp \
-  libs/glm/glm/./ext/../detail/setup.hpp \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cassert \
-  /usr/include/assert.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cstddef \
-  libs/glm/glm/./ext/../detail/../simd/platform.h \
-  /usr/include/clang/7.0.0/include/emmintrin.h \
-  /usr/include/clang/7.0.0/include/xmmintrin.h \
-  /usr/include/clang/7.0.0/include/mmintrin.h \
-  /usr/include/clang/7.0.0/include/mm_malloc.h \
   libs/glm/glm/./ext/../detail/type_vec4.inl \
   libs/glm/glm/./ext/../detail/compute_vector_relational.hpp \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/limits \
   libs/glm/glm/./ext/../detail/type_vec4_simd.inl \
   libs/glm/glm/./ext/../detail/type_mat4x4.inl \
   libs/glm/glm/./ext/../detail/../matrix.hpp \
   libs/glm/glm/detail/qualifier.hpp libs/glm/glm/detail/setup.hpp \
-  libs/glm/glm/vec2.hpp libs/glm/glm/./ext/vector_bool2.hpp \
-  libs/glm/glm/./ext/../detail/type_vec2.hpp \
-  libs/glm/glm/./ext/../detail/type_vec2.inl \
-  libs/glm/glm/./ext/../detail/./compute_vector_relational.hpp \
-  libs/glm/glm/./ext/vector_bool2_precision.hpp \
-  libs/glm/glm/./ext/vector_float2.hpp \
-  libs/glm/glm/./ext/vector_float2_precision.hpp \
-  libs/glm/glm/./ext/vector_double2.hpp \
-  libs/glm/glm/./ext/vector_double2_precision.hpp \
-  libs/glm/glm/./ext/vector_int2.hpp \
-  libs/glm/glm/./ext/vector_int2_precision.hpp \
-  libs/glm/glm/./ext/vector_uint2.hpp \
-  libs/glm/glm/./ext/vector_uint2_precision.hpp libs/glm/glm/vec3.hpp \
-  libs/glm/glm/./ext/vector_bool3.hpp \
+  libs/glm/glm/vec3.hpp libs/glm/glm/./ext/vector_bool3.hpp \
   libs/glm/glm/./ext/../detail/type_vec3.hpp \
   libs/glm/glm/./ext/../detail/type_vec3.inl \
   libs/glm/glm/./ext/vector_bool3_precision.hpp \
@@ -461,7 +464,6 @@ map_list_screen.o map_list_screen.d : src/gui/map_list_screen.cpp \
   libs/glm/glm/./ext/../gtc/constants.inl \
   libs/glm/glm/./ext/../matrix.hpp \
   libs/glm/glm/./ext/matrix_transform.inl src/main.hpp \
-  libs/glfw/include/glfw/window.hpp \
   libs/freetype/include/freetype/library.hpp src/beatmap.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/iostream \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/fstream \
@@ -470,10 +472,8 @@ map_list_screen.o map_list_screen.d : src/gui/map_list_screen.cpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/c++io.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/fstream.tcc \
   src/resourcepack.hpp libs/openal/include/openal/al.hpp src/shaders.hpp \
-  src/unsafe_iostream_operations.hpp src/properties/with_height.hpp \
-  src/properties/with_size.hpp src/properties/with_width.hpp \
-  src/properties/pressable.hpp src/properties/drawable.hpp src/png.hpp \
-  libs/lodepng/lodepng.h src/mp3.hpp /usr/include/GLFW/glfw3.h \
-  /usr/include/GL/gl.h /usr/include/GL/glext.h \
+  src/unsafe_iostream_operations.hpp src/properties/pressable.hpp \
+  src/png.hpp libs/lodepng/lodepng.h src/mp3.hpp \
+  /usr/include/GLFW/glfw3.h /usr/include/GL/gl.h /usr/include/GL/glext.h \
   /usr/include/clang/7.0.0/include/inttypes.h /usr/include/inttypes.h \
   src/jpeg.hpp

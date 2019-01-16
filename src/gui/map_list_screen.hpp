@@ -5,7 +5,7 @@
 #include <vector>
 #include <filesystem>
 #include <memory>
-#include "text_drawer.hpp"
+#include "draw/text_drawer.hpp"
 #include "opengl/shader.hpp"
 #include "glm/mat4x4.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
@@ -20,25 +20,32 @@
 #include "properties/pressable.hpp"
 #include "properties/drawable.hpp"
 
-class map_list_screen : public gui::view<>
+class map_list_screen : public gui::screen<>
 {
+    class group;
+    class beatmap_info;
+    using group_cursor = std::vector<group>::iterator;
+    using beatmap_cursor = std::vector<beatmap_info>::iterator;
+
     struct background_drawer: public gfx::triangle_fan_drawer<0, 4> {
         std::shared_ptr<gl::texture_2d> current_tex;
+        map_list_screen& screen;
 
-        background_drawer()
+        background_drawer(map_list_screen& screen)
         :
         gfx::triangle_fan_drawer<0, 4>(
             gl::program {
                 osu::load<gl::vertex_shader>("shaders/rectangle_u_mat4_u_dim_uv.vs"),
                 osu::load<gl::fragment_shader>("shaders/passtrough_u_tex2_a_uv.fs")
             }
-        ){}
+        ),
+        screen{screen}{}
 
         void draw(glm::mat4 center);
-    } background_drawer;
+    } background_drawer{*this};
 
-    struct rec_drawer_t : public gfx::vertex_array_drawer<> {
-        rec_drawer_t()
+    struct rectangle_drawer_t : public gfx::vertex_array_drawer<> {
+        rectangle_drawer_t()
         :
         gfx::vertex_array_drawer<> (
             gl::program {
@@ -60,13 +67,13 @@ class map_list_screen : public gui::view<>
         prop::with_pressable_state<>
     >{
         gfx::text_drawer text;
-        rec_drawer_t& rec;
+        rectangle_drawer_t& rec;
         float w;
     public:
         slot(
             std::string text,
             std::shared_ptr<gl::program> prog,
-            rec_drawer_t& rec)
+            rectangle_drawer_t& rec)
             :
         text{text, *osu::glyph_cache, prog, gfx::text_drawer::origin::baseline_start},
         w{this->text.get_width() + 10},
@@ -82,41 +89,47 @@ class map_list_screen : public gui::view<>
             glm::vec4 text);
     };
 
-    class bm_diff_drawer : public slot {
+    class beatmap_info: public slot {
     public:
-        using slot::slot;
+        const osu::beatmap& bm;
+        beatmap_info(
+            std::string text,
+            std::shared_ptr<gl::program> prog,
+            rectangle_drawer_t& rec,
+            osu::beatmap& bm)
+        :slot(text, prog, rec), bm{bm}{}
     };
 
-    struct bm_main_drawer : public prop::with_height<float> {
-        osu::beatmap_info info;
-        std::vector<bm_diff_drawer> diffs;
-        slot main;
+    struct group : public prop::with_height<float> {
+        std::string name;
+        map_list_screen::slot group_slot;
+        std::vector<beatmap_info> beatmaps;
 
-        bm_main_drawer(
+        group(
+            std::string name,
             std::shared_ptr<gl::program> prog,
-            rec_drawer_t& od,
-            osu::beatmap_info bi
+            rectangle_drawer_t& od
         );
 
 		float get_h() override {
-            return 
-            main.get_h()
-            +main.is_pressed()*diffs.size()*diffs[0].get_h();
+            return
+            group_slot.get_h()
+            +
+            group_slot.is_pressed()*beatmaps.size()*beatmaps[0].get_h();
         }
 
         void draw(glm::mat4 top_left);
     };
 
-    std::vector<bm_main_drawer> diffs_drawers;
-
-    unsigned current_map = 1;
-    unsigned current_diff = 1;
+    std::vector<group> groups;
+    group_cursor current_group = {};
+    beatmap_cursor current_beatmap = {};
     float prevOffset = 0;
     al::source src;
-    al::buffer buf;
 
   public:
     map_list_screen();
-    void choose(unsigned map, unsigned diff);
-    void draw();
+    void choose(group_cursor mp, beatmap_cursor diff);
+    void draw() override;
+    void update() override {}
 };

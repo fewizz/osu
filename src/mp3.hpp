@@ -5,6 +5,7 @@
 #include <fstream>
 #include <memory>
 #include <filesystem>
+#include <functional>
 #include <unsafe_iostream_operations.hpp>
 
 namespace mp3 {
@@ -52,5 +53,14 @@ namespace mp3 {
 
     inline info decode(std::filesystem::path path, std::vector<uint16_t>& out) {
         return decode(std::ifstream(path, std::ios::binary), out);
+    }
+
+    using frame_iter_func = std::function<void(mp3::info, std::array<uint16_t, 1152*2>&)>;
+
+    void for_each_frame(std::istream& stream, frame_iter_func);
+
+    inline void for_each_frame(std::filesystem::path path, frame_iter_func cb) {
+        std::ifstream s(path, std::ios::binary);
+        for_each_frame(s, cb);
     }
 }

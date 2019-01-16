@@ -187,6 +187,8 @@ mp3.o mp3.d : src/mp3.cpp src/mp3.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/atomic_lockfree_defines.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/backward/auto_ptr.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/filesystem \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/functional \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/std_function.h \
   src/unsafe_iostream_operations.hpp libs/minimp3/minimp3_ex.h \
   libs/minimp3/minimp3.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/stdlib.h \

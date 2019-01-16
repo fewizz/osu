@@ -5,6 +5,7 @@
 #include <csetjmp>
 #include <stdexcept>
 #include <iostream>
+#include <utility>
 
 using namespace std;
 
@@ -116,4 +117,36 @@ mp3::info mp3::decoder::get_info() {
         ((mp3dec_frame_info_t*)frame_info)->hz,
         ((mp3dec_frame_info_t*)frame_info)->channels
     };
+}
+
+void mp3::for_each_frame(istream& stream, mp3::frame_iter_func cb) {
+    size_t size = estd::distance_to_end(stream);
+    auto buff = estd::get<uint8_t*>(stream, size);
+    mp3dec_t dec;
+    using pcm_array_t = array<uint16_t, 1152*2>;
+    pcm_array_t arr;
+    auto info = make_tuple(buff.get(), &dec, &arr, cb);
+
+    MP3D_ITERATE_CB fun = [](
+            void *user_data,
+            const uint8_t *frame,
+            int frame_size,
+            size_t offset,
+            mp3dec_frame_info_t *info) -> int
+        {
+            auto p =
+                (tuple<uint8_t*, mp3dec_t*, pcm_array_t*, mp3::frame_iter_func>*) user_data;
+            uint8_t* buff = get<0>(*p);
+            mp3dec_t* dec = get<1>(*p);
+            pcm_array_t* pcm = get<2>(*p);
+            mp3::frame_iter_func cb = get<3>(*p);
+            mp3dec_decode_frame(dec, frame, frame_size, (mp3d_sample_t*)pcm->data(), info);
+            cb(mp3::info{ info->hz, info->channels }, *pcm);
+            return 0;
+        };
+    mp3dec_iterate_buf(
+        buff.get(),
+        size,
+        fun,
+        &info);
 }

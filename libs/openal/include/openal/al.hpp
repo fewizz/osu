@@ -43,6 +43,7 @@ namespace al {
 		static unsigned gen();
 		void data(unsigned format, void* data, unsigned size, unsigned frequency);
 	public:
+		buffer(buffer&& r) = default;
 		enum class format {
 			mono8 = 0x1100,
 			mono16,
@@ -65,14 +66,22 @@ namespace al {
 
 		template<class Container>
 		void data(uint8_t channels, uint8_t bits, Container c, unsigned frequency) {
-			data(channels, bits, c.begin(), c.size(), frequency);
+			data(channels, bits, c.begin(), c.size()*sizeof(typename Container::value_type), frequency);
 		}
 	};
 
 	class source : public with_name {
 		static unsigned gen();
 		static void i(unsigned source, unsigned param, int value);
+		static void get_i(unsigned source, unsigned param, int* value);
 	public:
+		enum state {
+			initial = 0x1011,
+			playing,
+			paused,
+			stopped
+		};
+
 		source() :with_name{ gen() } {}
 		~source();
 
@@ -85,6 +94,20 @@ namespace al {
 				name,
 				internal::source_param::buffer,
 				buf == nullptr ? 0 : (*buf).name);
+		}
+
+		void queue_buffer(al::buffer& buff);
+
+		inline state get_state() {
+			int state;
+			get_i(name, 0x1010, &state);
+			return (source::state)state;
+		}
+
+		inline unsigned get_buffers_processed() {
+			int p;
+			get_i(name, 0x1016, &p);
+			return p;
 		}
 
 		void play();

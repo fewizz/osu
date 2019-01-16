@@ -274,7 +274,9 @@ main.o main.d : src/main.cpp src/main.hpp libs/glfw/include/glfw/window.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_multimap.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/numeric \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_numeric.h \
-  libs/opengl/include/opengl/core.hpp \
+  src/gui.hpp src/properties/drawable.hpp src/properties/updatable.hpp \
+  src/properties/with_size.hpp src/properties/with_width.hpp \
+  src/properties/with_height.hpp libs/opengl/include/opengl/core.hpp \
   libs/opengl/include/opengl/debug.hpp libs/openal/include/openal/al.hpp \
   libs/openal/include/openal/alc.hpp libs/glfw/include/glfw/glfw.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/thread \
@@ -302,8 +304,7 @@ main.o main.d : src/main.cpp src/main.hpp libs/glfw/include/glfw/window.hpp \
   /usr/include/x86_64-linux-gnu/bits/ss_flags.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
   /usr/include/x86_64-linux-gnu/bits/sigthread.h \
-  src/gui/map_list_screen.hpp src/gui.hpp src/text_drawer.hpp \
-  src/draw.hpp \
+  src/gui/map_list_screen.hpp src/text_drawer.hpp src/draw.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/iterator \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stream_iterator.h \
   libs/glm/glm/mat4x4.hpp libs/glm/glm/./ext/matrix_double4x4.hpp \
@@ -497,9 +498,7 @@ main.o main.d : src/main.cpp src/main.hpp libs/glfw/include/glfw/window.hpp \
   libs/glm/glm/./ext/../gtc/constants.inl \
   libs/glm/glm/./ext/../matrix.hpp \
   libs/glm/glm/./ext/matrix_transform.inl src/shaders.hpp \
-  src/unsafe_iostream_operations.hpp src/properties/with_height.hpp \
-  src/properties/with_size.hpp src/properties/with_width.hpp \
-  src/properties/pressable.hpp src/properties/drawable.hpp \
+  src/unsafe_iostream_operations.hpp src/properties/pressable.hpp \
   src/stacktrace.hpp /usr/include/execinfo.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/mutex \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/std_mutex.h \

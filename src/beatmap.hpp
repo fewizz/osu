@@ -5,70 +5,67 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <memory>
 
 namespace osu {
-    struct osu_file_info {
+    struct beatmap_set;
+    struct beatmap;
+
+    //struct beatmap_set_loc {
+    //    beatmap_set* ptr;
+    //};
+    beatmap_set parse_beatmap_dir(std::filesystem::path path);
+
+    class beatmap {
+        //std::shared_ptr<beatmap_set_loc> loc;
+        //beatmap(std::shared_ptr<beatmap_set_loc> s):loc{s}{}
+        //friend beatmap_set parse_beatmap_dir(std::filesystem::path path);
+        //beatmap_set& set;
+    public:
+        //beatmap(beatmap&& b) = delete;
+        //beatmap(beatmap_set& s) : set{s}{}
+        const beatmap_set& get_set() const;
+
         // General
-        std::string* audio;
+        std::string audio;
 
         // Metadata
-        std::string* title;
-        std::string* artist;
-        std::string* version;
-        std::string* set_id;
+        std::string title;
+        std::string artist;
+        std::string version;
+        std::string set_id;
 
         // Events
-        std::string* back;
+        std::string back;
     };
 
-    struct beatmap_info {
-        std::vector<osu_file_info> diffs;
+    struct beatmap_set {
+        //std::shared_ptr<beatmap_set_loc> loc;
+        std::vector<beatmap> diffs;
+        std::filesystem::path dir;
 
-        inline std::string title() {
-            return {*diffs[0].title};
+        beatmap_set(std::filesystem::path dir)
+        :dir{dir}{}
+        //loc{std::make_shared<beatmap_set_loc>(this)}{}
+
+        //beatmap_set(const beatmap_set&) = delete;
+        //beatmap_set(beatmap_set&& r) = delete;
+
+        inline const std::string title() {
+            return diffs[0].title;
         }
 
-        inline std::string artist() {
-            return {*diffs[0].artist};
+        inline const std::string artist() {
+            return diffs[0].artist;
         }
 
-        inline std::string set_id() {
-            return {*diffs[0].set_id};
+        inline const std::string set_id() const {
+            return diffs[0].set_id;
         }
 
         template<class T>
-        T get_dir() {
-            return "songs/"
-            + set_id()
-            + " "
-            + artist()
-            + " - "
-            + title();
+        T get_dir() const {
+            return dir;
         }
     };
-
-    namespace decoder {
-        osu_file_info diff(std::istream& stream);
-
-        inline osu_file_info diff(std::istream&& stream) {
-            return diff(stream);
-        }
-
-        inline osu_file_info diff(std::filesystem::path path) {
-            return diff(std::ifstream(path, std::ios::binary));
-        }
-    }
-
-    inline beatmap_info parse_beatmap_dir(std::filesystem::path path) {
-        using namespace std::filesystem;
-        beatmap_info res;
-
-        directory_iterator it{path};
-        std::for_each(it, directory_iterator{}, [&](directory_entry e) {
-            if(e.path().extension() == ".osu")
-                res.diffs.push_back(decoder::diff(e.path()));
-        });
-
-        return res;
-    }
 }

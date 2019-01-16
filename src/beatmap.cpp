@@ -2,33 +2,41 @@
 #include <algorithm>
 #include <filesystem>
 #include <string_view>
-#include <istream>
+#include <iostream>
+#include "main.hpp"
 
 using namespace osu;
-using namespace osu::decoder;
 using namespace std;
 using namespace std::filesystem;
 
-namespace osu {
-    namespace decoder {
-        enum event_type {
-            background = 0,
-            video = 1,
-            brk = 2,
-            colour = 3,
-            sprite = 4,
-            sample = 5,
-            animation = 6
-        };
+const beatmap_set& osu::beatmap::get_set() const {
+    cout << "st " << "\n";
+    for(auto& set : osu::beatmap_sets) {
+        cout << "diffs: " << set.diffs.size() << "\n";
+        cout << set.set_id() << "\n";
+        if(set.set_id() == set_id)
+            return set;
     }
+    throw std::runtime_error("unknown beatmap set");
 }
 
-void parse_general(osu_file_info& res, std::string_view str);
-void parse_metadata(osu_file_info& res, std::string_view str);
-void parse_events(osu_file_info& res, std::string_view str);
-void parse_hit_objects(osu_file_info& res, std::string_view str);
+enum event_type {
+    background = 0,
+    video = 1,
+    brk = 2,
+    colour = 3,
+    sprite = 4,
+    sample = 5,
+    animation = 6
+};
 
-osu_file_info osu::decoder::diff(istream& stream) {
+
+void parse_general(beatmap& res, std::string_view str);
+void parse_metadata(beatmap& res, std::string_view str);
+void parse_events(beatmap& res, std::string_view str);
+void parse_hit_objects(beatmap& res, std::string_view str);
+
+void diff(istream& stream, beatmap& res) {
     enum type {
             none,
             general,
@@ -38,7 +46,6 @@ osu_file_info osu::decoder::diff(istream& stream) {
     } current = none;
 
     char buff[0xFF];
-    osu_file_info res;
 
     while(stream) {
         stream.getline(buff, 0xFF);
@@ -74,8 +81,6 @@ osu_file_info osu::decoder::diff(istream& stream) {
         if(str == "[HitObjects]")
             current = hit_objects;
     }
-
-    return res;
 }
 
 pair<string_view, string_view>
@@ -90,42 +95,41 @@ kv_pair(string_view str) {
     };
 }
 
-void parse_general(osu_file_info& res, string_view str) {
+void parse_general(beatmap& res, string_view str) {
     auto [key, value] = kv_pair(str);
     //cout << "general: " << key << ":" << value << "\n";
 
     if(key == "AudioFilename")
-        res.audio = new string(value);
+        res.audio = value;
 }
 
-void parse_metadata(osu_file_info& res, string_view str) {
+void parse_metadata(beatmap& res, string_view str) {
     auto [key, value] = kv_pair(str);
-    string* val = new string(value);
 
     if(key == "Title")
-        res.title = val;
+        res.title = value;
     if(key == "Artist")
-        res.artist = val;
+        res.artist = value;
     if(key == "Version")
-        res.version = val;
+        res.version = value;
     if(key == "BeatmapSetID")
-        res.set_id = val;
+        res.set_id = value;
 }
 
-void parse_events(osu_file_info& res, string_view str) {
+void parse_events(beatmap& res, string_view str) {
     using namespace string_literals;
     int type = str[0] - '0';
     switch(type) {
     case background:
-        res.back = new string {
-            str.begin() + "x,x,q"s.length(),
-            str.end() - "q,x,x"s.length()
+        res.back = string {
+            str.begin() + str.find('"') + 1,
+            str.begin() + str.find_last_of('"')
         };
         break;
     }
 }
 
-void parse_hit_objects(osu_file_info& res, string_view str) {
+void parse_hit_objects(beatmap& res, string_view str) {
     vector<string_view> split;
 
     auto left = 0;
@@ -139,4 +143,25 @@ void parse_hit_objects(osu_file_info& res, string_view str) {
     }
 
     //cout << "x: " << split[0] << " y: " << split[1] << "\n";
+}
+
+beatmap_set osu::parse_beatmap_dir(std::filesystem::path path) {
+    using namespace std::filesystem;
+    beatmap_set res(path);
+
+    std::cout << "start parsing bm dirs" << "\n";
+
+    directory_iterator it{path};
+    std::for_each(it, directory_iterator{}, [&](directory_entry e) {
+        if(e.path().extension() == ".osu") {
+            res.diffs.emplace_back();
+
+            ifstream s{e.path(), ios::binary};
+            diff(s, res.diffs.back());
+        }
+    });
+
+    std::cout << "end parsing bm dirs" << "\n";
+
+    return res;
 }
