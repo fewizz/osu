@@ -10,10 +10,12 @@
 #include "resourcepack.hpp"
 #include "glyph_cache.hpp"
 #include "gui.hpp"
+#include "opengl/shader.hpp"
 
 namespace osu {
     extern std::vector<beatmap_set> beatmap_sets;
     extern std::vector<resourcepack> resourcepacks;
+    //extern std::map<std::string, gl::shader> compiled_shaders;
     extern std::unique_ptr<glfw::window> window;
     extern std::unique_ptr<
         gui::screen<>

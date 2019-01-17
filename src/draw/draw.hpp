@@ -12,6 +12,7 @@
 #include "opengl/texture.hpp"
 #include "opengl/core.hpp"
 #include <type_traits>
+#include "../properties/with_program.hpp"
 
 namespace gfx {
 
@@ -20,16 +21,13 @@ namespace gfx {
 		//virtual void render() = 0;
 	};
 
-	class with_program {
-	protected:
-		std::shared_ptr<gl::program> p;
+	class with_owned_texture_2d {
+		gl::texture_2d t;
 	public:
-		with_program(std::shared_ptr<gl::program> p):p{p}{}
-		with_program(gl::program&& p):
-			p{std::make_shared<gl::program>(std::move(p))}{}
+		with_owned_texture_2d(gl::texture_2d&& t):t{std::move(t)}{}
 
-		std::shared_ptr<gl::program> program() { return p; }
-		inline std::shared_ptr<gl::program> prog() { return program(); }
+		gl::texture_2d& texture() { return t; }
+		gl::texture_2d& tex() { return t; }
 	};
 
 	template<class Tex>
@@ -67,7 +65,9 @@ namespace gfx {
 		unsigned Begin = internal::dynamic,
 		unsigned Count = internal::dynamic
 	>
-	class vertex_array_drawer : public with_program, public with_vertex_array {
+	class vertex_array_drawer :
+	public prop::with_shared_program,
+	public with_vertex_array {
 	public:
 
 		template<class P, class VA>
@@ -150,7 +150,7 @@ namespace gfx {
 		unsigned Begin = internal::dynamic,
 		unsigned Count = internal::dynamic
 	>
-	using triangle_fan_drawer = 
+	using triangle_fan_drawer =
 		vertex_array_drawer<
 			gl::primitive_type::triangle_fan,
 			Begin, Count

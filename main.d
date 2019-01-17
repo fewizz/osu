@@ -304,7 +304,7 @@ main.o main.d : src/main.cpp src/main.hpp libs/glfw/include/glfw/window.hpp \
   /usr/include/x86_64-linux-gnu/bits/ss_flags.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
   /usr/include/x86_64-linux-gnu/bits/sigthread.h \
-  src/gui/map_list_screen.hpp src/text_drawer.hpp src/draw.hpp \
+  src/gui/map_list_screen.hpp src/draw/text_drawer.hpp src/draw/draw.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/iterator \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stream_iterator.h \
   libs/glm/glm/mat4x4.hpp libs/glm/glm/./ext/matrix_double4x4.hpp \

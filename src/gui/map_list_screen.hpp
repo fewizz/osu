@@ -19,6 +19,7 @@
 #include "properties/with_size.hpp"
 #include "properties/pressable.hpp"
 #include "properties/drawable.hpp"
+#include "draw/background_drawer.hpp"
 
 class map_list_screen : public gui::screen<>
 {
@@ -26,23 +27,12 @@ class map_list_screen : public gui::screen<>
     class beatmap_info;
     using group_cursor = std::vector<group>::iterator;
     using beatmap_cursor = std::vector<beatmap_info>::iterator;
-
-    struct background_drawer: public gfx::triangle_fan_drawer<0, 4> {
-        std::shared_ptr<gl::texture_2d> current_tex;
-        map_list_screen& screen;
-
-        background_drawer(map_list_screen& screen)
-        :
-        gfx::triangle_fan_drawer<0, 4>(
-            gl::program {
-                osu::load<gl::vertex_shader>("shaders/rectangle_u_mat4_u_dim_uv.vs"),
-                osu::load<gl::fragment_shader>("shaders/passtrough_u_tex2_a_uv.fs")
-            }
-        ),
-        screen{screen}{}
-
-        void draw(glm::mat4 center);
-    } background_drawer{*this};
+    gfx::background_drawer back_drawer{
+        gl::program{
+            osu::load<gl::vertex_shader>("shaders/rectangle_u_mat4_u_dim_uv.vs"),
+            osu::load<gl::fragment_shader>("shaders/passtrough_u_tex2_a_uv.fs")
+        }
+    };
 
     struct rectangle_drawer_t : public gfx::vertex_array_drawer<> {
         rectangle_drawer_t()

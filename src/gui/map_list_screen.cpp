@@ -139,6 +139,7 @@ void map_list_screen::draw() {
             for(auto& diff : g.beatmaps) {
                 if(&diff == &*current_beatmap) {
                     offY += diff.get_h() / 2.0;
+                    break;
                 }
                 offY += diff.get_h();
             }
@@ -156,35 +157,6 @@ void map_list_screen::draw() {
         g.draw(mat);
         mat = translate(mat, {0, -g.get_h(), 0});
     }
-}
-
-void map_list_screen::background_drawer::draw(mat4 center) {
-    vec2 fb_size = screen.get_size();
-    vec2 tex_size = {current_tex->width(), current_tex->height()};
-
-    float w_ratio = fb_size[0] / fb_size[1];
-    float t_ratio = tex_size[0] / tex_size[1];
-
-    vec2 scaled_size =
-        current_tex->size<vec2>()
-        *
-        (w_ratio > t_ratio ?
-            fb_size[0] / tex_size[0]
-            :
-            fb_size[1] / tex_size[1]
-        );
-    
-    prog()->uniform<float, 2>(prog()->u_loc("u_dim"), scaled_size);
-
-    prog()->uniform<float, 4, 4>(
-        prog()->u_loc("u_mat"),
-        translate(center, {-scaled_size[0] / 2.0f, -scaled_size[1] / 2.0f, 0})
-    );
-
-    active_texture(*current_tex, 0);
-    prog()->uniform<int, 1>(prog()->u_loc("u_tex"), 0);
-
-    gfx::triangle_fan_drawer<0, 4>::draw();
 }
 
 void map_list_screen::rectangle_drawer_t::draw(

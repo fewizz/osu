@@ -37,6 +37,7 @@ using namespace freetype;
 namespace osu {
     vector<beatmap_set> beatmap_sets;
     vector<resourcepack> resourcepacks;
+    //map<string, gl::shader> compiled_shaders;
     unique_ptr<glfw::window> window;
     freetype::library main_lib;
     freetype::face* main_face;

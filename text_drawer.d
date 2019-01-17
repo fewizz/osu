@@ -1,4 +1,4 @@
-text_drawer.o text_drawer.d : src/text_drawer.cpp \
+text_drawer.o text_drawer.d : src/draw/text_drawer.cpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/iostream \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/c++config.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/os_defines.h \
@@ -155,7 +155,7 @@ text_drawer.o text_drawer.d : src/text_drawer.cpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/ostream.tcc \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/istream \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/istream.tcc \
-  src/text_drawer.hpp libs/freetype/include/freetype/face.hpp \
+  src/draw/text_drawer.hpp libs/freetype/include/freetype/face.hpp \
   libs/freetype/include/freetype/freetype_fwd.hpp \
   /usr/include/freetype2/ft2build.h \
   /usr/include/freetype2/freetype/config/ftheader.h \
@@ -208,7 +208,7 @@ text_drawer.o text_drawer.d : src/text_drawer.cpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/backward/auto_ptr.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/functional \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/std_function.h \
-  src/draw.hpp \
+  src/draw/draw.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/vector \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_vector.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_bvector.h \
