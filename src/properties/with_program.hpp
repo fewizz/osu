@@ -1,7 +1,7 @@
 #pragma once
 
 #include "opengl/program.hpp"
-#include <with_obj.hpp>
+#include "with_obj.hpp"
 
 namespace prop {
     struct with_shared_program: public with_shared_object<gl::program> {

@@ -19,6 +19,7 @@
 #include "properties/with_size.hpp"
 #include "properties/pressable.hpp"
 #include "properties/drawable.hpp"
+#include "properties/with_program.hpp"
 #include "draw/background_drawer.hpp"
 
 class map_list_screen : public gui::screen<>
@@ -34,10 +35,11 @@ class map_list_screen : public gui::screen<>
         }
     };
 
-    struct rectangle_drawer_t : public gfx::vertex_array_drawer<> {
+    struct rectangle_drawer_t :
+    public prop::with_owned_program {
         rectangle_drawer_t()
         :
-        gfx::vertex_array_drawer<> (
+        prop::with_owned_program (
             gl::program {
                 osu::load<gl::vertex_shader>("shaders/rectangle_u_mat4_u_dim.vs"),
                 osu::load<gl::fragment_shader>("shaders/passtrough_u_color4.fs")

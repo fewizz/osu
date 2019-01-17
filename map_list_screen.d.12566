@@ -1,4 +1,4 @@
-map_list_screen.o map_list_screen.d : src/gui/map_list_screen.cpp \
+map_list_screen.o: src/gui/map_list_screen.cpp \
   src/gui/map_list_screen.hpp src/gui.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/memory \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_algobase.h \
@@ -451,8 +451,7 @@ map_list_screen.o map_list_screen.d : src/gui/map_list_screen.cpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/algorithmfwd.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_heap.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/uniform_int_dist.h \
-  src/glyph_cache.hpp src/properties/with_vertex_array.hpp \
-  src/properties/with_program.hpp libs/opengl/include/opengl/shader.hpp \
+  src/glyph_cache.hpp libs/opengl/include/opengl/shader.hpp \
   libs/glm/glm/ext/matrix_clip_space.hpp \
   libs/glm/glm/./ext/../ext/scalar_constants.hpp \
   libs/glm/glm/./ext/scalar_constants.inl \

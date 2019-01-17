@@ -11,7 +11,7 @@ namespace gfx {
 
         background_drawer(gl::program&& p)
         :
-        prop::with_owned_program(std::move(p)),
+        prop::with_owned_program(std::move(p))
         {}
 
         void draw(glm::mat4 center);

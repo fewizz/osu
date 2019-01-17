@@ -10,7 +10,7 @@ namespace prop {
 
     public:
         with_shared_object() = default;
-        
+
         with_shared_object(T&& t)
         :o{std::make_shared<T>(std::move(o))}{}
 
@@ -23,7 +23,7 @@ namespace prop {
 
     template<class T>
     class with_unique_object {
-        std::unquie_ptr<T> o;
+        std::unique_ptr<T> o;
 
     public:
         with_unique_object() = default;
@@ -35,13 +35,14 @@ namespace prop {
         :o{o}{}
 
         T& ref() { return *o; }
-        std::unique_ptr<T> unique() { return o; }
+        std::unique_ptr<T>& unique() { return o; }
     };
 
     template<class T>
     class with_owned_object {
         T o;
     public:
+        with_owned_object() = default;
         with_owned_object(T&& o): o{std::move(o)}{}
         T& ref() { return o; }
     };
@@ -50,7 +51,7 @@ namespace prop {
     class with_object_ref {
         T& o;
     public:
-        with_owned_object(T& o): o{o}{}
+        with_object_ref(T& o): o{o}{}
         T& ref() { return o; }
     };
 }

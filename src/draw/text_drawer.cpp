@@ -22,7 +22,7 @@ gfx::text_drawer::text_drawer(
     origin o
 )
 :
-gfx::triangles_drawer<>(program),
+prop::with_shared_program(program),
 text{ str },
 cache { cache },
 chars{ str.size() }
@@ -107,13 +107,13 @@ void gfx::text_drawer::draw() {
     gl::enable_blending();
     gl::blend_func(gl::blending_factor::src_alpha, gl::blending_factor::one_minus_src_alpha);
     gl::active_texture(cache.get_texture_atlas(), 0);
-    program()->uniform<int, 1>(program()->uniform_location("u_tex"), 0);
+    prog().uniform<int, 1>(prog().uniform_location("u_tex"), 0);
 
-    vertex_array()->attrib_pointer<float, 2>(program()->attrib_location("a_pos"), positions);
-    vertex_array()->enable_attrib_array(program()->attrib_location("a_pos"));
+    vertex_array().attrib_pointer<float, 2>(prog().attrib_location("a_pos"), positions);
+    vertex_array().enable_attrib_array(prog().attrib_location("a_pos"));
 
-    vertex_array()->attrib_pointer<float, 2>(program()->attrib_location("a_uv"), uvs);
-    vertex_array()->enable_attrib_array(program()->attrib_location("a_uv"));
+    vertex_array().attrib_pointer<float, 2>(prog().attrib_location("a_uv"), uvs);
+    vertex_array().enable_attrib_array(prog().attrib_location("a_uv"));
 
-    program()->draw_arrays(gl::primitive_type::triangles, 0, 6 * chars, *vertex_array());
+    prog().draw_arrays(gl::primitive_type::triangles, 0, 6 * chars, vertex_array());
 }

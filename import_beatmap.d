@@ -275,4 +275,4 @@ import_beatmap.o import_beatmap.d : src/import_beatmap.cpp /usr/include/zip.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_numeric.h \
   src/gui.hpp src/properties/drawable.hpp src/properties/updatable.hpp \
   src/properties/with_size.hpp src/properties/with_width.hpp \
-  src/properties/with_height.hpp
+  src/properties/with_height.hpp libs/opengl/include/opengl/shader.hpp

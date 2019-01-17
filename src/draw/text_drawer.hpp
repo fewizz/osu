@@ -11,9 +11,13 @@
 #include <map>
 #include "opengl/core.hpp"
 #include "glyph_cache.hpp"
+#include "properties/with_vertex_array.hpp"
+#include "properties/with_program.hpp"
 
 namespace gfx {
-	class text_drawer : public gfx::triangles_drawer<> {
+	class text_drawer:
+	public prop::with_owned_vertex_array, 
+	public prop::with_shared_program {
 		glyph_cache& cache;
 		std::string text;
 		std::vector<int> textures_array_texture_units;
@@ -21,7 +25,6 @@ namespace gfx {
 		gl::array_buffer uvs;
 		float width;
 		size_t chars;
-
 	public:
 
 		enum class origin {

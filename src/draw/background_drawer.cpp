@@ -1,5 +1,3 @@
-#pragma once
-
 #include "background_drawer.hpp"
 #include "glm/vec2.hpp"
 #include "glm/ext/matrix_transform.hpp"
@@ -33,6 +31,5 @@ void gfx::background_drawer::draw(glm::mat4 center) {
     gl::active_texture(tex(), 0);
     prog().uniform<int, 1>(prog().u_loc("u_tex"), 0);
 
-    //gfx::triangle_fan_drawer<0, 4>::draw();
     prog().draw_arrays(gl::primitive_type::triangle_fan, 0, 4);
 }

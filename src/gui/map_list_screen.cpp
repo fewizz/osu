@@ -95,8 +95,8 @@ void map_list_screen::choose(group_cursor g, beatmap_cursor bmi) {
             };
         std::cout << "back_loc: " << back.string() << "\n";
 
-        background_drawer.current_tex =
-            std::make_shared<gl::texture_2d>(
+        back_drawer.unique() =
+            std::make_unique<gl::texture_2d>(
                 png::is_png(back) ?
                 png::decode(back)
                 :
@@ -123,7 +123,7 @@ void map_list_screen::draw() {
         -fb_size[1] / 2,
         fb_size[1] / 2
     );
-    background_drawer.draw(mat);
+    back_drawer.draw(mat);
 
     mat = ortho<float> (
         0,
@@ -164,30 +164,30 @@ void map_list_screen::rectangle_drawer_t::draw(
     vec2 dim,
     gl::primitive_type pt, 
     vec4 color) {
-    prog()->uniform<float, 2> (
-        prog()->u_loc("u_dim"),
+    prog().uniform<float, 2> (
+        prog().u_loc("u_dim"),
         dim
     );
 
-    prog()->uniform<float, 4, 4>(prog()->u_loc("u_mat"), bot_left);
+    prog().uniform<float, 4, 4>(prog().u_loc("u_mat"), bot_left);
 
-    prog()->uniform<float, 4>(prog()->u_loc("u_color"), color);
-    gfx::vertex_array_drawer<>::draw(pt, 0, 4);
+    prog().uniform<float, 4>(prog().u_loc("u_color"), color);
+    prog().draw_arrays(pt, 0, 4);
 }
 
 void map_list_screen::slot::draw(mat4 top_left, vec4 out, vec4 back, vec4 text_color) {
     mat4 mat = translate(top_left, vec3{0, -get_size()[1], 0});
     rec.draw(mat, get_size(), gl::primitive_type::line_loop, out);
     rec.draw(mat, get_size(), gl::primitive_type::triangle_fan, back);
-    text.prog()->uniform<float, 4, 4>(
-        text.prog()->u_loc("u_mat"),
+    text.prog().uniform<float, 4, 4>(
+        text.prog().u_loc("u_mat"),
         translate(
             mat,
             {5, (get_h() - (osu::main_face->get_size_metrics().height() / 64.0)) / 2.0, 0}
         )
     );
-    text.prog()->uniform<float, 4>(
-        text.prog()->u_loc("u_color"),
+    text.prog().uniform<float, 4>(
+        text.prog().u_loc("u_color"),
         text_color
     );
     text.draw();

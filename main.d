@@ -276,7 +276,8 @@ main.o main.d : src/main.cpp src/main.hpp libs/glfw/include/glfw/window.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_numeric.h \
   src/gui.hpp src/properties/drawable.hpp src/properties/updatable.hpp \
   src/properties/with_size.hpp src/properties/with_width.hpp \
-  src/properties/with_height.hpp libs/opengl/include/opengl/core.hpp \
+  src/properties/with_height.hpp libs/opengl/include/opengl/shader.hpp \
+  libs/opengl/include/opengl/core.hpp \
   libs/opengl/include/opengl/debug.hpp libs/openal/include/openal/al.hpp \
   libs/openal/include/openal/alc.hpp libs/glfw/include/glfw/glfw.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/thread \
@@ -480,10 +481,11 @@ main.o main.d : src/main.cpp src/main.hpp libs/glfw/include/glfw/window.hpp \
   libs/opengl/include/opengl/program.hpp \
   libs/opengl/include/opengl/primitive.hpp \
   libs/opengl/include/opengl/vertex_array.hpp \
-  libs/opengl/include/opengl/buffer.hpp libs/utfcpp/source/utf8.h \
-  libs/utfcpp/source/utf8/checked.h libs/utfcpp/source/utf8/core.h \
-  libs/utfcpp/source/utf8/unchecked.h \
-  libs/opengl/include/opengl/shader.hpp \
+  libs/opengl/include/opengl/buffer.hpp \
+  src/draw/../properties/with_program.hpp src/properties/with_obj.hpp \
+  libs/utfcpp/source/utf8.h libs/utfcpp/source/utf8/checked.h \
+  libs/utfcpp/source/utf8/core.h libs/utfcpp/source/utf8/unchecked.h \
+  src/properties/with_vertex_array.hpp src/properties/with_program.hpp \
   libs/glm/glm/ext/matrix_clip_space.hpp \
   libs/glm/glm/./ext/../ext/scalar_constants.hpp \
   libs/glm/glm/./ext/scalar_constants.inl \
@@ -499,6 +501,7 @@ main.o main.d : src/main.cpp src/main.hpp libs/glfw/include/glfw/window.hpp \
   libs/glm/glm/./ext/../matrix.hpp \
   libs/glm/glm/./ext/matrix_transform.inl src/shaders.hpp \
   src/unsafe_iostream_operations.hpp src/properties/pressable.hpp \
+  src/draw/background_drawer.hpp src/draw/../properties/with_texture.hpp \
   src/stacktrace.hpp /usr/include/execinfo.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/mutex \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/std_mutex.h \

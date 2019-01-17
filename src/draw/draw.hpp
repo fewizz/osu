@@ -21,7 +21,7 @@ namespace gfx {
 		//virtual void render() = 0;
 	};
 
-	class with_owned_texture_2d {
+	/*class with_owned_texture_2d {
 		gl::texture_2d t;
 	public:
 		with_owned_texture_2d(gl::texture_2d&& t):t{std::move(t)}{}
@@ -42,9 +42,9 @@ namespace gfx {
 		std::shared_ptr<Tex> texture() { return t; }
 	};
 
-	using with_texture_2d = with_texture<gl::texture_2d>;
+	using with_texture_2d = with_texture<gl::texture_2d>;*/
 
-	class with_vertex_array {
+	/*class with_vertex_array {
 		protected:
 		std::shared_ptr<gl::vertex_array> vao;
 	public:
@@ -73,13 +73,13 @@ namespace gfx {
 		template<class P, class VA>
 		vertex_array_drawer(P&& p, VA&& va)
 		:
-		with_program(std::forward<P>(p)),
+		prop::with_shared_program(std::forward<P>(p)),
 		with_vertex_array(std::forward<VA>(va)) {}
 
 		template<class P>
 		vertex_array_drawer(P&& p)
 		:
-		with_program(std::forward<P>(p)) {}
+		with_shared_program(std::forward<P>(p)) {}
 
 		void draw() {
 			program()->draw_arrays(PT, Begin, Count);
@@ -94,7 +94,7 @@ namespace gfx {
 		//}
 	};
 
-	template<gl::primitive_type PT>
+	/*template<gl::primitive_type PT>
 	class vertex_array_drawer<PT, internal::dynamic, internal::dynamic>
 	: public with_program, public with_vertex_array {
 	public:
@@ -112,11 +112,11 @@ namespace gfx {
 		void draw(unsigned begin, unsigned count) {
 			program()->draw_arrays(PT, begin, count);
 		}
-	};
+	};*/
 
-	template<>
+	/*template<>
 	class vertex_array_drawer<(gl::primitive_type)internal::dynamic, internal::dynamic, internal::dynamic>
-	: public with_program, public with_vertex_array {
+	: public with_shared_program, public with_vertex_array {
 	public:
 		template<class P, class VA>
 		vertex_array_drawer(P&& p, VA&& va)
@@ -132,9 +132,9 @@ namespace gfx {
 		void draw(gl::primitive_type pt, unsigned begin, unsigned count) {
 			program()->draw_arrays(pt, begin, count);
 		}
-	};
+	};*/
 
-	template<
+	/*template<
 		unsigned Begin = internal::dynamic,
 		unsigned Count = internal::dynamic
 	>
@@ -190,7 +190,7 @@ namespace gfx {
 		}
 
 		glm::vec2 origin() { return origin_provider(); }
-	};
+	};*/
 
 
 }

@@ -428,7 +428,9 @@ text_drawer.o text_drawer.d : src/draw/text_drawer.cpp \
   libs/opengl/include/opengl/vertex_array.hpp \
   libs/opengl/include/opengl/buffer.hpp \
   libs/opengl/include/opengl/texture.hpp \
-  libs/opengl/include/opengl/core.hpp libs/utfcpp/source/utf8.h \
+  libs/opengl/include/opengl/core.hpp \
+  src/draw/../properties/with_program.hpp \
+  src/draw/../properties/with_obj.hpp libs/utfcpp/source/utf8.h \
   libs/utfcpp/source/utf8/checked.h libs/utfcpp/source/utf8/core.h \
   libs/utfcpp/source/utf8/unchecked.h src/texture_atlas.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/list \
@@ -445,4 +447,5 @@ text_drawer.o text_drawer.d : src/draw/text_drawer.cpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/algorithmfwd.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_heap.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/uniform_int_dist.h \
-  src/glyph_cache.hpp
+  src/glyph_cache.hpp src/properties/with_vertex_array.hpp \
+  src/properties/with_program.hpp
