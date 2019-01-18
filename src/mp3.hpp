@@ -24,7 +24,12 @@ namespace mp3 {
         size_t pointer;
     public:
         decoder(uint8_t* buffer, size_t buffer_size);
-        //decoder(std::istream* stream, size_t buffer_size);
+        decoder(std::ifstream&& s):decoder(s){}
+        decoder(std::istream& s)
+        :decoder(nullptr, 0) {
+            buffer_size = estd::distance_to_end(s);
+            buffer = estd::get<uint8_t*>(s, buffer_size).release();
+        }
 
         bool next(std::array<int16_t, 1152*2>& data);
 
@@ -55,7 +60,7 @@ namespace mp3 {
         return decode(std::ifstream(path, std::ios::binary), out);
     }
 
-    using frame_iter_func = std::function<void(mp3::info, std::array<uint16_t, 1152*2>&)>;
+    using frame_iter_func = std::function<bool(mp3::info, std::array<uint16_t, 1152*2>&)>;
 
     void for_each_frame(std::istream& stream, frame_iter_func);
 

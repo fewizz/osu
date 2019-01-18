@@ -48,6 +48,7 @@ namespace osu {
         vector<function<void()>> tasks;
         mutex m;
         condition_variable cv;
+        bool exit = false;
 
         void add_task(function<void()> t) {
             m.lock();
@@ -57,6 +58,7 @@ namespace osu {
         }
 
         void end() {
+            exit = true;
             cv.notify_one();
         }
     }
@@ -194,9 +196,13 @@ int main() {
 
         while(true) {
             osu::worker::cv.wait(lock);
-            if(osu::worker::tasks.empty())
+            if(osu::worker::exit) {
+                osu::worker::m.unlock();
                 return;
-            osu::worker::tasks.back();
+            }
+            if(osu::worker::tasks.empty())
+                continue;
+            osu::worker::tasks.back()();
             osu::worker::tasks.pop_back();
         }
     });
@@ -210,6 +216,6 @@ int main() {
         res = -1;
     }
     osu::worker::end();
-    t.join();
+    //t.join();
     return res;
 }

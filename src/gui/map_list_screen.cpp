@@ -4,6 +4,8 @@
 #include "GLFW/glfw3.h"
 #include "jpeg.hpp"
 #include "main.hpp"
+#include <iterator>
+#include <fstream>
 
 using namespace std;
 using namespace glm;
@@ -55,7 +57,12 @@ void map_list_screen::choose(group_cursor g, beatmap_cursor bmi) {
     if(g != current_group) {
         std::cout << "loading sound..." << "\n";
         std::cout << "bms: " << osu::beatmap_sets.size() << "\n";
-        //osu::worker::add_task([mp = mp, diff = diff, &src = src]() {
+        auto path = bmi->bm.get_set().get_dir<string>()
+                + "/"
+                + bmi->bm.audio;
+        player.stop();
+        player.begin(make_unique<mp3::decoder>(std::ifstream(path, ios::binary)));
+        /*osu::worker::add_task([g = g, bmi = bmi, &src = src]() {
             auto buffers = make_shared<vector<al::buffer>>(10);
             std::cout << "set: " << bmi->bm.get_set().set_id() << "\n";
             auto path = bmi->bm.get_set().get_dir<string>()
@@ -76,9 +83,10 @@ void map_list_screen::choose(group_cursor g, beatmap_cursor bmi) {
                     cout << "feeding" << "\n";
                     if(src.get_state() != al::source::state::playing)
                         src.play();
+                    return true;
                 }
             );
-        //});
+        });*/
         //std::cout << data.size() << " " <<info.channels << " " << info.frequency << "\n"; 
         //src.stop();
         //src.buffer(nullptr);
@@ -214,4 +222,8 @@ void map_list_screen::group::draw(mat4 top_left) {
             vec4{0, 0, 0, 1});
         mat = translate(mat, {0, -d.get_h(), 0});
     }
+}
+
+void map_list_screen::update() {
+    player.update();
 }

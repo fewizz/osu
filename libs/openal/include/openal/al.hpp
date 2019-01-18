@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 namespace al {
 	namespace internal {
@@ -16,16 +17,9 @@ namespace al {
 
 		virtual ~with_name() = 0;
 	public:
-		with_name(unsigned name) :name{ name } {}
-		with_name(with_name&& o) :name{ o.name } {
-			o.invalidate_name();
-		}
-
-		with_name& operator=(with_name&& o) {
-			name = o.name;
-			o.invalidate_name();
-			return *this;
-		}
+		with_name(unsigned name);
+		with_name(with_name&& o);
+		with_name& operator=(with_name&& o);
 
 		unsigned name{ invalid_name };
 	};
@@ -51,6 +45,7 @@ namespace al {
 			stereo16
 		};
 		buffer():with_name(gen()) {}
+		buffer& operator=(buffer&& b) = default;
 		~buffer();
 
 		template<class RAI>
@@ -75,7 +70,7 @@ namespace al {
 		static void i(unsigned source, unsigned param, int value);
 		static void get_i(unsigned source, unsigned param, int* value);
 	public:
-		enum state {
+		enum class state {
 			initial = 0x1011,
 			playing,
 			paused,
@@ -97,6 +92,7 @@ namespace al {
 		}
 
 		void queue_buffer(al::buffer& buff);
+		void unqueue_buffer(al::buffer& buff);
 
 		inline state get_state() {
 			int state;
@@ -104,9 +100,19 @@ namespace al {
 			return (source::state)state;
 		}
 
+		inline bool stopped() {
+			return get_state() == state::stopped;
+		}
+
 		inline unsigned get_buffers_processed() {
 			int p;
 			get_i(name, 0x1016, &p);
+			return p;
+		}
+
+		inline unsigned get_buffers_queued() {
+			int p;
+			get_i(name, 0x1015, &p);
 			return p;
 		}
 
