@@ -480,7 +480,7 @@ map_list_screen.o map_list_screen.d : src/gui/map_list_screen.cpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/deque \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_deque.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/deque.tcc \
-  src/mp3.hpp src/png.hpp libs/lodepng/lodepng.h \
+  src/mp3.hpp src/mp3_player.hpp src/png.hpp libs/lodepng/lodepng.h \
   /usr/include/GLFW/glfw3.h /usr/include/GL/gl.h /usr/include/GL/glext.h \
   /usr/include/clang/7.0.0/include/inttypes.h /usr/include/inttypes.h \
   src/jpeg.hpp

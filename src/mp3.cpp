@@ -37,7 +37,7 @@ bool mp3::decoder::next(array<int16_t, 1152*2>& data) {
                 data->first->data(),
                 info); 
             data->second->pointer += offset + frame_size;
-            cout << bytes << "\n";
+            //cout << bytes << "\n";
             //data->second->frame_info = info;
             //memset(data->second->frame_info, sizeof(mp3dec_frame_info_t), 1)
             memcpy(data->second->frame_info, info, sizeof(mp3dec_frame_info_t));

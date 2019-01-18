@@ -31,6 +31,8 @@ namespace mp3 {
             buffer = estd::get<uint8_t*>(s, buffer_size).release();
         }
 
+        //bool inline end() { return pointer == buffer_size; }
+
         bool next(std::array<int16_t, 1152*2>& data);
 
         info get_info();

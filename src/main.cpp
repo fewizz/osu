@@ -216,6 +216,6 @@ int main() {
         res = -1;
     }
     osu::worker::end();
-    //t.join();
+
     return res;
 }

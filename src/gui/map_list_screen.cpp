@@ -60,40 +60,12 @@ void map_list_screen::choose(group_cursor g, beatmap_cursor bmi) {
         auto path = bmi->bm.get_set().get_dir<string>()
                 + "/"
                 + bmi->bm.audio;
-        player.stop();
-        player.begin(make_unique<mp3::decoder>(std::ifstream(path, ios::binary)));
-        /*osu::worker::add_task([g = g, bmi = bmi, &src = src]() {
-            auto buffers = make_shared<vector<al::buffer>>(10);
-            std::cout << "set: " << bmi->bm.get_set().set_id() << "\n";
-            auto path = bmi->bm.get_set().get_dir<string>()
-                + "/"
-                + bmi->bm.audio;
-            std::cout << "path: " + path;
-            mp3::for_each_frame(
-                path
-                ,
-                [=, &src = src](mp3::info info, array<uint16_t, 1152*2> pcm) {
-                    al::buffer b;
-                    std::cout << "al0: " << al::internal::get_error() << "\n";
-                    b.data(2, 16, pcm, info.frequency);
-                    std::cout << "al1: " << al::internal::get_error() << "\n";
-                    src.queue_buffer(b);
-                    std::cout << "al2: " << al::internal::get_error() << "\n";
-                    buffers->push_back(std::move(b));
-                    cout << "feeding" << "\n";
-                    if(src.get_state() != al::source::state::playing)
-                        src.play();
-                    return true;
-                }
-            );
-        });*/
-        //std::cout << data.size() << " " <<info.channels << " " << info.frequency << "\n"; 
-        //src.stop();
-        //src.buffer(nullptr);
-        //buf.data(info.channels, 16, data, info.frequency);
-        //src.buffer(buf);
-        //src.play();
-        //std::cout << "al: " << al::internal::get_error() << "\n";
+        
+        osu::worker::add_task([&, path=path]
+        {
+            player.stop();
+            player.begin(make_unique<mp3::decoder>(std::ifstream(path, ios::binary)));
+        });
 
         std::cout << "loading back..." << "\n";
         filesystem::path back
@@ -225,5 +197,7 @@ void map_list_screen::group::draw(mat4 top_left) {
 }
 
 void map_list_screen::update() {
-    player.update();
+    osu::worker::add_task([&] {
+        player.update();
+    });
 }
