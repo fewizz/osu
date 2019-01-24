@@ -226,26 +226,7 @@ main.o main.d : src/main.cpp src/main.hpp libs/glfw/include/glfw/window.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_heap.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/uniform_int_dist.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/limits \
-  src/resourcepack.hpp src/glyph_cache.hpp src/texture_atlas.hpp \
-  libs/opengl/include/opengl/texture.hpp \
-  libs/opengl/include/opengl/bindable.hpp \
-  libs/opengl/include/opengl/with_name.hpp \
-  libs/opengl/include/opengl/internal.hpp \
-  libs/opengl/include/opengl/context.hpp \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/list \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_list.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/list.tcc \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cmath \
-  /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
-  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
-  /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
-  /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
-  /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
-  /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
-  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
-  /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
-  /usr/include/x86_64-linux-gnu/bits/iscanonical.h libs/glm/glm/vec2.hpp \
-  libs/glm/glm/./ext/vector_bool2.hpp \
+  libs/glm/glm/vec2.hpp libs/glm/glm/./ext/vector_bool2.hpp \
   libs/glm/glm/./ext/../detail/type_vec2.hpp \
   libs/glm/glm/./ext/../detail/qualifier.hpp \
   libs/glm/glm/./ext/../detail/setup.hpp \
@@ -267,7 +248,26 @@ main.o main.d : src/main.cpp src/main.hpp libs/glfw/include/glfw/window.hpp \
   libs/glm/glm/./ext/vector_int2.hpp \
   libs/glm/glm/./ext/vector_int2_precision.hpp \
   libs/glm/glm/./ext/vector_uint2.hpp \
-  libs/glm/glm/./ext/vector_uint2_precision.hpp \
+  libs/glm/glm/./ext/vector_uint2_precision.hpp src/resourcepack.hpp \
+  src/glyph_cache.hpp src/texture_atlas.hpp \
+  libs/opengl/include/opengl/texture.hpp \
+  libs/opengl/include/opengl/bindable.hpp \
+  libs/opengl/include/opengl/with_name.hpp \
+  libs/opengl/include/opengl/internal.hpp \
+  libs/opengl/include/opengl/context.hpp \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/list \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_list.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/list.tcc \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cmath \
+  /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
+  /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
+  /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
+  /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
+  /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/map \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_tree.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_map.h \

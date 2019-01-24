@@ -6,6 +6,7 @@
 #include "main.hpp"
 #include <iterator>
 #include <fstream>
+//#include "play_screen.hpp"
 
 using namespace std;
 using namespace glm;
@@ -50,6 +51,9 @@ map_list_screen::map_list_screen()
             choose(current_group, current_beatmap-1);
         if (current_beatmap != current_group->beatmaps.end()-1 && key == GLFW_KEY_RIGHT)
             choose(current_group, current_beatmap+1);
+        
+        //..if(key == GLFW_KEY_ENTER)                                                                           
+        //    osu::current_screen = make_unique<play_screen>(current_beatmap->bm);
     });
 }
 
@@ -81,7 +85,7 @@ void map_list_screen::choose(group_cursor g, beatmap_cursor bmi) {
                 png::decode(back)
                 :
                 jpeg::decode(back)
-                );
+            );
     }
     std::cout << "updating cursors" << "\n";
     if(current_group != group_cursor{})
@@ -144,15 +148,10 @@ void map_list_screen::rectangle_drawer_t::draw(
     vec2 dim,
     gl::primitive_type pt, 
     vec4 color) {
-    prog().uniform<float, 2> (
-        prog().u_loc("u_dim"),
-        dim
-    );
-
-    prog().uniform<float, 4, 4>(prog().u_loc("u_mat"), bot_left);
-
-    prog().uniform<float, 4>(prog().u_loc("u_color"), color);
-    prog().draw_arrays(pt, 0, 4);
+    uniform("u_dim", dim);
+    uniform("u_mat", bot_left);
+    uniform("u_color", color);
+    draw_arrays(pt, 0, 4);
 }
 
 void map_list_screen::slot::draw(mat4 top_left, vec4 out, vec4 back, vec4 text_color) {
@@ -160,14 +159,14 @@ void map_list_screen::slot::draw(mat4 top_left, vec4 out, vec4 back, vec4 text_c
     rec.draw(mat, get_size(), gl::primitive_type::line_loop, out);
     rec.draw(mat, get_size(), gl::primitive_type::triangle_fan, back);
     text.prog().uniform<float, 4, 4>(
-        text.prog().u_loc("u_mat"),
+        "u_mat",
         translate(
             mat,
             {5, (get_h() - (osu::main_face->get_size_metrics().height() / 64.0)) / 2.0, 0}
         )
     );
     text.prog().uniform<float, 4>(
-        text.prog().u_loc("u_color"),
+        "u_color",
         text_color
     );
     text.draw();

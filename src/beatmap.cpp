@@ -4,6 +4,7 @@
 #include <string_view>
 #include <iostream>
 #include "main.hpp"
+#include <charconv>
 
 using namespace osu;
 using namespace std;
@@ -129,6 +130,15 @@ void parse_events(beatmap& res, string_view str) {
     }
 }
 
+enum line_about {
+    circle = 0b1,
+    slider = 0b10,
+    new_combo = 0b100,
+    spinner = 0b1000,
+    combo_offset = 0b1110000,
+    hold = 0b10000000
+};
+
 void parse_hit_objects(beatmap& res, string_view str) {
     vector<string_view> split;
 
@@ -142,7 +152,15 @@ void parse_hit_objects(beatmap& res, string_view str) {
         left = right + 1;
     }
 
-    //cout << "x: " << split[0] << " y: " << split[1] << "\n";
+    glm::ivec2 pos;
+    from_chars(split[0].begin(), split[0].end(), pos.x);
+    from_chars(split[1].begin(), split[1].end(), pos.y);
+    
+    unsigned type = stoi(string{split[3]});
+    if(!(type & 1))
+        return;
+    res.circle_positions.emplace_back(pos);
+    //cout << "x: " << pos[0] << " y: " << pos[1] << "\n";
 }
 
 beatmap_set osu::parse_beatmap_dir(std::filesystem::path path) {

@@ -6,6 +6,7 @@
 #include <fstream>
 #include <algorithm>
 #include <memory>
+#include "glm/vec2.hpp"
 
 namespace osu {
     struct beatmap_set;
@@ -17,13 +18,7 @@ namespace osu {
     beatmap_set parse_beatmap_dir(std::filesystem::path path);
 
     class beatmap {
-        //std::shared_ptr<beatmap_set_loc> loc;
-        //beatmap(std::shared_ptr<beatmap_set_loc> s):loc{s}{}
-        //friend beatmap_set parse_beatmap_dir(std::filesystem::path path);
-        //beatmap_set& set;
     public:
-        //beatmap(beatmap&& b) = delete;
-        //beatmap(beatmap_set& s) : set{s}{}
         const beatmap_set& get_set() const;
 
         // General
@@ -37,6 +32,9 @@ namespace osu {
 
         // Events
         std::string back;
+
+        // Hit Objects
+        std::vector<glm::ivec2> circle_positions;
     };
 
     struct beatmap_set {
