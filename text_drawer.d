@@ -427,6 +427,7 @@ text_drawer.o text_drawer.d : src/draw/text_drawer.cpp \
   libs/opengl/include/opengl/bindable.hpp \
   libs/opengl/include/opengl/vertex_array.hpp \
   libs/opengl/include/opengl/buffer.hpp \
+  libs/opengl/include/opengl/shader.hpp \
   libs/opengl/include/opengl/texture.hpp \
   libs/opengl/include/opengl/core.hpp \
   src/draw/../properties/with_program.hpp \

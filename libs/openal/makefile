@@ -1,7 +1,7 @@
 vpath %.hpp include/openal
 vpath %.cpp src
 
-CXXFLAGS = --std=c++17
+override CXXFLAGS += --std=c++17
 CPPFLAGS = -I include/openal
 LIBNAME := openal-wrapper
 libfile := lib$(LIBNAME).a

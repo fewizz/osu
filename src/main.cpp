@@ -127,8 +127,10 @@ int main0()
     wrap_context();
 
     cout << "GL: " << current_context()->get_major() << "." << current_context()->get_minor() << "\n";
-    debug_message_callback([](string str) {
+    debug_message_callback([](gl::message_type type, string str) {
         cout << str << "\n";
+        if(type == gl::message_type::error)
+            std::exit(-1);
     });
     cout << "debug callback set" << "\n";
 

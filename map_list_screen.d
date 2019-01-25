@@ -432,6 +432,7 @@ map_list_screen.o map_list_screen.d : src/gui/map_list_screen.cpp \
   libs/opengl/include/opengl/bindable.hpp \
   libs/opengl/include/opengl/vertex_array.hpp \
   libs/opengl/include/opengl/buffer.hpp \
+  libs/opengl/include/opengl/shader.hpp \
   libs/opengl/include/opengl/texture.hpp \
   src/draw/../properties/with_program.hpp src/properties/with_obj.hpp \
   libs/utfcpp/source/utf8.h libs/utfcpp/source/utf8/checked.h \
@@ -452,8 +453,7 @@ map_list_screen.o map_list_screen.d : src/gui/map_list_screen.cpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_heap.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/uniform_int_dist.h \
   src/glyph_cache.hpp src/properties/with_vertex_array.hpp \
-  src/properties/with_program.hpp libs/opengl/include/opengl/shader.hpp \
-  libs/glm/glm/ext/matrix_clip_space.hpp \
+  src/properties/with_program.hpp libs/glm/glm/ext/matrix_clip_space.hpp \
   libs/glm/glm/./ext/../ext/scalar_constants.hpp \
   libs/glm/glm/./ext/scalar_constants.inl \
   libs/glm/glm/./ext/../geometric.hpp \

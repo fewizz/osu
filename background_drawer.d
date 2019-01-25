@@ -163,6 +163,7 @@ background_drawer.o background_drawer.d : src/draw/background_drawer.cpp \
   libs/opengl/include/opengl/bindable.hpp \
   libs/opengl/include/opengl/vertex_array.hpp \
   libs/opengl/include/opengl/buffer.hpp \
+  libs/opengl/include/opengl/shader.hpp \
   src/draw/../properties/with_obj.hpp \
   src/draw/../properties/with_texture.hpp \
   libs/opengl/include/opengl/texture.hpp libs/glm/glm/mat4x4.hpp \
@@ -464,5 +465,4 @@ background_drawer.o background_drawer.d : src/draw/background_drawer.cpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_numeric.h \
   src/gui.hpp src/properties/drawable.hpp src/properties/updatable.hpp \
   src/properties/with_size.hpp src/draw/../properties/with_width.hpp \
-  src/draw/../properties/with_height.hpp \
-  libs/opengl/include/opengl/shader.hpp
+  src/draw/../properties/with_height.hpp

@@ -1,7 +1,7 @@
 vpath %.hpp include/glfw
 vpath %.cpp src
 
-CXXFLAGS= --std=c++17
+override CXXFLAGS += --std=c++17
 CPPFLAGS= -I include
 LIBNAME := glfw-wrapper
 libfile := lib$(LIBNAME).a
