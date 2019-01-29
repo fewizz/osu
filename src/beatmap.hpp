@@ -2,11 +2,9 @@
 
 #include <filesystem>
 #include <string>
-#include <iostream>
-#include <fstream>
-#include <algorithm>
 #include <memory>
 #include "glm/vec2.hpp"
+#include "hit_object.hpp"
 
 namespace osu {
     struct beatmap_set;
@@ -34,7 +32,7 @@ namespace osu {
         std::string back;
 
         // Hit Objects
-        std::vector<glm::ivec2> circle_positions;
+        std::vector<std::unique_ptr<osu::pf_object>> objects;
     };
 
     struct beatmap_set {

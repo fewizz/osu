@@ -1,15 +1,14 @@
-#define GLFW_IMPORT_NONE
 #include "zip.h"
 #include <filesystem>
 #include <iostream>
 #include <fstream>
 #include <memory>
-#include "main.hpp"
+#include "beatmaps.hpp"
+#include "import_beatmap.hpp"
 
 using namespace std;
 
-namespace osu {
-void import_beatmap(filesystem::path path) {
+void osu::import_beatmap(filesystem::path path) {
     filesystem::create_directory("songs");
 
     cout << "Importing " << path << "\n";
@@ -66,8 +65,7 @@ void import_beatmap(filesystem::path path) {
         }
     }
 
-    osu::load_beatmap(song_dir);
+    osu::load_beatmap_set(song_dir);
     delete[] ar_data;
     delete[] buff0;
-}
 }

@@ -19,24 +19,25 @@
 #include "freetype/face.hpp"
 #include "opengl/internal.hpp"
 #include "stacktrace.hpp"
-#include "beatmap.hpp"
 #include <thread>
 #include <mutex>
 #include <future>
 #include <condition_variable>
 #include <functional>
 #include "resourcepack.hpp"
+#include "resources.hpp"
 #include "glyph_cache.hpp"
 #include "properties/updatable.hpp"
 #include "properties/drawable.hpp"
+#include "beatmaps.hpp"
+#include "import_beatmap.hpp"
 
 using namespace std;
 using namespace gl;
 using namespace freetype;
 
 namespace osu {
-    vector<beatmap_set> beatmap_sets;
-    vector<resourcepack> resourcepacks;
+    //vector<beatmap_set> beatmap_sets;
     //map<string, gl::shader> compiled_shaders;
     unique_ptr<glfw::window> window;
     freetype::library main_lib;
@@ -66,23 +67,8 @@ namespace osu {
 
 int main0()
 {
-    for_each (
-        filesystem::directory_iterator{"resourcepacks"},
-        filesystem::directory_iterator{},
-        [](filesystem::directory_entry entry)
-        {
-            osu::resourcepacks.push_back(entry.path());
-        }
-    );
-
-    for_each (
-        filesystem::directory_iterator{"songs"},
-        filesystem::directory_iterator{},
-        [](filesystem::directory_entry entry)
-        {
-            osu::load_beatmap(entry.path());
-        }
-    );
+    osu::load_resourcepacks();
+    osu::load_beatmaps();
 
     cout << "reading font..." << "\n";
     osu::main_face = 
@@ -173,15 +159,6 @@ int main0()
     }
 
     return 0;
-}
-
-filesystem::path osu::get_resource_path(string p) {
-        for(auto r : resourcepacks) {
-            auto path = r.get_relative_path(p);
-            if(std::filesystem::exists(path))
-                return path;
-        }
-        throw std::runtime_error("resource \"" + p + "\" not found");
 }
 
 void on_error(int s) {

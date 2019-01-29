@@ -1,9 +1,6 @@
-background_drawer.o background_drawer.d : src/draw/background_drawer.cpp \
-  src/draw/background_drawer.hpp src/draw/../properties/with_program.hpp \
-  libs/opengl/include/opengl/program.hpp \
-  libs/opengl/include/opengl/with_name.hpp \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/memory \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_algobase.h \
+beatmap_decoder.o beatmap_decoder.d : src/beatmap_decoder.cpp src/beatmap.hpp \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/filesystem \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/string \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/c++config.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/os_defines.h \
   /usr/include/features.h /usr/include/stdc-predef.h \
@@ -13,6 +10,10 @@ background_drawer.o background_drawer.d : src/draw/background_drawer.cpp \
   /usr/include/x86_64-linux-gnu/gnu/stubs.h \
   /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/cpu_defines.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stringfwd.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/memoryfwd.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/char_traits.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_algobase.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/functexcept.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/exception_defines.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/cpp_type_traits.h \
@@ -29,34 +30,13 @@ background_drawer.o background_drawer.d : src/draw/background_drawer.cpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/ptr_traits.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/debug/debug.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/predefined_ops.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/allocator.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/c++allocator.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/ext/new_allocator.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/new \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/exception \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/exception.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/exception_ptr.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/cxxabi_init_exception.h \
-  /usr/include/clang/7.0.0/include/stddef.h \
-  /usr/include/clang/7.0.0/include/__stddef_max_align_t.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/typeinfo \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/hash_bytes.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/nested_exception.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/memoryfwd.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_construct.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/ext/alloc_traits.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/alloc_traits.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_uninitialized.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_tempbuf.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_raw_storage_iter.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/iosfwd \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stringfwd.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/postypes.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cwchar \
   /usr/include/wchar.h \
   /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
   /usr/include/x86_64-linux-gnu/bits/floatn.h \
   /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
+  /usr/include/clang/7.0.0/include/stddef.h \
   /usr/include/clang/7.0.0/include/stdarg.h \
   /usr/include/x86_64-linux-gnu/bits/wchar.h \
   /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
@@ -66,16 +46,46 @@ background_drawer.o background_drawer.d : src/draw/background_drawer.cpp \
   /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
   /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cstdint \
+  /usr/include/clang/7.0.0/include/stdint.h /usr/include/stdint.h \
+  /usr/include/x86_64-linux-gnu/bits/types.h \
+  /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
+  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/allocator.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/c++allocator.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/ext/new_allocator.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/new \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/exception \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/exception.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/exception_ptr.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/cxxabi_init_exception.h \
+  /usr/include/clang/7.0.0/include/__stddef_max_align_t.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/typeinfo \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/hash_bytes.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/nested_exception.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/localefwd.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/c++locale.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/clocale \
+  /usr/include/locale.h /usr/include/x86_64-linux-gnu/bits/locale.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/iosfwd \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cctype \
+  /usr/include/ctype.h /usr/include/endian.h \
+  /usr/include/x86_64-linux-gnu/bits/endian.h \
+  /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+  /usr/include/x86_64-linux-gnu/bits/uintn-identity.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/ostream_insert.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/cxxabi_forced.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_function.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/backward/binders.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/range_access.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/initializer_list \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/basic_string.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/ext/atomicity.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/gthr.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/gthr-default.h \
-  /usr/include/pthread.h /usr/include/endian.h \
-  /usr/include/x86_64-linux-gnu/bits/endian.h \
-  /usr/include/x86_64-linux-gnu/bits/byteswap.h \
-  /usr/include/x86_64-linux-gnu/bits/types.h \
-  /usr/include/x86_64-linux-gnu/bits/typesizes.h \
-  /usr/include/x86_64-linux-gnu/bits/uintn-identity.h \
-  /usr/include/sched.h /usr/include/x86_64-linux-gnu/bits/types/time_t.h \
+  /usr/include/pthread.h /usr/include/sched.h \
+  /usr/include/x86_64-linux-gnu/bits/types/time_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h \
   /usr/include/x86_64-linux-gnu/bits/sched.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
@@ -93,33 +103,8 @@ background_drawer.o background_drawer.d : src/draw/background_drawer.cpp \
   /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h \
   /usr/include/x86_64-linux-gnu/bits/setjmp.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/atomic_word.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/ext/concurrence.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_function.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/backward/binders.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/uses_allocator.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/unique_ptr.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/utility \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_relops.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/initializer_list \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/tuple \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/array \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/stdexcept \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/string \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/char_traits.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cstdint \
-  /usr/include/clang/7.0.0/include/stdint.h /usr/include/stdint.h \
-  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
-  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/localefwd.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/c++locale.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/clocale \
-  /usr/include/locale.h /usr/include/x86_64-linux-gnu/bits/locale.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cctype \
-  /usr/include/ctype.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/ostream_insert.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/cxxabi_forced.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/range_access.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/basic_string.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/ext/alloc_traits.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/alloc_traits.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/ext/string_conversions.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cstdlib \
   /usr/include/stdlib.h /usr/include/x86_64-linux-gnu/bits/waitflags.h \
@@ -147,6 +132,19 @@ background_drawer.o background_drawer.d : src/draw/background_drawer.cpp \
   /usr/include/x86_64-linux-gnu/bits/types/error_t.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/functional_hash.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/basic_string.tcc \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/memory \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_construct.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_uninitialized.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_tempbuf.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_raw_storage_iter.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/ext/concurrence.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/uses_allocator.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/unique_ptr.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/utility \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_relops.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/tuple \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/array \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/stdexcept \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/invoke.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/shared_ptr.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/shared_ptr_base.h \
@@ -157,19 +155,8 @@ background_drawer.o background_drawer.d : src/draw/background_drawer.cpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/atomic_base.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/atomic_lockfree_defines.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/backward/auto_ptr.h \
-  libs/opengl/include/opengl/internal.hpp \
-  libs/opengl/include/opengl/context.hpp \
-  libs/opengl/include/opengl/primitive.hpp \
-  libs/opengl/include/opengl/bindable.hpp \
-  libs/opengl/include/opengl/vertex_array.hpp \
-  libs/opengl/include/opengl/buffer.hpp \
-  libs/opengl/include/opengl/shader.hpp \
-  src/draw/../properties/with_obj.hpp \
-  src/draw/../properties/with_texture.hpp \
-  libs/opengl/include/opengl/texture.hpp libs/glm/glm/mat4x4.hpp \
-  libs/glm/glm/./ext/matrix_double4x4.hpp \
-  libs/glm/glm/./ext/../detail/type_mat4x4.hpp \
-  libs/glm/glm/./ext/../detail/type_vec4.hpp \
+  libs/glm/glm/vec2.hpp libs/glm/glm/./ext/vector_bool2.hpp \
+  libs/glm/glm/./ext/../detail/type_vec2.hpp \
   libs/glm/glm/./ext/../detail/qualifier.hpp \
   libs/glm/glm/./ext/../detail/setup.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cassert \
@@ -181,17 +168,9 @@ background_drawer.o background_drawer.d : src/draw/background_drawer.cpp \
   /usr/include/clang/7.0.0/include/mmintrin.h \
   /usr/include/clang/7.0.0/include/mm_malloc.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/stdlib.h \
-  libs/glm/glm/./ext/../detail/type_vec4.inl \
-  libs/glm/glm/./ext/../detail/compute_vector_relational.hpp \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/limits \
-  libs/glm/glm/./ext/../detail/type_vec4_simd.inl \
-  libs/glm/glm/./ext/../detail/type_mat4x4.inl \
-  libs/glm/glm/./ext/../detail/../matrix.hpp \
-  libs/glm/glm/detail/qualifier.hpp libs/glm/glm/detail/setup.hpp \
-  libs/glm/glm/vec2.hpp libs/glm/glm/./ext/vector_bool2.hpp \
-  libs/glm/glm/./ext/../detail/type_vec2.hpp \
   libs/glm/glm/./ext/../detail/type_vec2.inl \
   libs/glm/glm/./ext/../detail/./compute_vector_relational.hpp \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/limits \
   libs/glm/glm/./ext/vector_bool2_precision.hpp \
   libs/glm/glm/./ext/vector_float2.hpp \
   libs/glm/glm/./ext/vector_float2_precision.hpp \
@@ -200,8 +179,17 @@ background_drawer.o background_drawer.d : src/draw/background_drawer.cpp \
   libs/glm/glm/./ext/vector_int2.hpp \
   libs/glm/glm/./ext/vector_int2_precision.hpp \
   libs/glm/glm/./ext/vector_uint2.hpp \
-  libs/glm/glm/./ext/vector_uint2_precision.hpp libs/glm/glm/vec3.hpp \
-  libs/glm/glm/./ext/vector_bool3.hpp \
+  libs/glm/glm/./ext/vector_uint2_precision.hpp src/hit_object.hpp \
+  libs/glm/glm/mat4x4.hpp libs/glm/glm/./ext/matrix_double4x4.hpp \
+  libs/glm/glm/./ext/../detail/type_mat4x4.hpp \
+  libs/glm/glm/./ext/../detail/type_vec4.hpp \
+  libs/glm/glm/./ext/../detail/type_vec4.inl \
+  libs/glm/glm/./ext/../detail/compute_vector_relational.hpp \
+  libs/glm/glm/./ext/../detail/type_vec4_simd.inl \
+  libs/glm/glm/./ext/../detail/type_mat4x4.inl \
+  libs/glm/glm/./ext/../detail/../matrix.hpp \
+  libs/glm/glm/detail/qualifier.hpp libs/glm/glm/detail/setup.hpp \
+  libs/glm/glm/vec3.hpp libs/glm/glm/./ext/vector_bool3.hpp \
   libs/glm/glm/./ext/../detail/type_vec3.hpp \
   libs/glm/glm/./ext/../detail/type_vec3.inl \
   libs/glm/glm/./ext/vector_bool3_precision.hpp \
@@ -373,14 +361,24 @@ background_drawer.o background_drawer.d : src/draw/background_drawer.cpp \
   libs/glm/glm/./ext/matrix_double4x4_precision.hpp \
   libs/glm/glm/./ext/matrix_float4x4.hpp \
   libs/glm/glm/./ext/matrix_float4x4_precision.hpp \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/iostream \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/ostream \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/vector \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_vector.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_bvector.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/vector.tcc \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/algorithm \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_algo.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/algorithmfwd.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_heap.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/uniform_int_dist.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/charconv \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/error_constants.h \
+  src/beatmap_decoder.hpp \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/istream \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/ios \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/ios_base.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/locale_classes.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/locale_classes.tcc \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/system_error \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/error_constants.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/streambuf \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/streambuf.tcc \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/basic_ios.h \
@@ -393,71 +391,7 @@ background_drawer.o background_drawer.d : src/draw/background_drawer.cpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/ctype_inline.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/locale_facets.tcc \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/basic_ios.tcc \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/ostream \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/ostream.tcc \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/istream \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/istream.tcc \
-  libs/glm/glm/ext/matrix_transform.hpp \
-  libs/glm/glm/./ext/../gtc/constants.hpp \
-  libs/glm/glm/./ext/../gtc/../ext/scalar_constants.hpp \
-  libs/glm/glm/./ext/scalar_constants.inl \
-  libs/glm/glm/./ext/../gtc/constants.inl \
-  libs/glm/glm/./ext/../geometric.hpp \
-  libs/glm/glm/./ext/../trigonometric.hpp \
-  libs/glm/glm/detail/func_trigonometric.inl \
-  libs/glm/glm/./ext/../detail/func_trigonometric_simd.inl \
-  libs/glm/glm/./ext/../matrix.hpp \
-  libs/glm/glm/./ext/matrix_transform.inl src/main.hpp \
-  libs/glfw/include/glfw/window.hpp \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/vector \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_vector.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_bvector.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/vector.tcc \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/filesystem \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/functional \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/std_function.h \
-  libs/freetype/include/freetype/library.hpp \
-  libs/freetype/include/freetype/freetype_fwd.hpp \
-  /usr/include/freetype2/ft2build.h \
-  /usr/include/freetype2/freetype/config/ftheader.h \
-  /usr/include/freetype2/freetype/freetype.h \
-  /usr/include/freetype2/freetype/config/ftconfig.h \
-  /usr/include/freetype2/freetype/config/ftoption.h \
-  /usr/include/freetype2/freetype/config/ftstdlib.h \
-  /usr/include/clang/7.0.0/include/limits.h /usr/include/limits.h \
-  /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
-  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
-  /usr/include/linux/limits.h \
-  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
-  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
-  /usr/include/x86_64-linux-gnu/bits/uio_lim.h /usr/include/setjmp.h \
-  /usr/include/freetype2/freetype/fttypes.h \
-  /usr/include/freetype2/freetype/ftsystem.h \
-  /usr/include/freetype2/freetype/ftimage.h \
-  /usr/include/freetype2/freetype/fterrors.h \
-  /usr/include/freetype2/freetype/ftmoderr.h \
-  /usr/include/freetype2/freetype/fterrdef.h \
-  libs/freetype/include/freetype/face.hpp \
-  libs/freetype/include/freetype/internal.hpp \
-  libs/freetype/include/freetype/glyph_slot.hpp \
-  libs/freetype/include/freetype/glyph_metrics.hpp \
-  libs/freetype/include/freetype/bitmap.hpp \
-  libs/freetype/include/freetype/bbox.hpp \
-  libs/freetype/include/freetype/size_metrics.hpp \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/fstream \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/codecvt.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/basic_file.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/c++io.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/fstream.tcc \
-  src/glyph_cache.hpp src/texture_atlas.hpp \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/list \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_list.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/list.tcc \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/map \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_tree.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_map.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_multimap.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/numeric \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_numeric.h \
-  src/gui.hpp src/properties/drawable.hpp src/properties/updatable.hpp \
-  src/properties/with_size.hpp src/draw/../properties/with_width.hpp \
-  src/draw/../properties/with_height.hpp
+  src/beatmaps.hpp

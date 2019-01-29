@@ -21,15 +21,15 @@ void gfx::background_drawer::draw(glm::mat4 center) {
             fb_size[1] / tex_size[1]
         );
     
-    prog().uniform<float, 2>(prog().u_loc("u_dim"), scaled_size);
+    prog().uniform("u_dim", scaled_size);
 
-    prog().uniform<float, 4, 4>(
-        prog().u_loc("u_mat"),
+    prog().uniform(
+        "u_mat",
         translate(center, {-scaled_size[0] / 2.0f, -scaled_size[1] / 2.0f, 0})
     );
 
     gl::active_texture(tex(), 0);
-    prog().uniform<int, 1>(prog().u_loc("u_tex"), 0);
+    prog().uniform("u_tex", 0);
 
     prog().draw_arrays(gl::primitive_type::triangle_fan, 0, 4);
 }

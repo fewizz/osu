@@ -191,9 +191,8 @@ main.o main.d : src/main.cpp src/main.hpp libs/glfw/include/glfw/window.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/atomic_base.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/atomic_lockfree_defines.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/backward/auto_ptr.h \
-  src/beatmap.hpp \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/iostream \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/ostream \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/fstream \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/istream \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/ios \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/ios_base.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/locale_classes.h \
@@ -212,43 +211,13 @@ main.o main.d : src/main.cpp src/main.hpp libs/glfw/include/glfw/window.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/ctype_inline.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/locale_facets.tcc \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/basic_ios.tcc \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/ostream \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/ostream.tcc \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/istream \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/istream.tcc \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/fstream \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/codecvt.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/basic_file.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/x86_64-linux-gnu/c++/8/bits/c++io.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/fstream.tcc \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/algorithm \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_algo.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/algorithmfwd.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_heap.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/uniform_int_dist.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/limits \
-  libs/glm/glm/vec2.hpp libs/glm/glm/./ext/vector_bool2.hpp \
-  libs/glm/glm/./ext/../detail/type_vec2.hpp \
-  libs/glm/glm/./ext/../detail/qualifier.hpp \
-  libs/glm/glm/./ext/../detail/setup.hpp \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cassert \
-  /usr/include/assert.h \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cstddef \
-  libs/glm/glm/./ext/../detail/../simd/platform.h \
-  /usr/include/clang/7.0.0/include/emmintrin.h \
-  /usr/include/clang/7.0.0/include/xmmintrin.h \
-  /usr/include/clang/7.0.0/include/mmintrin.h \
-  /usr/include/clang/7.0.0/include/mm_malloc.h \
-  libs/glm/glm/./ext/../detail/type_vec2.inl \
-  libs/glm/glm/./ext/../detail/./compute_vector_relational.hpp \
-  libs/glm/glm/./ext/vector_bool2_precision.hpp \
-  libs/glm/glm/./ext/vector_float2.hpp \
-  libs/glm/glm/./ext/vector_float2_precision.hpp \
-  libs/glm/glm/./ext/vector_double2.hpp \
-  libs/glm/glm/./ext/vector_double2_precision.hpp \
-  libs/glm/glm/./ext/vector_int2.hpp \
-  libs/glm/glm/./ext/vector_int2_precision.hpp \
-  libs/glm/glm/./ext/vector_uint2.hpp \
-  libs/glm/glm/./ext/vector_uint2_precision.hpp src/resourcepack.hpp \
   src/glyph_cache.hpp src/texture_atlas.hpp \
   libs/opengl/include/opengl/texture.hpp \
   libs/opengl/include/opengl/bindable.hpp \
@@ -267,7 +236,31 @@ main.o main.d : src/main.cpp src/main.hpp libs/glfw/include/glfw/window.hpp \
   /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
   /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
   /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
-  /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
+  /usr/include/x86_64-linux-gnu/bits/iscanonical.h libs/glm/glm/vec2.hpp \
+  libs/glm/glm/./ext/vector_bool2.hpp \
+  libs/glm/glm/./ext/../detail/type_vec2.hpp \
+  libs/glm/glm/./ext/../detail/qualifier.hpp \
+  libs/glm/glm/./ext/../detail/setup.hpp \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cassert \
+  /usr/include/assert.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cstddef \
+  libs/glm/glm/./ext/../detail/../simd/platform.h \
+  /usr/include/clang/7.0.0/include/emmintrin.h \
+  /usr/include/clang/7.0.0/include/xmmintrin.h \
+  /usr/include/clang/7.0.0/include/mmintrin.h \
+  /usr/include/clang/7.0.0/include/mm_malloc.h \
+  libs/glm/glm/./ext/../detail/type_vec2.inl \
+  libs/glm/glm/./ext/../detail/./compute_vector_relational.hpp \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/limits \
+  libs/glm/glm/./ext/vector_bool2_precision.hpp \
+  libs/glm/glm/./ext/vector_float2.hpp \
+  libs/glm/glm/./ext/vector_float2_precision.hpp \
+  libs/glm/glm/./ext/vector_double2.hpp \
+  libs/glm/glm/./ext/vector_double2_precision.hpp \
+  libs/glm/glm/./ext/vector_int2.hpp \
+  libs/glm/glm/./ext/vector_int2_precision.hpp \
+  libs/glm/glm/./ext/vector_uint2.hpp \
+  libs/glm/glm/./ext/vector_uint2_precision.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/map \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_tree.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_map.h \
@@ -276,10 +269,10 @@ main.o main.d : src/main.cpp src/main.hpp libs/glfw/include/glfw/window.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_numeric.h \
   src/gui.hpp src/properties/drawable.hpp src/properties/updatable.hpp \
   src/properties/with_size.hpp src/properties/with_width.hpp \
-  src/properties/with_height.hpp libs/opengl/include/opengl/shader.hpp \
-  libs/opengl/include/opengl/core.hpp \
+  src/properties/with_height.hpp libs/opengl/include/opengl/core.hpp \
   libs/opengl/include/opengl/debug.hpp libs/openal/include/openal/al.hpp \
   libs/openal/include/openal/alc.hpp libs/glfw/include/glfw/glfw.hpp \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/iostream \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/thread \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/chrono \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/ratio \
@@ -482,9 +475,15 @@ main.o main.d : src/main.cpp src/main.hpp libs/glfw/include/glfw/window.hpp \
   libs/opengl/include/opengl/primitive.hpp \
   libs/opengl/include/opengl/vertex_array.hpp \
   libs/opengl/include/opengl/buffer.hpp \
+  libs/opengl/include/opengl/shader.hpp \
   src/draw/../properties/with_program.hpp src/properties/with_obj.hpp \
   libs/utfcpp/source/utf8.h libs/utfcpp/source/utf8/checked.h \
   libs/utfcpp/source/utf8/core.h libs/utfcpp/source/utf8/unchecked.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/algorithm \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_algo.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/algorithmfwd.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_heap.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/uniform_int_dist.h \
   src/properties/with_vertex_array.hpp src/properties/with_program.hpp \
   libs/glm/glm/ext/matrix_clip_space.hpp \
   libs/glm/glm/./ext/../ext/scalar_constants.hpp \
@@ -500,8 +499,10 @@ main.o main.d : src/main.cpp src/main.hpp libs/glfw/include/glfw/window.hpp \
   libs/glm/glm/./ext/../gtc/constants.inl \
   libs/glm/glm/./ext/../matrix.hpp \
   libs/glm/glm/./ext/matrix_transform.inl src/shaders.hpp \
-  src/unsafe_iostream_operations.hpp src/properties/pressable.hpp \
-  src/draw/background_drawer.hpp src/draw/../properties/with_texture.hpp \
+  src/resources.hpp src/resourcepack.hpp \
+  src/unsafe_iostream_operations.hpp src/beatmap.hpp src/hit_object.hpp \
+  src/properties/pressable.hpp src/draw/background_drawer.hpp \
+  src/draw/../properties/with_texture.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/deque \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/stl_deque.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/deque.tcc \
@@ -512,4 +513,5 @@ main.o main.d : src/main.cpp src/main.hpp libs/glfw/include/glfw/window.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/future \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/condition_variable \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/atomic \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/atomic_futex.h
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/atomic_futex.h \
+  src/beatmaps.hpp src/import_beatmap.hpp

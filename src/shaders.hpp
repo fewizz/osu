@@ -3,13 +3,13 @@
 #include <string>
 #include "opengl/shader.hpp"
 #include <fstream>
-#include "main.hpp"
+#include "resources.hpp"
 #include "unsafe_iostream_operations.hpp"
 
 namespace osu {
-
     template<class Shader>
-    Shader load(std::string shader) {
+    std::enable_if_t<std::is_base_of_v<gl::shader, Shader>,
+    Shader> load(std::string shader) {
         auto path = get_resource_path(shader);
 
         if(!std::filesystem::exists(path))

@@ -3,10 +3,12 @@
 #include "mp3.hpp"
 #include "GLFW/glfw3.h"
 #include "jpeg.hpp"
-#include "main.hpp"
+#include "beatmaps.hpp"
+#include "textures.hpp"
+#include "shaders.hpp"
 #include <iterator>
 #include <fstream>
-//#include "play_screen.hpp"
+#include "play_screen.hpp"
 
 using namespace std;
 using namespace glm;
@@ -52,8 +54,8 @@ map_list_screen::map_list_screen()
         if (current_beatmap != current_group->beatmaps.end()-1 && key == GLFW_KEY_RIGHT)
             choose(current_group, current_beatmap+1);
         
-        //..if(key == GLFW_KEY_ENTER)                                                                           
-        //    osu::current_screen = make_unique<play_screen>(current_beatmap->bm);
+        if(key == GLFW_KEY_ENTER)                                                                           
+            osu::current_screen = make_unique<play_screen>(current_beatmap->bm);
     });
 }
 
@@ -158,14 +160,14 @@ void map_list_screen::slot::draw(mat4 top_left, vec4 out, vec4 back, vec4 text_c
     mat4 mat = translate(top_left, vec3{0, -get_size()[1], 0});
     rec.draw(mat, get_size(), gl::primitive_type::line_loop, out);
     rec.draw(mat, get_size(), gl::primitive_type::triangle_fan, back);
-    text.prog().uniform<float, 4, 4>(
+    text.prog().uniform(
         "u_mat",
         translate(
             mat,
             {5, (get_h() - (osu::main_face->get_size_metrics().height() / 64.0)) / 2.0, 0}
         )
     );
-    text.prog().uniform<float, 4>(
+    text.prog().uniform(
         "u_color",
         text_color
     );
@@ -181,15 +183,15 @@ name{name},
 group_slot{name, prog, rec}{}
 
 void map_list_screen::group::draw(mat4 top_left) {
-    group_slot.draw(top_left, vec4{0, 0, 0, 1}, vec4{0, 0, 0, 1}, vec4{1, 1, 1, 1});
+    group_slot.draw(top_left, vec4{0, 0, 0, 1}, vec4{0, 0, 0, 1}, vec4{1});
     if(!group_slot.is_pressed())
         return;
     mat4 mat = translate(top_left, {10, -group_slot.get_h(), 0});
     for(auto& d : beatmaps) {
         d.draw(
             mat,
-            d.is_pressed() ? vec4{1, 0, 0, 1} : vec4{1, 1, 1, 1},
-            vec4{1, 1, 1, 1},
+            d.is_pressed() ? vec4{1, 0, 0, 1} : vec4{1},
+            vec4{1},
             vec4{0, 0, 0, 1});
         mat = translate(mat, {0, -d.get_h(), 0});
     }
