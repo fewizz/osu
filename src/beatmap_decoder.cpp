@@ -130,13 +130,13 @@ std::vector<std::string_view> split(It b, It e, char c) {
     std::vector<std::string_view> res;
     
     while(true) {
-        b = std::find(b, e, c);
+        auto r = std::find(b, e, c);
         res.push_back(
-            std::string_view{b, (size_t)(e - b)}
+            std::string_view{&*b, (size_t)(r - b)}
         );
-        if(b == e)
+        if(r == e)
             break;
-        b++;
+        b = r + 1;
     }
 
     return res;

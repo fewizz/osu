@@ -16,9 +16,9 @@ void osu::circle::draw(glm::mat4 lb) {
     if(!internal::cd)
         internal::cd = make_unique<circle_drawer>();
 
-    internal::cd->draw(
-        glm::translate(lb, glm::vec3{position.x, position.y, 0})
-    );
+    //internal::cd->draw(
+    //    glm::translate(lb, glm::vec3{position.x, position.y, 0})
+    //);
 }
 
 void osu::slider::draw(glm::mat4 lb) {
