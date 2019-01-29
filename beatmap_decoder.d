@@ -394,4 +394,110 @@ beatmap_decoder.o beatmap_decoder.d : src/beatmap_decoder.cpp src/beatmap.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/ostream \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/ostream.tcc \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/bits/istream.tcc \
-  src/beatmaps.hpp
+  src/beatmaps.hpp libs/glm/glm/gtx/norm.hpp \
+  libs/glm/glm/gtx/../geometric.hpp \
+  libs/glm/glm/gtx/../gtx/quaternion.hpp libs/glm/glm/gtx/../glm.hpp \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/climits \
+  /usr/include/clang/7.0.0/include/limits.h /usr/include/limits.h \
+  /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
+  /usr/include/linux/limits.h \
+  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../../include/c++/8/cfloat \
+  /usr/include/clang/7.0.0/include/float.h libs/glm/glm/fwd.hpp \
+  libs/glm/glm/trigonometric.hpp \
+  libs/glm/glm/detail/func_trigonometric.inl \
+  libs/glm/glm/./ext/../detail/func_trigonometric_simd.inl \
+  libs/glm/glm/exponential.hpp libs/glm/glm/common.hpp \
+  libs/glm/glm/packing.hpp libs/glm/glm/detail/func_packing.inl \
+  libs/glm/glm/./ext/../detail/type_half.hpp \
+  libs/glm/glm/./ext/../detail/type_half.inl \
+  libs/glm/glm/./ext/../detail/func_packing_simd.inl \
+  libs/glm/glm/geometric.hpp libs/glm/glm/matrix.hpp \
+  libs/glm/glm/vector_relational.hpp libs/glm/glm/integer.hpp \
+  libs/glm/glm/detail/func_integer.inl \
+  libs/glm/glm/./ext/../detail/func_integer_simd.inl \
+  libs/glm/glm/./ext/../detail/../simd/integer.h \
+  libs/glm/glm/gtx/../gtc/constants.hpp \
+  libs/glm/glm/gtx/../gtc/../ext/scalar_constants.hpp \
+  libs/glm/glm/./ext/scalar_constants.inl \
+  libs/glm/glm/gtx/../gtc/constants.inl \
+  libs/glm/glm/gtx/../gtc/quaternion.hpp \
+  libs/glm/glm/gtx/../gtc/../gtc/constants.hpp \
+  libs/glm/glm/gtx/../gtc/../gtc/matrix_transform.hpp \
+  libs/glm/glm/gtx/../gtc/../mat4x4.hpp \
+  libs/glm/glm/gtx/../gtc/../vec2.hpp \
+  libs/glm/glm/gtx/../gtc/../vec3.hpp \
+  libs/glm/glm/gtx/../gtc/../vec4.hpp \
+  libs/glm/glm/gtx/../gtc/../ext/matrix_projection.hpp \
+  libs/glm/glm/./ext/../gtc/constants.hpp \
+  libs/glm/glm/./ext/../geometric.hpp \
+  libs/glm/glm/./ext/../trigonometric.hpp \
+  libs/glm/glm/./ext/../matrix.hpp \
+  libs/glm/glm/./ext/matrix_projection.inl \
+  libs/glm/glm/gtx/../gtc/../ext/matrix_clip_space.hpp \
+  libs/glm/glm/./ext/../ext/scalar_constants.hpp \
+  libs/glm/glm/./ext/matrix_clip_space.inl \
+  libs/glm/glm/gtx/../gtc/../ext/matrix_transform.hpp \
+  libs/glm/glm/./ext/matrix_transform.inl \
+  libs/glm/glm/gtx/../gtc/matrix_transform.inl \
+  libs/glm/glm/gtx/../gtc/../geometric.hpp \
+  libs/glm/glm/gtx/../gtc/../trigonometric.hpp \
+  libs/glm/glm/gtx/../gtc/../matrix.hpp \
+  libs/glm/glm/gtx/../gtc/../ext/vector_relational.hpp \
+  libs/glm/glm/./ext/vector_relational.inl \
+  libs/glm/glm/./ext/../vector_relational.hpp \
+  libs/glm/glm/./ext/../common.hpp \
+  libs/glm/glm/./ext/../detail/type_float.hpp \
+  libs/glm/glm/gtx/../gtc/../ext/quaternion_common.hpp \
+  libs/glm/glm/./ext/../ext/quaternion_geometric.hpp \
+  libs/glm/glm/./ext/../exponential.hpp \
+  libs/glm/glm/./ext/../ext/vector_relational.hpp \
+  libs/glm/glm/./ext/quaternion_geometric.inl \
+  libs/glm/glm/./ext/quaternion_common.inl \
+  libs/glm/glm/./ext/quaternion_common_simd.inl \
+  libs/glm/glm/gtx/../gtc/../ext/quaternion_float.hpp \
+  libs/glm/glm/./ext/../detail/type_quat.hpp \
+  libs/glm/glm/./ext/../detail/../detail/type_mat3x3.hpp \
+  libs/glm/glm/./ext/../detail/../detail/type_mat4x4.hpp \
+  libs/glm/glm/./ext/../detail/../detail/type_vec3.hpp \
+  libs/glm/glm/./ext/../detail/../detail/type_vec4.hpp \
+  libs/glm/glm/./ext/../detail/../ext/vector_relational.hpp \
+  libs/glm/glm/./ext/../detail/../ext/quaternion_relational.hpp \
+  libs/glm/glm/./ext/quaternion_relational.inl \
+  libs/glm/glm/./ext/../detail/../gtc/constants.hpp \
+  libs/glm/glm/./ext/../detail/../gtc/matrix_transform.hpp \
+  libs/glm/glm/./ext/../detail/type_quat.inl \
+  libs/glm/glm/./ext/../detail/../trigonometric.hpp \
+  libs/glm/glm/./ext/../detail/../ext/quaternion_geometric.hpp \
+  libs/glm/glm/./ext/../detail/type_quat_simd.inl \
+  libs/glm/glm/gtx/../gtc/../ext/quaternion_float_precision.hpp \
+  libs/glm/glm/gtx/../gtc/../ext/quaternion_double.hpp \
+  libs/glm/glm/gtx/../gtc/../ext/quaternion_double_precision.hpp \
+  libs/glm/glm/gtx/../gtc/../ext/quaternion_relational.hpp \
+  libs/glm/glm/gtx/../gtc/../ext/quaternion_geometric.hpp \
+  libs/glm/glm/gtx/../gtc/../ext/quaternion_trigonometric.hpp \
+  libs/glm/glm/./ext/scalar_constants.hpp \
+  libs/glm/glm/./ext/vector_relational.hpp \
+  libs/glm/glm/./ext/quaternion_trigonometric.inl \
+  libs/glm/glm/gtx/../gtc/../ext/quaternion_transform.hpp \
+  libs/glm/glm/./ext/quaternion_transform.inl \
+  libs/glm/glm/gtx/../gtc/../detail/type_mat3x3.hpp \
+  libs/glm/glm/gtx/../gtc/../detail/type_mat4x4.hpp \
+  libs/glm/glm/gtx/../gtc/../detail/type_vec3.hpp \
+  libs/glm/glm/gtx/../gtc/../detail/type_vec4.hpp \
+  libs/glm/glm/gtx/../gtc/quaternion.inl \
+  libs/glm/glm/gtx/../gtc/../exponential.hpp \
+  libs/glm/glm/gtx/../gtc/epsilon.hpp \
+  libs/glm/glm/gtx/../gtc/../detail/setup.hpp \
+  libs/glm/glm/gtx/../gtc/../detail/qualifier.hpp \
+  libs/glm/glm/gtx/../gtc/epsilon.inl \
+  libs/glm/glm/gtx/../gtc/../vector_relational.hpp \
+  libs/glm/glm/gtx/../gtc/../common.hpp \
+  libs/glm/glm/gtx/../gtc/quaternion_simd.inl \
+  libs/glm/glm/gtx/../ext/quaternion_exponential.hpp \
+  libs/glm/glm/./ext/quaternion_exponential.inl \
+  libs/glm/glm/gtx/../gtx/norm.hpp libs/glm/glm/gtx/quaternion.inl \
+  libs/glm/glm/gtx/norm.inl libs/glm/glm/gtx/../detail/qualifier.hpp

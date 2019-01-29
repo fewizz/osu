@@ -4,9 +4,13 @@
 #include <charconv>
 #include "beatmap_decoder.hpp"
 #include "beatmaps.hpp"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/gtx/norm.hpp"
+#include <cmath>
 
 using namespace std;
 using namespace osu;
+using namespace glm;
 
 enum event_type {
     background = 0,
@@ -142,6 +146,88 @@ std::vector<std::string_view> split(It b, It e, char c) {
     return res;
 }
 
+vector<uvec2> bezier(vec2 a, vec2 b, vec2 c) {
+    vector<uvec2> res;
+
+    for(double i = 0; i <= 1; i+= (1.0/100.0)) {
+        res.push_back(
+            mix(mix(a, b, i), mix(b, c, i), i)
+        );
+    }
+    return res;
+}
+
+vector<uvec2> catmull(vector<uvec2> points) {
+    vector<uvec2> res;
+    // just stolen
+
+    for(int i = 0; i < points.size() - 1; i++) {
+        vec2 a = i > 0 ? points[i - 1] : points[i];
+        vec2 b = points[i];
+        vec2 c = i < points.size() - 1 ? (vec2)points[i + 1] : b*2.0f - a;
+        vec2 d = i < points.size() - 2 ? (vec2)points[i + 2] : c*2.0f - b;
+
+        for(float t = 0; t <= 1; t+= (1.0/100.0)) {
+            float t2 = t * t;
+            float t3 = t * t2;
+
+            res.push_back(
+                 0.5f * (2.0f * b + (-a + c) * t
+                + (2.0f * a - 5.0f * b + 4.0f * c - d) * t2
+                + (-a + 3.0f * b - 3.0f * c + d) * t3)
+            );
+        }
+    }
+    return res;
+}
+
+vector<uvec2> circ_arc(vec2 a, vec2 b, vec2 c) {
+    float pa2 = distance2(b, c);
+    float pb2 = distance2(a, c);
+    float pc2 = distance2(a, b);
+    float a0 = pa2*(pb2 + pc2 - pa2);
+    float b0 = pb2*(pa2 + pc2 - pb2);
+    float c0 = pc2*(pb2 + pa2 - pc2);
+
+    vec2 center = (a*a0 + b*b0 + c*c0) / (a0 + b0 + c0);
+    float r = length(a - center);
+
+    auto cross = [](vec2 a, vec2 b) { return a.x*b.y-b.x*a.y; };
+
+    bool cw = cross(b - a, b - c) > 0;
+    int side_sign = (int)cw*2-1;
+    float beg_angle = atan2((a-center).x, (a-center).y);
+    float end_angle = atan2((c-center).x, (c-center).y);
+
+    bool end_trunced =
+        side_sign*(beg_angle - end_angle) > 0;
+    end_angle +=
+        2*M_PI*end_trunced*side_sign;
+    float step_rad = side_sign / 100.0f;
+
+    vector<uvec2> res;
+    for(float angle = beg_angle; side_sign*(end_angle-angle) > 0; angle += step_rad) {
+        res.push_back({center.x + sin(angle)*r, center.y + cos(angle)*r});
+    }
+    return res;
+}
+
+vector<uvec2> linear(vector<uvec2>& ps) {
+    vector<uvec2> res;
+
+    res.push_back(ps[0]);
+    for(int i = 0; i < ps.size() - 1; i++) {
+        vec2 a = ps[i];
+        vec2 b = ps[i + 1];
+
+        for(int k = 0; k < 200; k++) {
+            res.push_back(a + (b - a)*((float)k / 200.0f));
+        }
+        res.push_back(ps[i]);
+    }
+    return res;
+}
+
 void parse_hit_objects(beatmap& res, string_view str) {
     auto s = split(str.begin(), str.end(), ',');
 
@@ -180,8 +266,14 @@ void parse_hit_objects(beatmap& res, string_view str) {
 
         std::vector<glm::uvec2> positions;
 
-        if(line_type == "L")
-            positions = std::move(points);
+        if(line_type == "!L")
+            positions = linear(points);
+        if(line_type == "!P")
+            positions = circ_arc(points[0], points[1], points[2]);
+        if(line_type == "!B")
+            positions = bezier(points[0], points[1], points[2]);
+        if(line_type == "C")
+            positions = catmull(points);
         
         res.objects.emplace_back(
             std::make_unique<osu::slider>(std::move(positions))
