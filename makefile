@@ -86,7 +86,7 @@ freetype-wrapper:
 liblodepng.a: liblodepng.a(.build/lodepng.o)
 
 clean:
-	rm -f .build liblodepng.a osu
+	rm -rf .build liblodepng.a osu
 	make -C libs/opengl clean
 	make -C libs/openal clean
 	make -C libs/glfw clean
