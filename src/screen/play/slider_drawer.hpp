@@ -5,10 +5,10 @@
 #include "shaders.hpp"
 #include "glm/mat4x4.hpp"
 #include "properties/with_program.hpp"
-#include "field_object.hpp"
+#include "slider.hpp"
 
 struct slider_drawer {
-    slider_drawer(osu::slider s);
+    slider_drawer(osu::playfield::slider s);
     /*:prop::with_shared_program (
         osu::load<gl::vertex_shader>("shaders/rectangle_u_mat4_u_dim_uv.vs"),
         osu::load<gl::fragment_shader>("shaders/passtrough_u_tex2_a_uv.fs")

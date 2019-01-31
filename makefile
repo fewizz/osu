@@ -1,10 +1,11 @@
-source-containing-dirs = $(sort $(dir $(wildcard src/*/)))
+source-containing-dirs = $(sort $(dir $(wildcard src/*/*/) $(wildcard src/*)))
 
 $(info $(source-containing-dirs))
 
 vpath %.cpp $(source-containing-dirs) libs/lodepng
 vpath %.hpp $(source-containing-dirs)
 vpath %.h libs/lodepng
+vpath %.o .build/
 
 objects := $(subst .cpp,.o,\
 $(foreach dir,$(source-containing-dirs),$(notdir $(wildcard $(dir)*.cpp ))))
@@ -55,16 +56,23 @@ liblodepng.a
 .PHONY: $(lib-targets) clean osu
 
 osu: $(objects) $(lib-targets)
-	$(CXX) $(CXXFLAGS) -o $@ $(objects) $(LDFLAGS) $(LDLIBS)
+	$(CXX) $(CXXFLAGS) -o $@ $(addprefix .build/,$(objects)) $(LDFLAGS) $(LDLIBS)
 
 %.hpp:
 	
-%.d : %.cpp
+%.o: %.cpp
+	$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) $< -o .build/$@
+
+.build/%.d : %.cpp
 	#@set -e; rm -f $@;
-	mkdir .build; \
-	$(CXX) -M $(CPPFLAGS) $< > .build/$@.$$$$; \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < .build/$@.$$$$ > ./build/$@; \
-	rm -f ./build/$@.$$$$
+	$(CXX) -M $(CPPFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$
+
+ifeq (,$(wildcard /.build/))
+	mkdir -p .build
+endif
+
 include $(addprefix .build/,$(deps))
 
 opengl-wrapper:
@@ -75,10 +83,10 @@ glfw-wrapper:
 	make -C libs/glfw
 freetype-wrapper:
 	make -C libs/freetype
-liblodepng.a: liblodepng.a(lodepng.o)
+liblodepng.a: liblodepng.a(.build/lodepng.o)
 
 clean:
-	rm -f $(objects) $(deps) liblodepng.a osu
+	rm -f .build liblodepng.a osu
 	make -C libs/opengl clean
 	make -C libs/openal clean
 	make -C libs/glfw clean

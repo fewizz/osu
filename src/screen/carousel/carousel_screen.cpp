@@ -8,7 +8,7 @@
 #include "shaders.hpp"
 #include <iterator>
 #include <fstream>
-#include "play_screen.hpp"
+#include "screen/play/play_screen.hpp"
 
 using namespace std;
 using namespace glm;
@@ -55,7 +55,7 @@ carousel_screen::carousel_screen()
             choose(current_group, current_beatmap+1);
         
         if(key == GLFW_KEY_ENTER)                                                                           
-            osu::current_screen = make_unique<play_screen>(current_beatmap->bm);
+            osu::current_screen = make_unique<osu::playfield::play_screen>(current_beatmap->bm);
     });
 }
 

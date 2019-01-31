@@ -3,6 +3,6 @@
 
 using namespace std;
 
-slider_drawer::slider_drawer(osu::slider s) {
+slider_drawer::slider_drawer(osu::playfield::slider s) {
 
 }

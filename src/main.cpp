@@ -13,7 +13,7 @@
 #include <vector>
 #include <fstream>
 #include <csignal>
-#include "gui/map_list_screen.hpp"
+#include "screen/carousel/carousel_screen.hpp"
 #include "freetype/library.hpp"
 #include "freetype/face.hpp"
 #include "freetype/face.hpp"
@@ -141,7 +141,7 @@ int main0()
 
     clear_color(0, 0, 0, 1);
     cout << "set clear color" << "\n";
-    osu::current_screen = make_unique<map_list_screen>();
+    osu::current_screen = make_unique<carousel_screen>();
 
     while (!osu::window->should_close())
     {
