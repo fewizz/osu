@@ -6,6 +6,7 @@ vpath %.cpp $(source-containing-dirs) libs/lodepng
 vpath %.hpp $(source-containing-dirs)
 vpath %.h libs/lodepng
 vpath %.o .build/
+vpath %.a .build/
 
 objects := $(subst .cpp,.o,\
 $(foreach dir,$(source-containing-dirs),$(notdir $(wildcard $(dir)*.cpp ))))
@@ -25,6 +26,7 @@ override CPPFLAGS += \
 -I/usr/include/freetype2/
 override CXXFLAGS += --std=c++17
 override LDFLAGS += \
+-L.build \
 -L. \
 -Llibs/opengl \
 -Llibs/openal \
@@ -83,7 +85,8 @@ glfw-wrapper:
 	make -C libs/glfw
 freetype-wrapper:
 	make -C libs/freetype
-liblodepng.a: liblodepng.a(.build/lodepng.o)
+liblodepng.a: lodepng.o
+	ar cr .build/liblodepng.a .build/lodepng.o
 
 clean:
 	rm -rf .build liblodepng.a osu
