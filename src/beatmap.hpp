@@ -5,8 +5,7 @@
 #include <memory>
 #include <utility>
 #include "glm/vec2.hpp"
-#include "hit_object.hpp"
-#include "polymorphic_vector.hpp"
+#include <variant>
 
 namespace osu {
     struct beatmap_set;
@@ -50,8 +49,8 @@ namespace osu {
             std::vector<glm::uvec2> control_points;
         };
 
-        estd::polymorphic_container<
-            circle, slider
+        std::vector<
+            std::variant<circle, slider>
         > objects;
     };
 

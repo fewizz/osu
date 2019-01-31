@@ -26,7 +26,7 @@
 #include "mp3.hpp"
 #include "mp3_player.hpp"
 
-class map_list_screen : public gui::screen<>
+class carousel_screen : public gui::screen<>
 {
     class group;
     class beatmap_info;
@@ -99,7 +99,7 @@ class map_list_screen : public gui::screen<>
 
     struct group : public prop::with_height<float> {
         std::string name;
-        map_list_screen::slot group_slot;
+        carousel_screen::slot group_slot;
         std::vector<beatmap_info> beatmaps;
 
         group(
@@ -124,7 +124,7 @@ class map_list_screen : public gui::screen<>
     float prevOffset = 0;
 
   public:
-    map_list_screen();
+    carousel_screen();
     void choose(group_cursor mp, beatmap_cursor diff);
     void draw() override;
     void update() override;

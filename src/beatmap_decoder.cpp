@@ -4,9 +4,6 @@
 #include <charconv>
 #include "beatmap_decoder.hpp"
 #include "beatmaps.hpp"
-#define GLM_ENABLE_EXPERIMENTAL
-#include "glm/gtx/norm.hpp"
-#include <cmath>
 
 using namespace std;
 using namespace osu;
@@ -244,7 +241,7 @@ void parse_hit_objects(beatmap& res, string_view str) {
     type &= ~line_about::new_combo;
 
     if(type & line_about::circle)
-        res.objects.push_back(
+        res.objects.emplace_back(
             osu::beatmap::circle { pos }
         );
     if(type & line_about::slider) {
@@ -280,8 +277,8 @@ void parse_hit_objects(beatmap& res, string_view str) {
             type = osu::beatmap::slider::type_t::catmull;
            // positions = catmull(points);
         
-        res.objects.push_back(
-            slider {
+        res.objects.emplace_back(
+            osu::beatmap::slider {
                 type, points
             }
             //std::make_unique<osu::slider>(std::move(positions))

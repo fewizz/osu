@@ -1,4 +1,4 @@
-#include "map_list_screen.hpp"
+#include "carousel_screen.hpp"
 #include "png.hpp"
 #include "mp3.hpp"
 #include "GLFW/glfw3.h"
@@ -14,7 +14,7 @@ using namespace std;
 using namespace glm;
 using namespace gl;
 
-map_list_screen::map_list_screen()
+carousel_screen::carousel_screen()
 {
     std::cout << "map_list_constructor" << "\n";
     auto diff_d_program = make_shared<program> (
@@ -59,7 +59,7 @@ map_list_screen::map_list_screen()
     });
 }
 
-void map_list_screen::choose(group_cursor g, beatmap_cursor bmi) {
+void carousel_screen::choose(group_cursor g, beatmap_cursor bmi) {
     if(g != current_group) {
         std::cout << "loading sound..." << "\n";
         std::cout << "bms: " << osu::beatmap_sets.size() << "\n";
@@ -101,7 +101,7 @@ void map_list_screen::choose(group_cursor g, beatmap_cursor bmi) {
     current_beatmap = bmi;
 }
 
-void map_list_screen::draw() {
+void carousel_screen::draw() {
     vec2 fb_size = osu::window->framebuffer_size<vec2>();
     mat mat = ortho<float> (
         -fb_size[0] / 2,
@@ -145,7 +145,7 @@ void map_list_screen::draw() {
     }
 }
 
-void map_list_screen::rectangle_drawer_t::draw(
+void carousel_screen::rectangle_drawer_t::draw(
     mat4 bot_left,
     vec2 dim,
     gl::primitive_type pt, 
@@ -156,7 +156,7 @@ void map_list_screen::rectangle_drawer_t::draw(
     draw_arrays(pt, 0, 4);
 }
 
-void map_list_screen::slot::draw(mat4 top_left, vec4 out, vec4 back, vec4 text_color) {
+void carousel_screen::slot::draw(mat4 top_left, vec4 out, vec4 back, vec4 text_color) {
     mat4 mat = translate(top_left, vec3{0, -get_size()[1], 0});
     rec.draw(mat, get_size(), gl::primitive_type::line_loop, out);
     rec.draw(mat, get_size(), gl::primitive_type::triangle_fan, back);
@@ -174,7 +174,7 @@ void map_list_screen::slot::draw(mat4 top_left, vec4 out, vec4 back, vec4 text_c
     text.draw();
 }
 
-map_list_screen::group::group(
+carousel_screen::group::group(
     string name,
     shared_ptr<gl::program> prog,
     rectangle_drawer_t& rec
@@ -182,7 +182,7 @@ map_list_screen::group::group(
 name{name},
 group_slot{name, prog, rec}{}
 
-void map_list_screen::group::draw(mat4 top_left) {
+void carousel_screen::group::draw(mat4 top_left) {
     group_slot.draw(top_left, vec4{0, 0, 0, 1}, vec4{0, 0, 0, 1}, vec4{1});
     if(!group_slot.is_pressed())
         return;
@@ -197,7 +197,7 @@ void map_list_screen::group::draw(mat4 top_left) {
     }
 }
 
-void map_list_screen::update() {
+void carousel_screen::update() {
     osu::worker::add_task([&] {
         player.update();
     });

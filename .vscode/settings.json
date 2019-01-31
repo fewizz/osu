@@ -57,6 +57,8 @@
         "list": "cpp",
         "future": "cpp",
         "map": "cpp",
-        "charconv": "cpp"
+        "charconv": "cpp",
+        "variant": "cpp",
+        "typeindex": "cpp"
     }
 }

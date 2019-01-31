@@ -60,11 +60,12 @@ osu: $(objects) $(lib-targets)
 %.hpp:
 	
 %.d : %.cpp
-	@set -e; rm -f $@; \
-	$(CXX) -M $(CPPFLAGS) $< > $@.$$$$; \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
-	rm -f $@.$$$$
-include $(deps)
+	#@set -e; rm -f $@;
+	mkdir .build; \
+	$(CXX) -M $(CPPFLAGS) $< > .build/$@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < .build/$@.$$$$ > ./build/$@; \
+	rm -f ./build/$@.$$$$
+include $(addprefix .build/,$(deps))
 
 opengl-wrapper:
 	make -C libs/opengl
