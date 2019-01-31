@@ -3,8 +3,10 @@
 #include <filesystem>
 #include <string>
 #include <memory>
+#include <utility>
 #include "glm/vec2.hpp"
 #include "hit_object.hpp"
+#include "polymorphic_vector.hpp"
 
 namespace osu {
     struct beatmap_set;
@@ -32,7 +34,25 @@ namespace osu {
         std::string back;
 
         // Hit Objects
-        std::vector<std::unique_ptr<osu::pf_object>> objects;
+
+        struct circle {
+            const glm::uvec2 pos;
+        };
+
+        struct slider {
+            enum class type_t {
+                linear,
+                bezier,
+                catmull,
+                arc
+            } type;
+
+            std::vector<glm::uvec2> control_points;
+        };
+
+        estd::polymorphic_container<
+            circle, slider
+        > objects;
     };
 
     struct beatmap_set {

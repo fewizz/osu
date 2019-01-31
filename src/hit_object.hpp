@@ -5,11 +5,11 @@
 #include <vector>
 
 namespace osu {
-    struct pf_object {
+    struct on_field_object {
         virtual void draw(glm::mat4) = 0;
     };
 
-    class circle : public pf_object {
+    class circle : public on_field_object {
         glm::uvec2 position;
         uint combo;
     public:
@@ -21,7 +21,7 @@ namespace osu {
         void draw(glm::mat4 lb) override;
     };
 
-    class slider : public pf_object {
+    class slider : public on_field_object {
         std::vector<glm::uvec2> positions;
 
     public:

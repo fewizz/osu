@@ -146,7 +146,7 @@ std::vector<std::string_view> split(It b, It e, char c) {
     return res;
 }
 
-vector<uvec2> bezier(vec2 a, vec2 b, vec2 c) {
+/*vector<uvec2> bezier(vec2 a, vec2 b, vec2 c) {
     vector<uvec2> res;
 
     for(double i = 0; i <= 1; i+= (1.0/100.0)) {
@@ -226,7 +226,7 @@ vector<uvec2> linear(vector<uvec2>& ps) {
         res.push_back(ps[i]);
     }
     return res;
-}
+}*/
 
 void parse_hit_objects(beatmap& res, string_view str) {
     auto s = split(str.begin(), str.end(), ',');
@@ -244,8 +244,8 @@ void parse_hit_objects(beatmap& res, string_view str) {
     type &= ~line_about::new_combo;
 
     if(type & line_about::circle)
-        res.objects.emplace_back(
-            make_unique<osu::circle>(pos, combo_offset)
+        res.objects.push_back(
+            osu::beatmap::circle { pos }
         );
     if(type & line_about::slider) {
         auto points_info =
@@ -262,21 +262,29 @@ void parse_hit_objects(beatmap& res, string_view str) {
             points.push_back(p_pos);
         });
 
-        auto line_type = points_info[0];
+        auto type_s = points_info[0];
+        osu::beatmap::slider::type_t type;
 
-        std::vector<glm::uvec2> positions;
+        //std::vector<glm::uvec2> positions;
 
-        if(line_type == "!L")
-            positions = linear(points);
-        if(line_type == "!P")
-            positions = circ_arc(points[0], points[1], points[2]);
-        if(line_type == "!B")
-            positions = bezier(points[0], points[1], points[2]);
-        if(line_type == "C")
-            positions = catmull(points);
+        if(type_s == "L")
+            type = osu::beatmap::slider::type_t::linear;
+            //positions = linear(points);
+        if(type_s == "P")
+            type = osu::beatmap::slider::type_t::arc;
+            //positions = circ_arc(points[0], points[1], points[2]);
+        if(type_s == "B")
+            type = osu::beatmap::slider::type_t::bezier;
+            //positions = bezier(points[0], points[1], points[2]);
+        if(type_s == "C")
+            type = osu::beatmap::slider::type_t::catmull;
+           // positions = catmull(points);
         
-        res.objects.emplace_back(
-            std::make_unique<osu::slider>(std::move(positions))
+        res.objects.push_back(
+            slider {
+                type, points
+            }
+            //std::make_unique<osu::slider>(std::move(positions))
         );
     }
 
