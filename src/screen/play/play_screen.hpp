@@ -64,7 +64,7 @@ public:
             {-256, -192, 0}
         );
 
-        cs.draw(mat);
+        //cs.draw(mat);
         ss.draw(mat);
     }
     

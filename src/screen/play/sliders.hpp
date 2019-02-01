@@ -24,8 +24,8 @@ namespace osu {
             sliders()
             :
             prog {
-                load<gl::vertex_shader>("shaders/passtrough_u_mat4_a_pos2.vs"),
-                load<gl::fragment_shader>("shaders/passtrough_u_color4.fs")
+                load<gl::vertex_shader>("shaders/slider.vs"),
+                load<gl::fragment_shader>("shaders/slider.fs")
             }
             {
             }
@@ -37,18 +37,19 @@ namespace osu {
             }
 
             void draw(glm::mat4 lb) {
-                //gl::active_texture(0, )
                 prog.uniform("u_color", glm::vec4{1});
-                prog.uniform("u_mat4", lb);
+                prog.uniform("u_mat", lb);
                 for(auto& pair : ss) {
                     vao.attrib_pointer<float, 2>(
                         prog.attrib_location("a_pos"),
                         pair.second
                     );
+                    vao.enable_attrib_array(prog.attrib_location("a_pos"));
                     prog.draw_arrays(
                         gl::primitive_type::triangle_strip,
                         0,
-                        pair.second.size() / sizeof(glm::vec2));
+                        pair.second.size() / sizeof(glm::vec2),
+                        vao);
                 }
             }
         };

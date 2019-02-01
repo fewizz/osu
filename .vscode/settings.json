@@ -59,6 +59,7 @@
         "map": "cpp",
         "charconv": "cpp",
         "variant": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "iterator": "cpp"
     }
 }
