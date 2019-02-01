@@ -30,6 +30,7 @@ namespace playfield {
 class play_screen : public gui::screen<> {
     const osu::beatmap& bm;
     circles cs;
+    sliders ss;
 
 public:
     play_screen(const osu::beatmap& bm):bm{bm}
@@ -41,8 +42,8 @@ public:
             [&](const osu::beatmap::circle& c){
                 cs.add(c);
             },
-            [&](const osu::beatmap::slider& a){
-                
+            [&](const osu::beatmap::slider& s){
+                ss.add(s);
             }
             }
             ,
@@ -64,6 +65,7 @@ public:
         );
 
         cs.draw(mat);
+        ss.draw(mat);
     }
     
     void update() override {

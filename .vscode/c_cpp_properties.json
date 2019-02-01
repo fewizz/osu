@@ -7,7 +7,8 @@
                 "/usr/include/freetype2/**",
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/libs/utfcpp/source",
-                "${workspaceFolder}/libs/freetype/include"
+                "${workspaceFolder}/libs/freetype/include",
+                "${workspaceFolder}/libs/glm/"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

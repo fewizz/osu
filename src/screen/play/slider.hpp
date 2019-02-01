@@ -9,7 +9,7 @@ namespace osu {
         struct slider {
             std::vector<glm::vec2> positions;
 
-            slider(osu::beatmap::slider& s);
+            slider(const osu::beatmap::slider& s);
             slider(slider&&) = default;
         };
     }

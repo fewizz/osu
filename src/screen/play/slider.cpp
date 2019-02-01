@@ -8,7 +8,7 @@
 using namespace std;
 using namespace glm;
 
-vector<vec2> bezier(vector<uvec2> points) {
+vector<vec2> bezier(const vector<uvec2> points) {
     vec2 a = points[0];
     vec2 b = points[1];
     vec2 c = points[2];
@@ -22,7 +22,7 @@ vector<vec2> bezier(vector<uvec2> points) {
     return res;
 }
 
-vector<vec2> catmull(vector<uvec2> points) {
+vector<vec2> catmull(const vector<uvec2> points) {
     vector<vec2> res;
     // just stolen
 
@@ -46,7 +46,7 @@ vector<vec2> catmull(vector<uvec2> points) {
     return res;
 }
 
-vector<vec2> arc(vector<uvec2>& ps) {
+vector<vec2> arc(const vector<uvec2>& ps) {
     vec2 a = ps[0];
     vec2 b = ps[1];
     vec2 c = ps[2];
@@ -80,7 +80,7 @@ vector<vec2> arc(vector<uvec2>& ps) {
     return res;
 }
 
-vector<vec2> linear(vector<uvec2>& ps) {
+vector<vec2> linear(const vector<uvec2>& ps) {
     vector<vec2> res;
 
     res.push_back(ps[0]);
@@ -96,9 +96,9 @@ vector<vec2> linear(vector<uvec2>& ps) {
     return res;
 }
 
-osu::playfield::slider::slider(osu::beatmap::slider& s) {
+osu::playfield::slider::slider(const osu::beatmap::slider& s) {
     auto fun =
-    [&](osu::beatmap::slider& s) -> vector<vec2> {
+    [&](const osu::beatmap::slider& s) -> vector<vec2> {
         switch(s.type) {
             case osu::beatmap::slider::type_t::arc:
                 return arc(s.control_points);
