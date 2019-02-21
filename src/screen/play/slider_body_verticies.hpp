@@ -9,7 +9,7 @@ namespace playfield {
 
 struct slider_body_verticies : public gl::array_buffer {
 
-    slider_body_verticies(const std::vector<glm::vec2>& positions);
+    slider_body_verticies(const std::vector<glm::vec2>& positions, float scale);
 };
 
 }

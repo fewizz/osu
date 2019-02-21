@@ -16,6 +16,7 @@
 #include "circles.hpp"
 #include <memory>
 #include <variant>
+#include <cmath>
 
 template<class...Ts>
 struct hand : public Ts... {
@@ -32,11 +33,24 @@ class play_screen : public gui::screen<> {
     circles cs;
     sliders ss;
 
+    double diff_range(double diff, double min, double mid, double max) {
+        return
+        min + (mid - min)/5*std::min(5.0, diff)
+        +
+        (max - mid)/5*std::max(0.0, diff-5);
+    }
 public:
-    play_screen(const osu::beatmap& bm):bm{bm}
-    {
-        
+    std::chrono::system_clock::time_point start;
+    std::chrono::milliseconds preempt;
+    std::chrono::milliseconds fade_in;
 
+    play_screen(const osu::beatmap& bm)
+    :bm{bm},
+    preempt{(uint64_t)diff_range(bm.ar, 1800, 1200, 450)},
+    fade_in{(uint64_t)diff_range(bm.ar, 1200, 800, 300)},
+    ss{(1.0f - 0.7f * (float(bm.cs) - 5.0f) / 5.0f) / 2.0f},
+    start{std::chrono::system_clock::now()}
+    {
         for(auto& o : bm.objects) {
             std::visit( hand {
             [&](const osu::beatmap::circle& c){
@@ -64,8 +78,11 @@ public:
             {-256, -192, 0}
         );
 
-        //cs.draw(mat);
-        ss.draw(mat);
+        auto dur =
+            std::chrono::duration_cast<std::chrono::milliseconds>
+            (std::chrono::system_clock::now() - start);
+        cs.draw(mat, dur, preempt, fade_in);
+        ss.draw(mat, dur);
     }
     
     void update() override {

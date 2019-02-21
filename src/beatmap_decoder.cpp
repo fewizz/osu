@@ -21,7 +21,9 @@ enum event_type {
 
 void parse_general(beatmap& res, std::string_view str);
 void parse_metadata(beatmap& res, std::string_view str);
+void parse_difficulty(beatmap& res, std::string_view str);
 void parse_events(beatmap& res, std::string_view str);
+void parse_timing_points(beatmap& res, std::string_view str);
 void parse_hit_objects(beatmap& res, std::string_view str);
 
 void osu::decode(istream& stream, beatmap& res) {
@@ -29,7 +31,9 @@ void osu::decode(istream& stream, beatmap& res) {
             none,
             general,
             metadata,
+            difficulty,
             events,
+            timing_points,
             hit_objects
     } current = none;
 
@@ -40,9 +44,6 @@ void osu::decode(istream& stream, beatmap& res) {
         string_view str(buff);
         if(str.back() == '\r')
             str = str.substr(0, str.length() - 1);
-        // cout << str << "\n";
-        // cout << str.length() << "\n";
-
 
         if(str.length() == 0) { // Delimiter only
             current = none;
@@ -55,6 +56,10 @@ void osu::decode(istream& stream, beatmap& res) {
             parse_general(res, str);
         if(current == events)
             parse_events(res, str);
+        if(current == difficulty)
+            parse_difficulty(res, str);
+        if(current == timing_points)
+            parse_timing_points(res, str);
         if(current == metadata)
             parse_metadata(res, str);
         if(current == hit_objects)
@@ -62,8 +67,12 @@ void osu::decode(istream& stream, beatmap& res) {
 
         if(str == "[General]")
             current = general;
+        if(str == "[Difficulty]")
+            current = difficulty;
         if(str == "[Events]")
             current = events;
+        if(str == "[TimingPoints]")
+            current = timing_points;
         if(str == "[Metadata]")
             current = metadata;
         if(str == "[HitObjects]")
@@ -104,6 +113,19 @@ void parse_metadata(beatmap& res, string_view str) {
         res.set_id = value;
 }
 
+void parse_difficulty(beatmap& res, std::string_view str) {
+    auto [key, value] = kv_pair(str);
+
+    if(key == "ApproachRate")
+        res.ar = stod(string{value});
+    if(key == "CircleSize")
+        res.cs = stod(string{value});
+    if(key == "SliderMultiplier")
+        res.slider_multiplier = stod(string{value});
+    if(key == "SliderTickRate")
+        res.slider_tick_rate = stod(string{value});
+}
+
 void parse_events(beatmap& res, string_view str) {
     using namespace string_literals;
     int type = str[0] - '0';
@@ -116,15 +138,6 @@ void parse_events(beatmap& res, string_view str) {
         break;
     }
 }
-
-enum line_about {
-    circle = 0b1,
-    slider = 0b10,
-    new_combo = 0b100,
-    spinner = 0b1000,
-    combo_offset = 0b1110000,
-    hold = 0b10000000
-};
 
 template<class It>
 std::vector<std::string_view> split(It b, It e, char c) {
@@ -143,87 +156,35 @@ std::vector<std::string_view> split(It b, It e, char c) {
     return res;
 }
 
-/*vector<uvec2> bezier(vec2 a, vec2 b, vec2 c) {
-    vector<uvec2> res;
+void parse_timing_points(beatmap& res, std::string_view str) {
+    auto s = split(str.begin(), str.end(), ',');
 
-    for(double i = 0; i <= 1; i+= (1.0/100.0)) {
-        res.push_back(
-            mix(mix(a, b, i), mix(b, c, i), i)
-        );
-    }
-    return res;
+    chrono::milliseconds start_time{(int64_t)stod(string{s[0]})};
+    //from_chars(s[0].begin(), s[0].end(), start_time);
+
+    chrono::milliseconds beat_len{(int64_t)stod(string{s[1]})};
+    double speed_mul =
+        beat_len.count() < 0 ? 100.0 / -beat_len.count() : 1;
+    beat_len = 
+        chrono::milliseconds{clamp(beat_len.count(), 6L, 6000L)};
+    bool changes_timing = true;
+    if(s.size() >= 7 && s[6][0] - '0' == 0)
+        changes_timing = false;
+    
+    if(changes_timing)
+        res.timing_points.push_back({start_time, beat_len});
+    
+    res.diff_points.push_back({start_time, speed_mul});
 }
 
-vector<uvec2> catmull(vector<uvec2> points) {
-    vector<uvec2> res;
-    // just stolen
-
-    for(int i = 0; i < points.size() - 1; i++) {
-        vec2 a = i > 0 ? points[i - 1] : points[i];
-        vec2 b = points[i];
-        vec2 c = i < points.size() - 1 ? (vec2)points[i + 1] : b*2.0f - a;
-        vec2 d = i < points.size() - 2 ? (vec2)points[i + 2] : c*2.0f - b;
-
-        for(float t = 0; t <= 1; t+= (1.0/100.0)) {
-            float t2 = t * t;
-            float t3 = t * t2;
-
-            res.push_back(
-                 0.5f * (2.0f * b + (-a + c) * t
-                + (2.0f * a - 5.0f * b + 4.0f * c - d) * t2
-                + (-a + 3.0f * b - 3.0f * c + d) * t3)
-            );
-        }
-    }
-    return res;
-}
-
-vector<uvec2> circ_arc(vec2 a, vec2 b, vec2 c) {
-    float pa2 = distance2(b, c);
-    float pb2 = distance2(a, c);
-    float pc2 = distance2(a, b);
-    float a0 = pa2*(pb2 + pc2 - pa2);
-    float b0 = pb2*(pa2 + pc2 - pb2);
-    float c0 = pc2*(pb2 + pa2 - pc2);
-
-    vec2 center = (a*a0 + b*b0 + c*c0) / (a0 + b0 + c0);
-    float r = length(a - center);
-
-    auto cross = [](vec2 a, vec2 b) { return a.x*b.y-b.x*a.y; };
-
-    bool cw = cross(b - a, b - c) > 0;
-    int side_sign = (int)cw*2-1;
-    float beg_angle = atan2((a-center).x, (a-center).y);
-    float end_angle = atan2((c-center).x, (c-center).y);
-
-    bool end_trunced =
-        side_sign*(beg_angle - end_angle) > 0;
-    end_angle +=
-        2*M_PI*end_trunced*side_sign;
-    float step_rad = side_sign / 100.0f;
-
-    vector<uvec2> res;
-    for(float angle = beg_angle; side_sign*(end_angle-angle) > 0; angle += step_rad) {
-        res.push_back({center.x + sin(angle)*r, center.y + cos(angle)*r});
-    }
-    return res;
-}
-
-vector<uvec2> linear(vector<uvec2>& ps) {
-    vector<uvec2> res;
-
-    res.push_back(ps[0]);
-    for(int i = 0; i < ps.size() - 1; i++) {
-        vec2 a = ps[i];
-        vec2 b = ps[i + 1];
-
-        for(int k = 0; k < 200; k++) {
-            res.push_back(a + (b - a)*((float)k / 200.0f));
-        }
-        res.push_back(ps[i]);
-    }
-    return res;
-}*/
+enum line_about {
+    circle = 0b1,
+    slider = 0b10,
+    new_combo = 0b100,
+    spinner = 0b1000,
+    combo_offset = 0b1110000,
+    hold = 0b10000000
+};
 
 void parse_hit_objects(beatmap& res, string_view str) {
     auto s = split(str.begin(), str.end(), ',');
@@ -231,7 +192,10 @@ void parse_hit_objects(beatmap& res, string_view str) {
     glm::uvec2 pos;
     from_chars(s[0].begin(), s[0].end(), pos.x);
     from_chars(s[1].begin(), s[1].end(), pos.y);
-    
+    uint millis;
+    from_chars(s[2].begin(), s[2].end(), millis);
+    chrono::milliseconds start_time{millis};
+
     uint type = stoi(string{s[3]});
 
     uint combo_offset = (type & line_about::combo_offset) >> 4;
@@ -242,7 +206,7 @@ void parse_hit_objects(beatmap& res, string_view str) {
 
     if(type & line_about::circle)
         res.objects.emplace_back(
-            osu::beatmap::circle { pos }
+            osu::beatmap::circle { pos, start_time }
         );
     if(type & line_about::slider) {
         auto points_info =
@@ -276,38 +240,16 @@ void parse_hit_objects(beatmap& res, string_view str) {
         if(type_s == "C")
             type = osu::beatmap::slider::type_t::catmull;
            // positions = catmull(points);
+        uint repeats = max(0, stoi(string{s[6]}) - 1);
         
         res.objects.emplace_back(
             osu::beatmap::slider {
-                type, points
+                start_time,
+                type,
+                repeats,
+                points
             }
-            //std::make_unique<osu::slider>(std::move(positions))
         );
     }
 
 }
-
-/*beatmap_set parse_beatmap_dir(std::filesystem::path path) {
-    using namespace std::filesystem;
-    beatmap_set res(path);
-
-    std::cout << "start parsing bm dirs" << "\n";
-
-    directory_iterator it{path};
-    std::for_each(it, directory_iterator{}, [&](directory_entry e) {
-        if(e.path().extension() == ".osu") {
-            res.diffs.emplace_back();
-
-            ifstream s{e.path(), ios::binary};
-            diff(s, res.diffs.back());
-        }
-    });
-
-    std::cout << "end parsing bm dirs" << "\n";
-
-    return res;
-}*/
-
-/*void osu::load_beatmap_set(filesystem::path p) {
-    beatmap_sets.push_back(parse_beatmap_dir(p));
-}*/
