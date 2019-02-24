@@ -8,7 +8,7 @@ using namespace glm;
 osu::playfield::slider_body_verticies
 ::slider_body_verticies(const vector<vec2>& positions, float scale) {
     vector<vec2> verticies;
-    float r = (64 / 2) * scale;
+    float r = 64 * scale;
 
     auto perp_right = [&](vec2 v) {
         swap(v.x, v.y);

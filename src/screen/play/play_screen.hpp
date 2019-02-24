@@ -17,6 +17,7 @@
 #include <memory>
 #include <variant>
 #include <cmath>
+#include "mp3_player.hpp"
 
 template<class...Ts>
 struct hand : public Ts... {
@@ -30,6 +31,7 @@ namespace playfield {
 
 class play_screen : public gui::screen<> {
     const osu::beatmap& bm;
+    float scale;
     circles cs;
     sliders ss;
 
@@ -48,7 +50,9 @@ public:
     :bm{bm},
     preempt{(uint64_t)diff_range(bm.ar, 1800, 1200, 450)},
     fade_in{(uint64_t)diff_range(bm.ar, 1200, 800, 300)},
-    ss{(1.0f - 0.7f * (float(bm.cs) - 5.0f) / 5.0f) / 2.0f},
+    scale{(1.0f - 0.7f * (float(bm.cs) - 5.0f) / 5.0f) / 2.0f},
+    ss{scale},
+    cs{scale},
     start{std::chrono::system_clock::now()}
     {
         for(auto& o : bm.objects) {

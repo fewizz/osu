@@ -24,7 +24,7 @@
 #include <deque>
 #include <utility>
 #include "mp3.hpp"
-#include "mp3_player.hpp"
+#include "audio_player.hpp"
 
 class carousel_screen : public gui::screen<>
 {

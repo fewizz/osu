@@ -1,6 +1,8 @@
 #pragma once
+
 #include <istream>
 #include <memory>
+#include <functional>
 
 namespace estd {
 	template<class T>
@@ -55,4 +57,21 @@ namespace estd {
 	get(std::istream& istream) {
 		get<T>(istream, distance_to_end(istream));
 	}
+
+	template<class T>
+	inline void iterate_for_range_search_while(
+		std::function<bool(T* begin, size_t size)> action,
+		std::istream& s,
+		int range_size,
+		T* buffer,
+		size_t buffer_size
+		) {
+			int off = 0;
+
+			while(s) {
+				s.read((char*)buffer + off, buffer_size - off);
+				if(action(buffer + off, s.gcount()))
+					return;
+			}
+		}
 }

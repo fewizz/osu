@@ -1,9 +1,6 @@
 [submodule "libs/utfcpp"]
 	path = libs/utfcpp
 	url = https://github.com/nemtrif/utfcpp.git
-[submodule "libs/opengl"]
-	path = libs/opengl
-	url = https://github.com/cpp-wrappers/opengl.git
 [submodule "libs/minimp3"]
 	path = libs/minimp3
 	url = https://github.com/lieff/minimp3

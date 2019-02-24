@@ -12,13 +12,10 @@
 
 namespace osu {
 namespace playfield {
-//using slider_body = gl::vertex_array;
 
 class sliders {
     std::vector<std::pair<slider, slider_body_verticies>> ss;
-    //slider_drawer drawer;
     gl::program prog;
-    //gl::program side;
     gl::vertex_array vao;
     float scale;
 
@@ -31,10 +28,6 @@ public:
         load<gl::vertex_shader>("shaders/slider.vs"),
         load<gl::fragment_shader>("shaders/slider.fs")
     }
-    /*side {
-        load<gl::vertex_shader>("shaders/slider_side.vs"),
-        load<gl::fragment_shader>("shaders/slider_side.fs")
-    }*/
     {
     }
 
@@ -46,8 +39,6 @@ public:
 
     void draw(glm::mat4 lb, std::chrono::milliseconds millis) {
         prog.uniform("u_mat", lb);
-        //side.uniform("u_mat", lb);
-        //side.uniform<float, 1>("u_r", 20.0f);
         for(auto& pair : ss) {
             float br =
                 (millis - pair.first.slider_info.start_time).count() / 1000.0;
@@ -70,35 +61,6 @@ public:
                 0,
                 pair.second.size() / sizeof(glm::vec2),
                 vao);
-
-
-            /*side.uniform(
-                "u_color",
-                glm::vec4{
-                    br
-                }
-            );
-            side.uniform(
-                "u_pos",
-                pair.first.positions[0]
-            );
-            side.uniform(
-                "u_normal",
-                pair.first.positions[0] - pair.first.positions[1]
-            );
-            side.draw_arrays(gl::primitive_type::triangle_strip, 0, 4);
-            side.uniform(
-                "u_pos",
-                pair.first.positions.back()
-            );
-            int last_index = pair.first.positions.size() - 1;
-            side.uniform(
-                "u_normal",
-                pair.first.positions[last_index]
-                -
-                pair.first.positions[last_index - 1]
-            );
-            side.draw_arrays(gl::primitive_type::triangle_strip, 0, 4);*/
         }
     }
 };

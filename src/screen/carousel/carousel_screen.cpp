@@ -16,14 +16,12 @@ using namespace gl;
 
 carousel_screen::carousel_screen()
 {
-    std::cout << "map_list_constructor" << "\n";
     auto diff_d_program = make_shared<program> (
         osu::load<vertex_shader>("shaders/passtrough_u_mat4_a_pos2_a_uv.vs"),
         osu::load<fragment_shader>("shaders/passtrough_u_tex2_u_color4_a_uv.fs")
     );
     
     for(auto& bm : osu::beatmap_sets) {
-        std::cout << "loading " << bm.title() << "\n";
         group g{bm.artist() + " - " + bm.title(), diff_d_program, rec_drawer};
 
         for(auto& d : bm.diffs) {
@@ -38,9 +36,7 @@ carousel_screen::carousel_screen()
         groups.push_back(std::move(g));
     }
 
-    std::cout << "choosing..." << "\n";
     choose(groups.begin(), groups.begin()->beatmaps.begin());
-    std::cout << "choosing end" << "\n";
 
     osu::window->set_key_callback([&](int key, int scancode, int action, int mods) {
         if(action == GLFW_REPEAT || action == GLFW_RELEASE)
@@ -61,8 +57,6 @@ carousel_screen::carousel_screen()
 
 void carousel_screen::choose(group_cursor g, beatmap_cursor bmi) {
     if(g != current_group) {
-        std::cout << "loading sound..." << "\n";
-        std::cout << "bms: " << osu::beatmap_sets.size() << "\n";
         auto path = bmi->bm.get_set().get_dir<string>()
                 + "/"
                 + bmi->bm.audio;
@@ -73,13 +67,11 @@ void carousel_screen::choose(group_cursor g, beatmap_cursor bmi) {
             player.begin(make_unique<mp3::decoder>(std::ifstream(path, ios::binary)));
         });
 
-        std::cout << "loading back..." << "\n";
         filesystem::path back
             {bmi->bm.get_set().get_dir<std::string>()
             + "/"
             + bmi->bm.back
             };
-        std::cout << "back_loc: " << back.string() << "\n";
 
         back_drawer.unique() =
             std::make_unique<gl::texture_2d>(
@@ -89,7 +81,6 @@ void carousel_screen::choose(group_cursor g, beatmap_cursor bmi) {
                 jpeg::decode(back)
             );
     }
-    std::cout << "updating cursors" << "\n";
     if(current_group != group_cursor{})
         current_group->group_slot.set_pressed(false);
     g->group_slot.set_pressed(true);

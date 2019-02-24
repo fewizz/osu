@@ -1,4 +1,5 @@
 #pragma once
+
 #include <vector>
 #include <array>
 #include <iostream>
@@ -7,6 +8,10 @@
 #include <filesystem>
 #include <functional>
 #include <unsafe_iostream_operations.hpp>
+#define MINIMP3_IMPLEMENTATION
+#define MINIMP3_ONLY_MP3
+#define MINIMP3_NO_STDIO
+#include "minimp3.h"
 
 namespace mp3 {
     struct info {
@@ -15,38 +20,38 @@ namespace mp3 {
     };
 
     class decoder {
-        void* mp3dec;
-        void* frame_info;
-        //std::istream* stream;
-        //std::unique_ptr<uint8_t[]> buffer;
-        uint8_t* buffer;
-        size_t buffer_size;
-        size_t pointer;
+        mp3dec_t mp3dec{};
+        mp3dec_frame_info_t frame_info{};
+        std::vector<uint8_t> buffer;
+        std::unique_ptr< std::istream > stream;
+        void skip_idv3();
+
     public:
-        decoder(uint8_t* buffer, size_t buffer_size);
-        decoder(std::ifstream&& s):decoder(s){}
-        decoder(std::istream& s)
-        :decoder(nullptr, 0) {
-            buffer_size = estd::distance_to_end(s);
-            buffer = estd::get<uint8_t*>(s, buffer_size).release();
+        using sample_type = uint16_t;
+        constexpr static uint optimal_samples_count = 1152*2;
+
+        template<class IStream>
+        decoder(IStream&& s, uint initial_buffer_size)
+        : buffer(initial_buffer_size)
+        {
+            skip_idv3();
         }
-
-        //bool inline end() { return pointer == buffer_size; }
-
-        bool next(std::array<int16_t, 1152*2>& data);
+        
+        bool next(std::vector<sample_type>& data);
+        bool next(std::array<sample_type, optimal_samples_count>& data);
 
         info get_info();
     };
 
     
-    inline info decode(std::istream& stream, std::vector<uint16_t>& out) {
+    inline info decode(std::istream& stream, std::vector<decoder::sample_type>& out) {
         size_t size = estd::distance_to_end(stream);
 
         auto buffer_ptr = estd::get<uint8_t*>(stream, size);
 
         decoder d(buffer_ptr.get(), size);
 
-        std::array<int16_t, 1152*2> temp;
+        std::array<decoder::sample_type, decoder::optimal_samples_count> temp;
 
         while(d.next(temp)) {
             out.insert(out.end(), temp.begin(), temp.end());
@@ -54,15 +59,15 @@ namespace mp3 {
         return d.get_info();
     }
 
-    inline info decode(std::istream&& stream, std::vector<uint16_t>& out) {
+    inline info decode(std::istream&& stream, std::vector<decoder::sample_type>& out) {
         return decode(stream, out);
     }
 
-    inline info decode(std::filesystem::path path, std::vector<uint16_t>& out) {
+    inline info decode(std::filesystem::path path, std::vector<decoder::sample_type>& out) {
         return decode(std::ifstream(path, std::ios::binary), out);
     }
 
-    using frame_iter_func = std::function<bool(mp3::info, std::array<uint16_t, 1152*2>&)>;
+    using frame_iter_func = std::function<bool(mp3::info, std::array<decoder::sample_type, decoder::optimal_samples_count>&)>;
 
     void for_each_frame(std::istream& stream, frame_iter_func);
 

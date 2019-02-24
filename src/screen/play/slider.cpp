@@ -20,11 +20,6 @@ vec2 bezier(vector<vec2>& ps, float t) {
 }
 
 void bezier(cp_cursor begin, cp_cursor end, vector<vec2>& res) {
-    //if(end - begin != 3)
-    //    throw runtime_error("not valid contol points: " + to_string(end - begin));
-    //vec2 a = begin[0];
-    //vec2 b = begin[1];
-    //vec2 c = begin[2];
     vector<vec2> copy(begin, end);
 
     for(double i = 0; i <= 1; i+= (1.0/100.0)) {
