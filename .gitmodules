@@ -10,3 +10,6 @@
 [submodule "libs/lodepng"]
 	path = libs/lodepng
 	url = https://github.com/lvandeve/lodepng.git
+[submodule "libs/opengl-wrapper"]
+	path = libs/opengl-wrapper
+	url = https://github.com/cpp-wrappers/opengl.git
