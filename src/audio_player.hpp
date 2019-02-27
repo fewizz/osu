@@ -6,13 +6,13 @@
 #include "mp3.hpp"
 
 class audio_player {
+
     al::source src;
-    std::deque<al::buffer> buffs = std::deque<al::buffer>(20);
+    std::deque<al::buffer> buffs = std::deque<al::buffer>(15);
     std::unique_ptr<mp3::decoder> d;
 
 public:
     inline void begin(std::unique_ptr<mp3::decoder> dec) {
-        std::cout << "player: beginning" << "\n";
         d = std::move(dec);
 
         std::array<uint16_t, 1152*2> data;
@@ -20,7 +20,6 @@ public:
         for(auto& b : buffs) {
 
             if(d && d->next(data)) {
-                //std::cout << "next" << "\n";
                 b.data(2, 16, data, d->get_info().frequency);
                 src.queue_buffer(b);
             }

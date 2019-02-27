@@ -1,14 +1,24 @@
 #include "mp3.hpp"
-#include "minimp3_ex.h"
 #include <csetjmp>
 #include <stdexcept>
 #include <iostream>
 #include <utility>
 #include "unsafe_iostream_operations.hpp"
+#define MINIMP3_IMPLEMENTATION
+#define MINIMP3_ONLY_MP3
+#define MINIMP3_NO_STDIO
+#include "minimp3.h"
+#include "minimp3_ex.h"
 
 using namespace std;
 
-void mp3::decoder::skip_idv3() {
+void mp3::decoder::init_and_skip_idv3() {
+    mp3dec = new mp3dec_t();
+    frame_info = new mp3dec_frame_info_t();
+
+#define mp3dec (*((mp3dec_t*)mp3dec))
+#define frame_info (*((mp3dec_frame_info_t*)frame_info))
+
     int global_offset = -1;
     
     estd::iterate_for_range_search_while<uint8_t>(
@@ -16,9 +26,9 @@ void mp3::decoder::skip_idv3() {
             int rought = mp3dec_skip_id3v2(beg, size);
             if(rought != 0) {
                 global_offset = rought;
-                return false;
+                return true;
             }
-            return true;
+            return false;
         },
         *stream,
         10,
@@ -26,29 +36,28 @@ void mp3::decoder::skip_idv3() {
         buffer.size()
     );
 
-    if(global_offset != 0)
+    if(global_offset != -1)
         stream->seekg(global_offset);
+    else
+        stream->seekg(0, ios::beg);
 }
 
 bool mp3::decoder::next(array<sample_type, optimal_samples_count>& data) {
-    int begin = -1;
-    int frame_bytes = -1;
 
-    estd::iterate_for_range_search_while<uint8_t>(
+    bool found = estd::iterate_for_range_search_while<uint8_t>(
         [&](uint8_t* beg, size_t size){
-            int free_format_bytes;
             int rought = 
-            mp3d_find_frame(
+            mp3dec_decode_frame(
+                &mp3dec,
                 beg,
                 size,
-                &free_format_bytes,
-                &frame_bytes
+                (mp3d_sample_t*)data.data(),
+                &frame_info
             );
-            if(frame_bytes != 0) {
-                begin = rought;
-                return false;
+            if(rought && frame_info.frame_bytes) {
+                return true;
             }
-            return true;
+            return false;
         },
         *stream,
         4,
@@ -56,33 +65,22 @@ bool mp3::decoder::next(array<sample_type, optimal_samples_count>& data) {
         buffer.size()
     );
 
-    if(begin == -1)
+    if(!found)
         return false;
-    
-    stream->seekg(begin, ios::cur);
-    
-    buffer.resize(frame_bytes);
-    stream->read((char*)buffer.data(), frame_bytes);
 
-    mp3dec_decode_frame(
-        (mp3dec_t*)mp3dec, 
-        buffer.data(), 
-        buffer.size(),
-        (mp3d_sample_t*)data.data(),
-        (mp3dec_frame_info_t*)frame_info
-    );
+    stream->seekg(-stream->gcount() + frame_info.frame_bytes, ios::cur);
 
     return true;
 }
 
 mp3::info mp3::decoder::get_info() {
     return {
-        ((mp3dec_frame_info_t*)frame_info)->hz,
-        ((mp3dec_frame_info_t*)frame_info)->channels
+        frame_info.hz,
+        frame_info.channels
     };
 }
 
-void mp3::for_each_frame(istream& stream, mp3::frame_iter_func cb) {
+/*void mp3::for_each_frame(istream& stream, mp3::frame_iter_func cb) {
     size_t size = estd::distance_to_end(stream);
     auto buff = estd::get<uint8_t*>(stream, size);
     mp3dec_t dec;
@@ -112,4 +110,4 @@ void mp3::for_each_frame(istream& stream, mp3::frame_iter_func cb) {
         fun,
         &info
     );
-}
+}*/

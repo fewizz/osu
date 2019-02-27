@@ -59,19 +59,22 @@ namespace estd {
 	}
 
 	template<class T>
-	inline void iterate_for_range_search_while(
+	inline bool iterate_for_range_search_while(
 		std::function<bool(T* begin, size_t size)> action,
 		std::istream& s,
 		int range_size,
 		T* buffer,
 		size_t buffer_size
 		) {
-			int off = 0;
+			//int off = 0;
 
-			while(s) {
-				s.read((char*)buffer + off, buffer_size - off);
-				if(action(buffer + off, s.gcount()))
-					return;
+			while(true) {
+				s.read((char*)buffer, buffer_size);
+				if(action(buffer, s.gcount()))
+					return true;
+				if(!s)
+					return false;
+				s.seekg(-range_size, std::ios::cur);
 			}
 		}
 }

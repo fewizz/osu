@@ -10,28 +10,33 @@ vpath %.a .build/
 
 objects := $(subst .cpp,.o,\
 $(foreach dir,$(source-containing-dirs),$(notdir $(wildcard $(dir)*.cpp ))))
+
 deps := $(objects:.o=.d)
 CXX = clang++
+
 override CPPFLAGS += \
 -Isrc \
--Ilibs/opengl/include \
+-Ilibs/opengl-wrapper/include \
 -Ilibs/utfcpp/source \
--Ilibs/openal/include \
--Ilibs/glfw/include \
--Ilibs/freetype/include \
+-Ilibs/openal-wrapper/include \
+-Ilibs/glfw-wrapper/include \
+-Ilibs/freetype-wrapper/include \
 -Ilibs/minimp3 \
 -Ilibs/glm \
 -Ilibs/stacktrace/include \
 -Ilibs/lodepng \
 -I/usr/include/freetype2/
+
 override CXXFLAGS += --std=c++17
+
 override LDFLAGS += \
 -L.build \
 -L. \
--Llibs/opengl \
--Llibs/openal \
--Llibs/glfw \
--Llibs/freetype
+-Llibs/opengl-wrapper \
+-Llibs/openal-wrapper \
+-Llibs/glfw-wrapper \
+-Llibs/freetype-wrapper
+
 LDLIBS+= \
 -lstdc++fs \
 -lopenal \
@@ -55,10 +60,10 @@ glfw-wrapper \
 freetype-wrapper \
 liblodepng.a
 
-.PHONY: $(lib-targets) clean osu
+.PHONY: $(lib-targets) clean framework
 
-osu: $(objects) $(lib-targets)
-	$(CXX) $(CXXFLAGS) -o $@ $(addprefix .build/,$(objects)) $(LDFLAGS) $(LDLIBS)
+framework: $(objects) $(lib-targets)
+	ar cr .build/libframework.a $(addprefix .build/,$(objects))
 
 %.hpp:
 	
@@ -78,19 +83,19 @@ endif
 include $(addprefix .build/,$(deps))
 
 opengl-wrapper:
-	make -C libs/opengl
+	make -C libs/opengl-wrapper
 openal-wrapper:
-	make -C libs/openal
+	make -C libs/openal-wrapper
 glfw-wrapper:
-	make -C libs/glfw
+	make -C libs/glfw-wrapper
 freetype-wrapper:
-	make -C libs/freetype
+	make -C libs/freetype-wrapper
 liblodepng.a: lodepng.o
 	ar cr .build/liblodepng.a .build/lodepng.o
 
 clean:
-	rm -rf .build liblodepng.a osu
-	make -C libs/opengl clean
-	make -C libs/openal clean
-	make -C libs/glfw clean
-	make -C libs/freetype clean
+	rm -rf .build
+	make -C libs/opengl-wrapper clean
+	make -C libs/openal-wrapper clean
+	make -C libs/glfw-wrapper clean
+	make -C libs/freetype-wrapper clean
