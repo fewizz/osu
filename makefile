@@ -12,7 +12,7 @@ objects := $(subst .cpp,.o,\
 $(foreach dir,$(source-containing-dirs),$(notdir $(wildcard $(dir)*.cpp ))))
 
 deps := $(objects:.o=.d)
-CXX = clang++
+CXX := clang++
 
 override CPPFLAGS += \
 -Isrc \

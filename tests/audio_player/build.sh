@@ -1,7 +1,7 @@
-#!/bin/bash
 clang++ \
 -o main \
 --std=c++17 -ggdb \
+-DAL_INCLUDE \
 -I../../src \
 -I../../libs/minimp3 \
 -I../../libs/openal-wrapper/include \
@@ -9,4 +9,3 @@ clang++ \
 ../../src/mp3.cpp \
 main.cpp \
 -lopenal \
--lopenal-wrapper

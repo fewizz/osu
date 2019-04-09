@@ -4,13 +4,12 @@
 #include <thread>
 #include <chrono>
 #include <iostream>
-#include "openal/al.hpp"
-#include "openal/alc.hpp"
+#include "alc/device.hpp"
 
 using namespace std;
 
 int main() {
-    auto device = alc::open_device();
+    auto device = alc::open_default_device();
     auto context = device.create_context();
     alc::make_context_current(context);
 
@@ -22,9 +21,8 @@ int main() {
 
     audio_player player{};
     player.begin(move(decoder));
-    for(int i = 0; i < 10000; i++) {
+    for(int i = 0; i < 20000; i++) {
         player.update();
-        cout << "al: " << al::internal::get_error() << "\n";
         this_thread::sleep_for(1ms);
     }
 

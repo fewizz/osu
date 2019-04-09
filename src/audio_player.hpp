@@ -1,12 +1,12 @@
 #pragma once
 
-#include "openal/al.hpp"
+#include "al/source.hpp"
+#include "al/buffer.hpp"
 #include <memory>
 #include <deque>
 #include "mp3.hpp"
 
 class audio_player {
-
     al::source src;
     std::deque<al::buffer> buffs = std::deque<al::buffer>(15);
     std::unique_ptr<mp3::decoder> d;
