@@ -13,3 +13,6 @@
 [submodule "libs/opengl-wrapper"]
 	path = libs/opengl-wrapper
 	url = https://github.com/cpp-wrappers/opengl.git
+[submodule "libs/openal-wrapper"]
+	path = libs/openal-wrapper
+	url = https://github.com/cpp-wrappers/openal-wrapper.git
