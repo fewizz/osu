@@ -1,24 +1,24 @@
 [submodule "libs/utfcpp"]
-	path = libs/utfcpp
+	path = lib/utfcpp
 	url = https://github.com/nemtrif/utfcpp.git
 [submodule "libs/minimp3"]
-	path = libs/minimp3
+	path = lib/minimp3
 	url = https://github.com/lieff/minimp3
 [submodule "libs/glm"]
-	path = libs/glm
+	path = lib/glm
 	url = https://github.com/g-truc/glm.git
 [submodule "libs/lodepng"]
-	path = libs/lodepng
+	path = lib/lodepng
 	url = https://github.com/lvandeve/lodepng.git
 [submodule "libs/opengl-wrapper"]
-	path = libs/opengl-wrapper
+	path = lib/opengl-wrapper
 	url = https://github.com/cpp-wrappers/opengl.git
 [submodule "libs/openal-wrapper"]
-	path = libs/openal-wrapper
+	path = lib/openal-wrapper
 	url = https://github.com/cpp-wrappers/openal-wrapper.git
 [submodule "libs/glfw-wrapper"]
-	path = libs/glfw-wrapper
+	path = lib/glfw-wrapper
 	url = https://github.com/cpp-wrappers/glfw-wrapper.git
 [submodule "libs/freetype-wrapper"]
-	path = libs/freetype-wrapper
+	path = lib/freetype-wrapper
 	url = https://github.com/cpp-wrappers/freetype-wrapper.git
