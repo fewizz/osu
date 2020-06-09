@@ -19,3 +19,6 @@
 [submodule "libs/glfw-wrapper"]
 	path = libs/glfw-wrapper
 	url = https://github.com/cpp-wrappers/glfw-wrapper.git
+[submodule "libs/freetype-wrapper"]
+	path = libs/freetype-wrapper
+	url = https://github.com/cpp-wrappers/freetype-wrapper.git
