@@ -16,3 +16,6 @@
 [submodule "libs/openal-wrapper"]
 	path = libs/openal-wrapper
 	url = https://github.com/cpp-wrappers/openal-wrapper.git
+[submodule "libs/glfw-wrapper"]
+	path = libs/glfw-wrapper
+	url = https://github.com/cpp-wrappers/glfw-wrapper.git
